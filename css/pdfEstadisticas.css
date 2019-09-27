@@ -1,0 +1,296 @@
+.titulo-grafico1{
+	width:100%;
+	text-align: center;
+}
+.titulo-grafico1 td {
+	padding: 1em;
+	font-weight: 500;
+	background: rgb(225, 229, 235); 
+	color: rgb(55, 60, 65);
+}
+.titulo-grafico1 th {
+	padding: 1em;
+	font-weight: 500;
+	background: rgba(12, 53, 102, 0.808);
+	color: white;
+}
+table , td, th {
+	border: 1px solid #595959;
+	border-collapse: collapse;
+	font-family: Arial, Helvetica, sans-serif;
+}
+td, th {
+	padding: 3px;
+}
+th {
+	background:#ffffff;
+}
+.even {
+	background: #fbf8f0;
+}
+.odd {
+	background: #fefcf9;
+}
+
+.grafico1{
+	width: 100%;
+	text-align: center;	
+}
+.grafico1 th  {
+  font-size: .8em;
+	background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+	color:white;
+	line-height: 1.5;
+	padding: .5em 1.5em;
+	text-transform: uppercase;
+	text-align: left;
+
+	
+}
+.grafico1 td{
+  font-size: .8em;
+	line-height: 1.5;
+	text-align: center;
+	color: rgb(55, 60, 65);
+}
+.grafico2{
+	width: 100%;
+	text-align: center;
+}
+.grafico2 th  {
+  font-size: .8em;
+	background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+	line-height: 1.5;
+	text-transform: uppercase;
+	color: white;
+	padding: .5em;
+	padding-right: 1.1em;
+	text-align: right;
+}
+.grafico2 td  {
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: center;
+	color: rgb(55, 60, 65);
+}
+
+.nombre_vendedor{
+text-align: center;
+}
+
+.grafico3{
+	width: 100%;
+	
+}
+.grafico3 th  {
+  background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+  font-size: .8em;	
+	line-height: 1.5;
+	color: white;
+	padding: .5em .99em;	
+	text-align: left;
+}
+
+.grafico3 tr > td > span {
+	text-align: center !important;	
+}
+.grafico3 td  {
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: left;
+	padding: .5em 1em;
+	color: rgb(55, 60, 65);
+}
+
+.grafico4{
+	width: 100%;
+	
+}
+.grafico4 th  {
+  font-size: .8em;
+	background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+	line-height: 1.5;
+	color: white;
+	padding: .5em;
+	padding-right: 1.1em;	
+	text-align: right;
+}
+.grafico4 td  {
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: left;
+	color: rgb(55, 60, 65);
+	padding: .3em 1em;
+}
+.grafico5{
+	width: 100%;
+	
+}
+.grafico5 th  {
+  font-size: .8em;
+	background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+	line-height: 1.5;
+	color: white;
+	text-align: left;
+	padding: .5em .99em;
+}
+.grafico5 td  {
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: left;
+	padding: .1em 1em;
+	color: rgb(55, 60, 65);
+}
+
+.encabezado-graficos{  
+  background: rgb(225, 229, 235);
+}
+.grafico6{
+	width: 100%;
+	text-align: center;
+}
+.grafico6 th  {
+  font-size: .8em;
+	background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+	line-height: 1.5;
+	color: white;	
+	text-align: left;
+	
+}
+.grafico6 td  {
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: center;
+	color: rgb(55, 60, 65);
+
+}
+.graficoVentas{
+	width: 100%;
+	text-align: center;
+}
+.graficoVentas th  {
+	font-size: .8em;
+	background: rgba(20, 75, 143, 0.808);
+	padding: .5em .99em;
+	font-weight: 600;
+	line-height: 1.5;
+	color: white;	
+	text-align: center;
+}
+.graficoVentas td  {
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: center;
+	color: rgb(55, 60, 65);
+
+}
+.venta_hecha{
+	background: rgb(79, 133, 79);
+}
+.tablaVendedor{
+	width: 100%;	
+}
+.tablaVendedor th  {
+	background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+  font-size: .8em;	
+	line-height: 1.5;
+	color: white;
+	padding: .5em 1.7em;
+	text-align: left;
+}
+.tablaVendedor td  {
+	
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: center;
+	color: rgb(55, 60, 65);
+}
+.tablaTotalVendedor{
+	width: 100%;		
+}
+.tablaTotalVendedor td{
+	border-top: hidden;
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: center;
+	color: rgb(55, 60, 65);
+	font-weight: bold;	
+}
+
+
+
+.encabezado-tabla-detalles{
+	background: rgb(225, 229, 235);
+	color: white;	
+}
+
+.vendedorIndividual{
+	width: 100%;	
+}
+.vendedorIndividual th  {
+	background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+  font-size: .8em;	
+	line-height: 1.5;
+	color: white;
+	padding: .5em 1.7em;
+	text-align: center;
+}
+.vendedorIndividual td  {
+	
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: center;
+	color: rgb(55, 60, 65);
+
+}
+.tablaProductosVendidos{
+	width: 100%;
+}
+.tablaProductosVendidos th{
+	background: rgba(20, 75, 143, 0.808);
+	font-weight: 600;
+  font-size: .8em;	
+	line-height: 1.5;
+	color: white;
+	padding: .5em 1.7em;
+	text-align: center;	
+}
+
+.tablaProductosVendidos td{
+	font-size: .8em;
+	line-height: 1.5;
+	text-align: left;
+	color: rgb(55, 60, 65);	
+}
+
+.titulo-RO{
+	padding: 1em !important;
+  font-size: 1em !important; 
+	background: rgb(0, 148, 135) !important; 
+	color: rgb(255, 255, 255) !important;
+}
+.titulo-tabla-completa {
+	padding: 1em !important;
+  font-size: 1em !important; 
+	background: rgb(20, 75, 143, 0.808) !important; 
+	color: rgb(255, 255, 255) !important;
+}
+.encabezado-tabla-comp-coti{
+	background: rgb(227, 231, 235) !important;
+	color: black !important;
+	text-align: center!important;	
+}
+.titulo-RO-cotizaciones{
+	background: rgb(255, 191, 66) !important;
+	padding: 1em !important;
+	  font-size: 1em !important; 
+	  color: black !important;	
+}

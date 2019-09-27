@@ -1,0 +1,29 @@
+div.dt-buttons.btn-group > button.btn.btn-secondary.buttons-pdf.buttons-html5 {
+	background: url('../imagenes/pdf2.png') no-repeat center;
+	width: 38px !important;
+	height: 38px !important;
+	border-style: none;
+
+}
+
+
+div.dt-buttons.btn-group > button.btn.btn-secondary.buttons-pdf.buttons-html5 > span {
+	display: none;
+}
+
+
+
+
+/*excel*/
+
+div.dt-buttons.btn-group > button.btn.btn-secondary.buttons-excel.buttons-html5 {
+	background: url('../imagenes/excel.png') no-repeat center;
+	width: 38px !important;
+	height: 38px !important;
+	border-style: none;
+
+}
+
+div.dt-buttons.btn-group > button.btn.btn-secondary.buttons-excel.buttons-html5 > span {
+	display: none;
+}

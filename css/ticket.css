@@ -1,0 +1,29 @@
+@page {
+    margin: 0;
+}
+ 
+#tablaTicket  {
+	margin: 1em;
+	width: 80%;
+	border-collapse: collapse;
+	font-size: 4rem;
+	font-family: 'Calibri', Times, serif;
+	font-weight: bold;
+}
+#TituloTicket{
+
+font-size: 6rem !important;
+}
+.FechaTicket{
+	text-align: center !important;
+	font-size: 2rem !important;
+}
+.logo{
+	text-align: center;
+	font-size: 3rem !important;
+}
+.leyendaPie{
+	text-align: center;
+	font-size: 3rem !important;
+}
+

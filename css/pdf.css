@@ -1,0 +1,140 @@
+/*Propiedades de la tabla */
+
+table,
+th,
+td {
+	border-collapse: collapse;
+}
+
+/* añadimos borde a la tabla y ancho de la pagina*/
+
+table {
+	border: 1px solid black;
+	width: 100%;
+	line-height: 1.5;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+
+#cabezera {
+	width: 100%;
+	line-height: 1.0 !important;
+	font-family: Arial, Helvetica, sans-serif;
+
+}
+
+#cabezera > thead > tr,
+#cabezera > tbody > tr,
+.productos {
+	text-align: center;
+	font-size: .85em;
+
+}
+
+#filaAgregada {
+	color: white;
+}
+
+.cuerpo-cabezera h4 {
+
+	color: #1F497D;
+	font-size: 1em;
+
+}
+
+.cuerpo-cabezera span {
+	color: #1F497D;
+	font-size: 1.5em;
+}
+
+.cliente {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .78em;
+	text-align: justify;
+
+}
+
+table.productos {
+	border: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .85em;
+	text-align: center;
+}
+
+table.productos > thead > tr > th {
+	color: #FFF;
+	background-color: #1F497D !important;
+	border-color: 1px solid #1F497D;
+
+}
+
+table.productos > thead > tr > th,
+table.productos > tbody > tr > td,
+table.productos > tbody > tr > th {
+	border: 1px solid black;
+}
+
+
+table.productos > tbody > td,
+table.productos > th {
+	text-align: center;
+
+}
+
+
+/*tabla total sin bordes*/
+
+.total {
+	border: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+/**------------- css tabla total */
+
+body > main > table.productos > tbody > tr > td.sinBordes {
+	border: 0px solid white;
+}
+
+/* letras total a la derecha y en negrita*/
+
+.total {
+	text-align: right !important;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.datos-despacho {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .9em;
+	top: 10px;
+	border-top: 1px solid;
+	border-left: 1px solid;
+	border-right: 1px solid;
+	position: relative;
+	padding: 0 .5em;
+	line-height: 1;
+	min-height: 50%;
+	max-width: 100%;
+}
+
+.datos-despacho2 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .9em;
+	top: -20px;
+	border-bottom: 1px solid;
+	border-left: 1px solid;
+	border-right: 1px solid;
+	position: relative;
+	padding: 0 .5em;
+	line-height: 1;
+	min-height: 50%;
+	max-width: 100%;
+}
+
+.firma {
+	font-family: Arial, Helvetica, sans-serif;
+}
+.nombreProducto{
+	text-align: left !important;
+	padding: .2em .5em;	
+}

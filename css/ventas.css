@@ -1,0 +1,90 @@
+.tablaCotizacion {
+	border: 1px solid black;
+	margin: auto;
+	background: white;
+}
+
+
+
+/*titlo de detalle de ventas segun el tipo de venta*/
+
+#tituloVentaNulo,
+#tituloVentaCotizacion,
+#tituloVentaNotaPedido,
+#tituloVentaCompletado {
+	width: 100%;
+	text-align: center;
+	padding-top: .9em;
+	color: white;
+	height: 45px;
+	border-radius: 0px 0px 0px 0px;
+	text-shadow: 1px 1px #656565;
+
+}
+
+
+#tituloVentaNulo {
+	background: #6c757d;
+
+}
+
+
+
+#tituloVentaCotizacion {
+	background: #ffc107;
+	color: black;
+
+}
+
+
+
+#tituloVentaNotaPedido {
+	background: #28a745;
+
+}
+
+
+#tituloVentaCompletado {
+	background: #17a2b8;
+
+}
+#tituloCompraFacturado {
+	background: #5e5c95;
+	color: white;
+	min-height: 45px;
+	text-align: center;
+	padding: .9em;
+	text-shadow: 1px 1px #000;
+
+}
+#tituloOrdenFacturada {
+	background: #37347a;
+	color: white;
+	min-height: 45px;
+	text-align: center;
+	padding: .9em;
+	text-shadow: 1px 1px #000;
+}
+#tituloFacturaFinaliazada{
+	background: #0a0755;
+	color: white;
+	min-height: 45px;
+	text-align: center;
+	padding: .9em;
+	text-shadow: 1px 1px #000;
+}
+/*fin del codigo de titulo de venta en detalle de ventas */
+
+#borrar {
+	border-radius: 5px 5px 0px 0px;
+}
+.VentaRelacional{
+
+	display: none;
+}
+.vuelto{
+	font-size: 1.5em;
+	display: grid;
+	grid-template-columns: 70% 30%;
+
+}
