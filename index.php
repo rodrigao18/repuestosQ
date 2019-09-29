@@ -12,7 +12,7 @@
 	<!-- Font-icon css-->
 	<link rel="stylesheet" type="text/css"href="fontawesome-5.5.0/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="css/pdfEstadisticas.css">
-	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<!-- <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
 <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
@@ -28,7 +28,7 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff"> -->
 	<script src="js/jquery-3.2.1.min.js"></script>
 </head>
 
@@ -171,14 +171,14 @@
 	<script type="text/javascript" src="js/html2canvas.min.js"></script>
 	<script type="text/javascript" src="js/jquery.plugin.html2canvas.js"></script>
 	<script type="text/javascript" src="js/guardar_canvas.js?vknet28"></script>
-	<script type="text/javascript" src="js/ventas_por_fecha.js?vknet28"></script>
+	<!--<script type="text/javascript" src="js/ventas_por_fecha.js?vknet28"></script>-->
 	<script>
 		<?php  $fecha  = date("Y-m-d") ?>;
 		var fecha_actual_menos = '<?php echo date("Y-m-d",strtotime($fecha."- 10 days")); ?>';
 		var fecha_actual = '<?php echo $fecha ?>';
 		var ID_VENDEDORLOGUEADO = <?php echo $idVendedor;?>;
 		var NIVEL = <?php echo $nivel;?>;
-		window.onload = cargar_estadisticas(fecha_actual_menos, fecha_actual, NIVEL, ID_VENDEDORLOGUEADO);
+		//window.onload = cargar_estadisticas(fecha_actual_menos, fecha_actual, NIVEL, ID_VENDEDORLOGUEADO);
 
 	</script>
 

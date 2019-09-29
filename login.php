@@ -24,7 +24,7 @@
 	<section class="login-content">
 			
 		<div class="logo-man">
-			<center><img src="imagenes/logo_laptop-pc.png" alt=""></center>
+			<center><img src="imagenes/logo.png" alt=""></center>
 			<h2>yoimplemento.cl </h2>
 			</div>
 		
@@ -45,9 +45,9 @@
 				<div class="form-group col-md-12">	
 				<label for="contra">Sucursal</label>					
 									<select class="form-control" id="select_sucursal" name="select_estado">
-									<option id="taller" value="0">Elija una surcursal</option>
-									<option id="taller" value="1">Laptop-PC</option>
-									<option value="2">Celutronix</option>									
+									<option id="taller" value="0">Elija un Terminal</option>
+									<option id="taller" value="1">Terminal-1</option>
+									<option value="2">Terminal-2</option>									
 								</select>
 								</div>
 				</div>

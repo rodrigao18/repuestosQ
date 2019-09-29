@@ -2,7 +2,7 @@
 class conectar {
     private $servidor="localhost";
     private $usuario="ventas";
-    private $bd="laptop-pc";
+    private $bd="repuestos";
     private $password="rf.2019";
 
 	public function conexion(){

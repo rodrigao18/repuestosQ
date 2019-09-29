@@ -64,33 +64,17 @@ function consultar($sql){
       mysqli_close($conect);
       }
 
- // CARGAR COMUNAS EN EL OP TION SELECT;
- if($tag == 'tipoContacto'){
-  $sql = $_POST['sql'];
-  $c= new conectar();
-  $conect = $c->conexion();
-  mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;
-  $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');
-  $arreglo_usuario=array();
-  echo '<option value="0">Seleccione el tipo de contacto</option>';
-    while($fila=mysqli_fetch_array($result)){
-        echo '<option value="'.$fila["id"].'">'.$fila["nombre_tipo_contacto"].'</option>';
 
-    }
-  mysqli_free_result($result);
-  mysqli_close($conect);
-
-}
 
  // CARGAR tecnicos;
- if($tag == 'tecnicos'){
+ if($tag == 'proveedor'){
   $sql = $_POST['sql'];
   $c= new conectar();
   $conect = $c->conexion();
   mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;
   $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');
   $arreglo_usuario=array();
-  echo '<option value="0">Seleccione un tecnico</option>';
+  echo '<option value="0">Seleccione un proveedor</option>';
     while($fila=mysqli_fetch_array($result)){
         echo '<option value="'.$fila["id"].'">'.$fila["nombre"].'</option>';
 
@@ -134,42 +118,7 @@ if($tag == 'marca'){
   mysqli_close($conect);
 
 }
-//cargar modelo
-if($tag == 'modelo'){
-  $sql = $_POST['sql'];
-  $c= new conectar();
-  $conect = $c->conexion();
-  mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;
-  $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');
-  $arreglo_usuario=array();
-  echo '<option value="0">Seleccione un modelo</option>';
-    while($fila=mysqli_fetch_array($result)){
-        echo '<option value="'.$fila["id"].'">'.$fila["modelo"].'</option>';
 
-    }
-  mysqli_free_result($result);
-  mysqli_close($conect);
-
-}
-
-
-// CARGAR COMUNAS EN EL OP TION SELECT;
-if($tag == 'Contactos'){
-  $sql = $_POST['sql'];
-  $c= new conectar();
-  $conect = $c->conexion();
-  mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;
-  $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');
-  $arreglo_usuario=array();
- // echo '<option value="0">Seleccione contacto</option>';
-    while($fila=mysqli_fetch_array($result)){
-        echo '<option value="'.$fila["id_contacto"].'">'.$fila["nombre"].' ('.$fila["nombre_tipo_contacto"].')</option>';
-
-    }
-  mysqli_free_result($result);
-  mysqli_close($conect);
-  echo json_encode($arreglo_usuario);
-}
 if($tag == 'obtener_semana'){
   $obtener_fecha = $_POST['obtener_fecha'];
   obtener_semana($obtener_fecha);
@@ -240,37 +189,102 @@ if($tag == 'categoria'){
   mysqli_close($conect);		
     
 }
+//PARA HACER LA CONSUTA PARA CARGAR LAS REGIONES EN EL SELECT ;
+if($tag == 'mostrarRegiones'){
+  $query = "SELECT id , nombre FROM regiones"; 
+  mostrarRegiones($query);
+    
+}
+//FUNCION QUE ES LLAMADA PARA CARGAR LAS REGIONES EL SELECT OPTION;
+function mostrarRegiones($sql){
+  $c= new conectar();
+  $conect = $c->conexion();  
+  mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;   
+  $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');       
+  $arreglo_usuario=array();    
+   echo '<option value="0">Seleccione Región</option>';
+    while($fila=mysqli_fetch_array($result)){              
+        echo '<option value="'.$fila["id"].'">'.$fila["nombre"].'</option>';
 
-// CARGAR BODEGAS
-if($tag == 'bodegas'){
-  $sql = $_POST['sql']; 
+    }
+  mysqli_free_result($result);
+  mysqli_close($conect);		
+
+//CARGAR PROVINCIAS EN EL OPTION SELECT;   
+  }
+  if($tag == 'mostrarProvincias'){
+  $id=$_POST['id'];      
+  $query = "SELECT id , nombre FROM provincias where idRegion = $id"; 
+  mostrarProvincias($query);
+    
+}
+//LLAMADA A LA FUNCIÓN PARA CARGAR LAS PROVINCIAS 
+function mostrarProvincias($sql){
   $c= new conectar();
   $conect = $c->conexion();  
   mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;   
   $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');       
   $arreglo_usuario=array();
-  echo '<option value="0">Seleccione una bodega</option>';
+   echo '<option value="0">Seleccione Provincia</option>';
     while($fila=mysqli_fetch_array($result)){
         echo '<option value="'.$fila["id"].'">'.$fila["nombre"].'</option>';
     
     }
   mysqli_free_result($result);
   mysqli_close($conect);		
+
+  }
+// CARGAR COMUNAS EN EL OP TION SELECT;      
+   if($tag == 'mostrarComunas'){
+  $id=$_POST['id'];      
+  $query = "SELECT id , nombre FROM comunas where idProvincia = $id"; 
+  mostrarComunas($query);
     
 }
+// LLAMADA A LA FUNCTION PARA CARGAR LAS COMUNAS;
+function mostrarComunas($sql){
+  $c= new conectar();
+  $conect = $c->conexion();  
+  mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;   
+  $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');       
+  $arreglo_usuario=array();
+    while($fila=mysqli_fetch_array($result)){
+        echo '<option value="'.$fila["id"].'">'.$fila["nombre"].'</option>';
+    
+    }
+  mysqli_free_result($result);
+  mysqli_close($conect);		
 
+  }
 
-function days_in_month($month, $year)
-{
-// calculate number of days in a month
-echo $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
+  // TAG PARA MOSTRAR LOS  CONSUMOS PARA HAER LA CONVERSION DEL ID DE LA CIUDAD Y MOSTRARLA EN LA PÁGINA PRINCIPAL; 
+if($tag == 'cargarComunas'){
 
+  $query = "SELECT id,nombre FROM comunas"; 
+  cargarComunas($query);
+   
 }
-if($tag == 'array_de_objetos'){
-	$sql = json_encode($_POST['idClientesObjeto'],true);
-	$fecha1 = $_POST['fecha1'];
-	$fecha2 = $_POST['fecha2'];
+///LLAMADA AL FUCION PARA HACER LA CONVERCION ....;
+function cargarComunas($sql){      
+  $c= new conectar();
+  $conect = $c->conexion();
+   mysqli_set_charset($conect,"utf8");
+  $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');
+  $arreglo_usuario=array();
+    while($fila=mysqli_fetch_array($result)){
+
+    array_push($arreglo_usuario,$fila);
+    }
+  mysqli_free_result($result);
+  mysqli_close($conect);		
+  echo json_encode($arreglo_usuario);
+}
+
+  // TAG PARA MOSTRAR CLIENTES EN LA PÁGINA PRINCIPAL;
+  if($tag == 'mostrarClientes'){
+
+  $query = "SELECT id_cliente,nombre_cliente,direccion_cliente,telefono_cliente,correo_cliente,ciudad_cliente FROM clientes order by id_cliente DESC"; 
+  $result=mostrarDatos($query);	
 }
 
 
-?>

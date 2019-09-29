@@ -1,6 +1,6 @@
 <?php
 session_start();
-$connect = mysqli_connect("localhost","ventas","rf.2019","laptop-pc");
+$connect = mysqli_connect("localhost","ventas","rf.2019","repuestos");
 
 if(isset($_POST["correo"]) && isset($_POST["contra"])){
   $sucursal=$_POST["sucursal"];

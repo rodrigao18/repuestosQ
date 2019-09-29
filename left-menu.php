@@ -68,9 +68,9 @@
 
 	<p class="app-sidebar__user-designation pl-3">
 	<?php if ($sucursal==1) {
-    echo "Sucursal : Laptop-PC";
+    echo "Sucursal : Terminal-1";
 } elseif ($sucursal==2) {
-    echo "Sucursal : Celutronix";
+    echo "Sucursal : Terminal-2";
 } ?>
 
 	</p>							
@@ -92,7 +92,7 @@
 
 			<!-- Ordenes de compra -->
 
-			<?php
+			<!-- <?php
             $reparaciones='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-truck-loading"></i><span class="app-menu__label">Reparaciones</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
 					<li><a class="treeview-item" href="ver_reparaciones.php"><i class="icon fas fa-angle-right"></i> Ver reparaciones</a></li>
@@ -105,26 +105,7 @@
             } else {
                 echo "";
             }
-            ?>
-
-
-			<!--Productos-->
-			<?php
-            $menuProductos='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-shopping-cart"></i><span class="app-menu__label">Productos </span><i class="treeview-indicator fa fa-angle-right"></i></a>
-				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="ver_productos.php"><i class="icon far fa-check-circle"></i> Ver productos </a></li>
-					<li><a class="treeview-item" href="ver_productos_descartados.php"><i class="icon far fa-times-circle"></i> Ver productos descartados </a></li>
-					<li><a class="treeview-item" href="ingresar_productos.php"><i class="icon fas fa-cart-plus"></i> Ingresar productos </a></li>
-
-				</ul>
-			</li>';
-            if ($nivel==0) {
-                echo "";
-            } else {
-                echo "";
-            }
-            ?>
-
+            ?> -->
 			<!--Productos nuevos--->
 			<?php
             $menuProductosNuevos='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-shopping-cart"></i><span class="app-menu__label">Productos </span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -157,7 +138,7 @@
 			}
 			?>
 			
-			<!--Proveedores--->
+			<!--Clientes--->
 			<?php
             $Clientes='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Clientes</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
@@ -173,7 +154,7 @@
             }
             ?>
 
-			<?php
+			<!-- <?php
             $Tecnicos='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-user-cog"></i><span class="app-menu__label">Técnicos</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
 					<li><a class="treeview-item" href="ver_tecnicos.php"><i class="icon fas fa-angle-right"></i> Ver técnicos</a></li>
@@ -186,8 +167,23 @@
             } else {
                 echo "";
             }
-            ?>
+            ?> -->
+	<!-- Vendedores -->
 
+	<?php
+            $menuProveedores='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-truck"></i><span class="app-menu__label">Proveedores</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a class="treeview-item" href="ver_proveedores.php"><i class="icon fas fa-angle-right"></i> Ver proveedores</a></li>
+					<li><a class="treeview-item" href="ingresar_proveedores.php"><i class="icon fas fa-angle-right"></i> ingresar proveedores</a></li>
+				
+				</ul>
+			</li>';
+            if ($nivel==0) {
+                echo $menuProveedores;
+            } else {
+                echo "";
+            }
+            ?>
 
 			<!-- Vendedores -->
 
@@ -207,25 +203,8 @@
             ?>
 
 
-			<!--Estadisticas-->
-			<?php
-			$menuEstadisticas='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-chart-bar"></i><span class="app-menu__label">Estadisticas</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-			<ul class="treeview-menu">
-			<li><a class="treeview-item" href="graficos_vendedor.php"><i class="icon fas fa-chart-pie"></i>Graficos vendedor</a></li>
-			<li><a class="treeview-item" href="index_productos_vendidos.php"><i class="icon fas fa-chart-area "></i>Productos vendidos</a></li>
 
-			</ul>
-			</li>';
-			if ($nivel==0) {
-			echo "";
-			} else {
-			echo "";
-			}
-
-            ?>
-
-
-<?php
+<!-- <?php
 $menuFlujoCajas='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-chart-line"></i><span class="app-menu__label">Flujo de cajas</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 			<ul class="treeview-menu">
 			<li><a class="treeview-item" href="resultado_operacional.php"><i class="icon  fas fa-angle-right"></i>  Ingresar gastos generales</a></li>		
@@ -239,7 +218,7 @@ if ($nivel==0) {
     echo "";
 }
 
-?>
+?> -->
 
  <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-clock"></i><span class="app-menu__label">Turnos</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
@@ -249,7 +228,7 @@ if ($nivel==0) {
 
 				</ul>
 			</li>
-			<?php
+			<!-- <?php
 $retiro='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-cart-arrow-down"></i><span class="app-menu__label">Retiro de dinero</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 			<ul class="treeview-menu">
 			<li><a class="treeview-item" href="ver_retiro_dinero.php"><i class="icon fas fa-angle-right"></i> Ver retiro de dinero</a></li>
@@ -264,7 +243,7 @@ if ($nivel==0) {
     echo "";
 }
 
-            ?>			
+            ?>			 -->
 			<?php
 $menuRespaldarBase='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-database"></i><span class="app-menu__label">Respaldar base</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 			<ul class="treeview-menu">
@@ -293,9 +272,9 @@ var NIVEL = <?php echo $nivel;?>;
 var SUCURSAL= <?php echo $sucursal;?>;
 
 if(SUCURSAL==1){
-var sucur="LAPTOP-PC";	
+var sucur="Terminal-1";	
 }else if(SUCURSAL==2){
-var sucur="CELUTRONIX";	
+var sucur="Terminal-2";	
 }
 console.error(sucur);
 document.getElementById("sucursal").innerHTML=sucur;
