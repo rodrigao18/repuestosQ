@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Sistema Ventas</title>
+	<title>Sistema Cotización</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,13 +38,13 @@
 	<main class="app-content">
 		<div class="app-title">
 			<div>
-				<h1><i class="fa fa-truck"></i> Ingresar proveedores </h1>
-				<p>Ingresar proveedores</p>
+				<h1><i class="fa fa-edit"></i> Editar clientes </h1>
+				<p>Editar clientes</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-				<li class="breadcrumb-item">proveedores</li>
-				<li class="breadcrumb-item active"><a href="#">Ingresar proveedores</a></li>
+				<li class="breadcrumb-item">clientes</li>
+				<li class="breadcrumb-item active"><a href="#">Editar clientes</a></li>
 			</ul>
 		</div>
 
@@ -56,36 +56,31 @@
 						<form method="POST" id="formularioGuardar">
 							<input type="hidden" class="form-control" id="id" name="id">						
 							<div class="form-row">
-							<div class="form-group col-md-12">
+							<div class="form-group col-md-6">
 								<label>R.U.T</label>
-								<input type="text" class="form-control" id="rutProveedor" name="rutProveedor" maxlength="9" placeholder=" Ej:123456789 (sin digito)" onfocus="this.value=sacarPuntosGuionRut(this.value)" onkeyup="this.value=soloRut(this.value)" onblur="this.value=validaRut(this.value,1)" >
+								<input type="text" class="form-control" id="rutCliente" disabled name="rutCliente" maxlength="9" placeholder=" Ej:123456789 (sin digito)" onfocus="this.value=sacarPuntosGuionRut(this.value)" onkeyup="this.value=soloRut(this.value)" onblur="this.value=validaRut(this.value,1)" >
 							</div>
-							</div>
-							<div class="form-row">
 							<div class="form-group col-md-6">
 								<label>Nombre</label>
-								<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese nombre" onkeyup="this.value=mayusculas(this.value)" required>
-							</div>
-							<div class="form-group col-md-6">
-								<label>Dirección</label>
-								<input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese direccion" onkeyup="this.value=mayusculas(this.value)" required>
+								<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese nombre" onkeyup="this.value=mayusculas(this.value)" >
 							</div>
 						</div>
 							<div class="form-row">
                             <div class="form-group col-md-4">
-								<label>Contacto</label>
-								<input type="text" class="form-control" id="contacto" name="contacto" placeholder="Ingrese contacto" onkeyup="this.value=mayusculas(this.value)" >
+								<label>Dirección</label>
+								<input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese dirección" onkeyup="this.value=mayusculas(this.value)" >
 							</div>
 							<div class="form-group col-md-4">
 								<label>Telefono</label>
-								<input type="text" class="form-control" id="fono" name="fono" placeholder="Ingrese telefono" onkeyup="this.value=mayusculas(this.value)" required >
+								<input type="text" class="form-control" id="fono" name="fono" placeholder="Ingrese telefono" onkeyup="this.value=mayusculas(this.value)" >
 							</div>
                             <div class="form-group col-md-4">
-								<label>Correo</label>
-								<input type="email" class="form-control" id="correo" name="correo" placeholder="Ingrese correo" required onkeyup="this.value=mayusculas(this.value)" >
+								<label>Referencia</label>
+								<input type="text" class="form-control" id="referencia" name="referencia" placeholder="Ingrese Referencia" onkeyup="this.value=mayusculas(this.value)" >
 							</div>
 						</div>
-						<div class="form-row">
+
+							<div class="form-row">
 							    <div class="form-group col-md-4">
                                 <label>Región</label>
 						        <div class="form-group">
@@ -103,15 +98,30 @@
 						        <div class="form-group">
 							        <select class="form-control" id="selectComunas" name="ciudad"></select>
 						        </div>
-								</div>															
+								</div>
+															
 							</div>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>Credito autorizado</label>
+									<input type="number" class="form-control" id="credito_autorizado" name="credito_autorizado" min="0" placeholder="Ingrese  credito" value="0">
+								</div>
+                                <div class="form-group col-md-4">
+									<label>Telefono 2</label>
+									<input type="text" class="form-control" id="fono2" name="fono2" min="0" placeholder="Ingrese  telefono" >
+								</div>
+                                <div class="form-group col-md-4">
+									<label>Giro</label>
+									<input type="text" class="form-control" id="giro" name="giro" min="0" placeholder="Ingrese giro" >
+								</div>															
+							</div>	
 							<div class="form-group">
-                            <label for="comment">Observaciones:</label>
-                                <textarea class="form-control" rows="5" id="observacion" onkeyup="this.value=mayusculas(this.value)"></textarea>
-                         </div>       				
+                            <label for="comment">Observacion:</label>
+                                <textarea class="form-control" rows="3" id="observacion" onkeyup="this.value=mayusculas(this.value)"></textarea>
+                         </div> 						
 							<!--Parte de Clientes Dinamicos-->						
 							<br>
-							<button class="btn btn-primary float-right" onclick="GuardarProveedor(event)"><i class="fa fa-save"></i> Guardar proveedor</button>
+							<button class="btn btn-primary float-right" onclick="GuardarCliente(event)"><i class="fa fa-save"></i> Guardar cliente</button>
 							<br><br>
 						</form>
 					</div>
@@ -129,14 +139,16 @@
     <script src="js/main.js"></script>
     <!-- The javascript plugin to display page loading on top-->
     <script src="js/plugins/pace.min.js"></script>
-     <script type="text/javascript" src="js/ingresar_proveedor.js?vknet28"></script> 
+     <script type="text/javascript" src="js/editar_cliente.js?vknet29"></script> 
     <script type="text/javascript" src="js/funciones.js?vknet28"></script>
     <!-- Page specific javascripts-->
     <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
 
 	<script>
-	//	window.onload = cargarProveedoresAP;
+		var id = <?php echo $_POST['id'];?>;
+		var NIVEL = 0;		
+		window.onload = cargarCliente(id);
 
 	</script>
 

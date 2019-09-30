@@ -57,7 +57,7 @@ let tablaClientes = (arreglo) => {
 		   <td>${i['fono_1']}</td>
            <td>${i['fono_2']}</td>
            <td>${COMUNAS[i['ciudad']-1]['nombre']}</td>						  
-		   <td><form method="POST" action="editar_productos_nuevos.php">
+		   <td><form method="POST" action="editar_cliente.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
 			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>			
 			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			

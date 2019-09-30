@@ -41,13 +41,13 @@
 	<main class="app-content">
 		<div class="app-title">
 			<div>
-				<h1><i class="fa fa-shopping-cart"></i> Ver productos </h1>
-				<p>Ver productos, editar y eliminar</p>
+				<h1><i class="fa fa-truck"></i> Ver proveedores </h1>
+				<p>Ver proveedores, editar y eliminar</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-				<li class="breadcrumb-item">Productos</li>
-				<li class="breadcrumb-item active"><a href="#">Ver productos</a></li>
+				<li class="breadcrumb-item">proveedores</li>
+				<li class="breadcrumb-item active"><a href="#">Ver proveedores</a></li>
 			</ul>
 		</div>
 
@@ -70,15 +70,13 @@
 								<table class="table table-striped " id="tablaProductos">
 								<thead>
 								<tr>
-								<th width="5%">Código</th>
-								<th width="25%">Nombre</th>	
-								<th width="10%">Costo</th>
-								<th width="25%">Proveedor</th>
-								<th width="10%">Ubicacion</th>							
-								<th width="5%">Stock Mínimo</th>	
-								<th width="5%">Stock</th>							
+								<th width="5%">Rut</th>
+								<th width="20%">Nombre</th>	
+								<th width="10%">Fono</th>
+								<th width="10%">Contacto</th>
+								<th width="10%">Ciudad</th>							
 								<th width="5%"> </th>
-								<th width="5%"> </th>
+								<th width="5%"> </th>							
 								</tr>
 								</thead>
 								<tbody id="tablaBody"></tbody></table>
@@ -100,7 +98,8 @@
 	<script src="js/main.js"></script>
 	<!-- The javascript plugin to display page loading on top-->
 	<script src="js/plugins/pace.min.js"></script>
-	<script type="text/javascript" src="js/ver_productos.js?vknet28"></script>
+    <script type="text/javascript" src="js/funciones.js?vknet29"></script>
+	<script type="text/javascript" src="js/ver_proveedores.js?vknet29"></script>
 	<?php include "./js/table.php"; ?>
 
 

@@ -1,39 +1,28 @@
-var PROVEEDOR;
+var COMUNAS;
 
-function cargarCategoria(e) {
-	
-	e.preventDefault();
-	var sql ='SELECT id,nombre FROM proveedores ';
+function cargarComunasArray() {
+	//primera funcion en cargar
 	$.ajax({
 		type: 'POST',
 		url: 'php/consulta.php',
-		data: {sql:sql, tag: 'array_de_datos' },
+		data: {
+			tag: 'cargarComunas'
+		},
 		success: function (data) {
 			var arreglo = JSON.parse(data);
-
-			var arr = new Array();
-
-			for (var i = 0; i < arreglo.length; i++) {
-				arr[arreglo[i][0].toString()] = arreglo[i][1];
-
-			}
-			PROVEEDOR = arr;
-			console.error(PROVEEDOR[2]);
-			cargarProductos();
-
+            COMUNAS = arreglo;
+          
+            cargarProveedores();
 		},
 		error: function (request, status, error) {
-			alert("Error: Could not cargarProveedores");
+			console.error("Error: Could not cargarComunasArray");
 		}
 	});
 }
-
-
-
 //*-cargar datos mediante async wait()
-let cargarProductos = async () => { 
+let cargarProveedores = async () => { 
 	const baseUrl = 'php/consultaFetch.php';
-	let consulta=`SELECT id,codigo,nombre, costo,proveedor, ubicacion,stock_m,stock FROM productos`;
+	let consulta=`SELECT id,rut,nombre,ciudad,fono,contacto FROM proveedores`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
@@ -45,8 +34,8 @@ let cargarProductos = async () => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);		
-		console.log(array);		
-		tablaProductos(array);
+	
+		tablaProveedores(array);
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		const botones = await lenguaje();	
@@ -57,24 +46,23 @@ let cargarProductos = async () => {
 	
 }
 //*-productos
-let tablaProductos = (arreglo) => {
+let tablaProveedores = (arreglo) => {
 	let tbody = document.getElementById('tablaBody');
-	
+   //${COMUNAS[i['ciudad']-1]['nombre']}
 	for (let i of arreglo) { 
+       
 		tbody.innerHTML +=
 		`<tr>		   
-		   <td>${i['codigo']}</td>
+		   <td>${formatearRut(i['rut'])}</td>
 		   <td>${i['nombre']}</td>
-		   <td>${i['costo']}</td>
-		   <td>${PROVEEDOR[i['proveedor']]}</td>
-		   <td>${i['ubicacion']}</td>
-		   <td>${i['stock_m']}</td>		
-		   <td>${i['stock']}</td>				  
-		   <td><form method="POST" action="editar_productos.php">
+		   <td>${i['fono']}</td>
+           <td>${i['contacto']}</td>
+           <td>${COMUNAS[i['ciudad']-1]['nombre']}</td>						  
+		   <td><form method="POST" action="editar_productos_nuevos.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
-			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
+			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>			
 			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
-		 </tr>`
+         </tr>`
 	 	
 	}
 	$('[data-toggle="tooltip"]').tooltip();
@@ -161,4 +149,4 @@ function eliminarProducto(e, id) {
 
 }
 
-window.onload = cargarCategoria
+window.onload = cargarComunasArray
