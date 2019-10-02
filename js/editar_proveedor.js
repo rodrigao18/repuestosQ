@@ -1,11 +1,11 @@
 var ID;
 //*-select de los datos del cliente-*//
-let cargarCliente = async (id) => {
+let cargarProveedor = async (id) => {
 
     ID=id;	
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,rut,nombre,direccion,ciudad,fono_1,fono_2,referencia,giro,credito_autorizado,observacion
-                  FROM clientes where id=${id}`;	 
+    let consulta=`SELECT id,rut,nombre,direccion,ciudad,fono,contacto,correo,observacion
+                  FROM proveedores where id=${id}`;	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
 	
@@ -20,7 +20,7 @@ let cargarCliente = async (id) => {
         let id_ciu=array[0]['ciudad'];      	     
        
         const InnerComunass = await innerComunas(id_ciu);
-        const datosClientes = await cargarInputs(array);     		
+        const datosProveeodor = await cargarInputsProveedor(array);     		
 		
 	} catch (error) { console.log('error en la conexion ', error); }
 
@@ -118,38 +118,34 @@ let comunas = async (array) => {
 }
 
 //*-cargar los datos en los inputs-*//
-let cargarInputs = async (array) => {
+let cargarInputsProveedor = async (array) => {
 
-    document.getElementById('rutCliente').value=array[0]['rut'];
+    document.getElementById('rutProveedor').value=array[0]['rut'];
 	document.getElementById('nombre').value=array[0]['nombre'];
 	document.getElementById('direccion').value=array[0]['direccion'];   
-    document.getElementById('fono').value=array[0]['fono_1'];
-    document.getElementById('fono2').value=array[0]['fono_2'];
-    document.getElementById('referencia').value=array[0]['referencia'];
-    document.getElementById('giro').value=array[0]['giro'];
-    document.getElementById('credito_autorizado').value=array[0]['credito_autorizado'];
+    document.getElementById('fono').value=array[0]['fono'];
+    document.getElementById('contacto').value=array[0]['contacto'];
+    document.getElementById('correo').value=array[0]['correo'];   
     document.getElementById('observacion').value=array[0]['observacion'];
 
 }
 
-let editarCliente = async (e) => {
+let EditarProveedor = async (e) => {
 
     const evento = e.preventDefault();
-    let rutCliente = $("#rutCliente").val();
+    let rutProveedor = $("#rutProveedor").val();
 	let nombre = $("#nombre").val();
 	let direccion = $("#direccion").val();
-	let fono = $("#fono").val();
-    let fono2 = $("#fono2").val();
-    let giro = $("#giro").val();
+	let fono = $("#fono").val();   
     let ciudad = document.getElementById("selectComunas").value;
-    let referencia = $("#referencia").val();
-    let credito = $("#credito_autorizado").val();
+    let contacto = $("#contacto").val();
+    let correo = $("#correo").val();
     let observacion = $("#observacion").val();
 
     const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`UPDATE clientes set rut="${rutCliente}",nombre="${nombre}",direccion="${direccion}",ciudad=${ciudad},fono_1="${fono}",
-	fono_2="${fono2}",giro="${giro}",referencia="${referencia}",credito_autorizado=${credito},observacion="${observacion}" WHERE id=${ID}`;
+	let consulta=`UPDATE proveedores set rut="${rutProveedor}",nombre="${nombre}",direccion="${direccion}",ciudad=${ciudad},fono="${fono}",
+	contacto="${contacto}",correo="${correo}",observacion="${observacion}" WHERE id=${ID}`;
     	
 	const sql   = {sql: consulta, tag: `crud`}
 	console.error(sql);
@@ -161,62 +157,8 @@ let editarCliente = async (e) => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		console.error(data);
-		if(data==1){  swal('UPDATE','El cliente fue actualizado exitosamente','success'); }     		
+		if(data==1){  swal('UPDATE','El proveedor fue actualizado exitosamente','success'); }     		
 		
 	} catch (error) { console.log('error en la conexion ', error); }
 
 }
-
-//*-comprobar si existe un cliente en la base-*//
-let comprobarCliente = async  () => { 
-
-    if(document.getElementById('rutCliente').value!= ""){   
-
-    let rutCliente = $("#rutCliente").val(); 
-    const baseUrl = 'php/consultaFetch.php';
-        console.error('rutCliente' + rutCliente);
-    let consulta=`SELECT count(*) FROM clientes where rut=${rutCliente}`;
-
-    const sql = {sql: consulta, tag: `array_datos`} 
-
-    try {
-		//*-llamar ajax al servidor mediate api fetch.
-		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-		//*-request de los datos en formato texto(viene todo el request)
-		const data = await response.text();
-		//*-se parsea solo la respuesta del Json enviada por el servidor.
-        let array = JSON.parse(data);
-        
-        let existe = array[0][0]; 
-
-        if (existe < 1) {
-			
-            } else {
-                $.notify({
-                    title: "Rut existente : ",
-                    message: "El rut de estes cliente ya existe en la base de datos:",
-                    icon: 'fas fa-exclamation-circle'
-                }, {
-                    type: "danger",
-                    placement: {
-                        from: "top",
-                        align: "right"
-                    },
-                    offset: 70,
-                    spacing: 70,
-                    z_index: 1031,
-                    delay: 1000,
-                    timer: 1000
-                });
-                    document.getElementById('rutCliente').focus();
-                    $("#rutCliente").val(convertirRut(rutCliente));
-
-                 }
-      		
-		
-    } catch (error) { console.log('error en la conexion ', error); }
-    
-}    else{ let rutCliente = $("#rutCliente").val(); console.error(rutCliente);   }
-
-}
-

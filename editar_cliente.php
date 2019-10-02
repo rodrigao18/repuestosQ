@@ -84,13 +84,13 @@
 							    <div class="form-group col-md-4">
                                 <label>Región</label>
 						        <div class="form-group">
-							        <select onchange="cargarProvincias()" class="form-control" id="selectRegiones"></select>
+							        <select onchange="provincias()" class="form-control" id="selectRegiones"></select>
 						        </div>									
 							    </div>
 								<div class="form-group col-md-4">
                                 <label>Provincia</label>
 						        <div class="form-group">
-							        <select onchange="cargarComunas()" class="form-control" id="selectProvincias"></select>
+							        <select onchange="comunas()" class="form-control" id="selectProvincias"></select>
 						        </div>
 								</div>	
 								<div class="form-group col-md-4">
@@ -121,7 +121,7 @@
                          </div> 						
 							<!--Parte de Clientes Dinamicos-->						
 							<br>
-							<button class="btn btn-primary float-right" onclick="GuardarCliente(event)"><i class="fa fa-save"></i> Guardar cliente</button>
+							<button class="btn btn-primary float-right" onclick="editarCliente(event)"><i class="fa fa-save"></i> Guardar cliente</button>
 							<br><br>
 						</form>
 					</div>

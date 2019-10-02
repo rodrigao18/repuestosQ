@@ -174,3 +174,4 @@ function validaRut(rut,indice) {
     }
     return rutPuntos;
 }
+

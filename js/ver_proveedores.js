@@ -58,9 +58,12 @@ let tablaProveedores = (arreglo) => {
 		   <td>${i['fono']}</td>
            <td>${i['contacto']}</td>
            <td>${COMUNAS[i['ciudad']-1]['nombre']}</td>						  
-		   <td><form method="POST" action="editar_productos_nuevos.php">
+		   <td><form method="POST" action="editar_proveedor.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
-			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>			
+			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>
+			<td><form method="POST" action="ingresar_facturas.php">
+		   <button type="submit" class="btn btn-mini" data-toggle="tooltip"
+			data-placement="top" title="Factura" name="id" value=${i['id']}><i class="fas fa-list" aria-hidden="true"></i></button></form></td>				
 			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
          </tr>`
 	 	

@@ -58,7 +58,7 @@
 			<div class="col-md-12">
 				<div class="tile">
 					<div class="tile-body">
-						<a style="margin-right: 15px" href="ingresar_productos_nuevos.php" class="btn btn-outline-primary float-right"><i class="icon fa fa-cart-plus"></i>Ingresar productos nuevos</a>
+						<a style="margin-right: 15px" href="ingresar_proveedores.php" class="btn btn-outline-primary float-right"><i class="icon fa fa-cart-plus"></i>Ingresar proveedor nuevos</a>
 						<div class="my-3 p-3 bg-white rounded box-shadow">
 
 							<h6 class="border-bottom border-gray pb-2 mb-0 ">Productos</h6>
@@ -75,6 +75,7 @@
 								<th width="10%">Fono</th>
 								<th width="10%">Contacto</th>
 								<th width="10%">Ciudad</th>							
+								<th width="5%"> </th>
 								<th width="5%"> </th>
 								<th width="5%"> </th>							
 								</tr>
