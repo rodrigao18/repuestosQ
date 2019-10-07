@@ -197,11 +197,64 @@ function comprobarProducto(){
 	return;
 }
 
+
+function comprobarCodigoPro(){
+	if($("#codigoProveedor").val() != ""	){
+		var codigo_producto = $("#codigoProveedor").val();
+		
+
+		var sql = 'SELECT count(*) FROM productos where codigo_proveedor="' + codigo_producto + '"';
+	
+		//-*AJAX	
+		$.ajax({
+			type: 'POST',
+			url: 'php/consulta.php',
+			data: { sql: sql, tag: 'array_de_datos' },
+
+			success: function (data) {
+				var arreglo = JSON.parse(data);
+				existe = arreglo[0][0];
+				if (existe < 1) {
+			
+					} else {
+						$.notify({
+							title: "Codigo existente : ",
+							message: "El Codigo proveedor de estes producto ya existe en la base de datos:",
+							icon: 'fas fa-exclamation-circle'
+						}, {
+							type: "danger",
+							placement: {
+								from: "top",
+								align: "right"
+							},
+							offset: 70,
+							spacing: 70,
+							z_index: 1031,
+							delay: 1000,
+							timer: 1000
+						});
+					document.getElementById('codigoProveedor').focus();					
+					}
+				
+			},
+			error: function (request, status, error) {
+				console.error("Error: Could not comprobarCLiente");
+			}
+		});
+
+	}else{
+		var codigo_producto = $("#codigoProducto").val();
+		console.error(codigo_producto);		
+	}	
+	return;
+}
+
 //*-guardar productos;	
 function GuardarProducto(e) {
 	e.preventDefault();
 	var nombre = $("#nombreProducto").val();
-	var codigoProducto = $("#codigoProducto").val();	
+	var codigoProducto = $("#codigoProducto").val();
+	var codigoProveedor = $("#codigoProveedor").val();		
 	var idCategoria = document.getElementById("select_categoria").value;
 	var idProveedor = document.getElementById("select_proveedor").value;
 	var descripcion = $("#descripcion").val();
@@ -220,9 +273,9 @@ function GuardarProducto(e) {
 		return;	 
 	 }
 
-	var sql = 'insert into productos (codigo,proveedor,nombre, descripcion, ubicacion,categoria,marca,costo,stock_m,stock,margen_contado,margen_oferta,margen_credito)' +
-		'VALUES("' + codigoProducto + '",' + idProveedor + ',"' + nombre + '","' + descripcion + '","' + ubicacion + '",' + idCategoria + ',' + idMarca + ',' + costo + ', '+
-		''  + stockMinimo + ','+stockMaximo+',' + margenContado + ',' + margenOferta + ',' + margenCredito + ')';
+	var sql = 'insert into productos (codigo,proveedor,codigo_proveedor,nombre, descripcion, ubicacion,categoria,marca,costo,stock_m,stock,margen_contado,margen_oferta,margen_credito,precio_venta)' +
+		'VALUES("' + codigoProducto + '",' + idProveedor + ',"' + codigoProveedor + '","' + nombre + '","' + descripcion + '","' + ubicacion + '",' + idCategoria + ',' + idMarca + ',' + costo + ', '+
+		''  + stockMinimo + ','+stockMaximo+',' + margenContado + ',' + margenOferta + ',' + margenCredito + ',0)';
 
 	 console.error(sql);
 	

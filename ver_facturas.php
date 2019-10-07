@@ -41,13 +41,13 @@
 	<main class="app-content">
 		<div class="app-title">
 			<div>
-				<h1><i class="fa fa-shopping-cart"></i> Ver productos </h1>
-				<p>Ver productos, editar y eliminar</p>
+				<h1><i class="fa fa-shopping-cart"></i> Ver facturas </h1>
+				<p>Ver facturas, editar y eliminar</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-				<li class="breadcrumb-item">Productos</li>
-				<li class="breadcrumb-item active"><a href="#">Ver productos</a></li>
+				<li class="breadcrumb-item">Facturas</li>
+				<li class="breadcrumb-item active"><a href="#">Ver facturas</a></li>
 			</ul>
 		</div>
 
@@ -61,7 +61,7 @@
 						<a style="margin-right: 15px" href="ingresar_productos_nuevos.php" class="btn btn-outline-primary float-right"><i class="icon fa fa-cart-plus"></i>Ingresar productos nuevos</a>
 						<div class="my-3 p-3 bg-white rounded box-shadow">
 
-							<h6 class="border-bottom border-gray pb-2 mb-0 ">Productos</h6>
+							<h6 class="border-bottom border-gray pb-2 mb-0 ">Facturas</h6>
 							<br><br>
 
 								<div id="salida">
@@ -70,15 +70,15 @@
 								<table class="table table-striped " id="tablaProductos">
 								<thead>
 								<tr>
-								<th width="5%">Código Interno</th>
-								<th width="10%">Código Proveedor</th>		
-								<th width="25%">Nombre</th>	
-								<th width="10%">Costo</th>
-								<th width="25%">Proveedor</th>													
-								<th width="5%">Stock Mínimo</th>	
-								<th width="5%">Stock</th>							
+                                <th width="15%">Proveedor</th>
+								<th width="10%">Rut</th>
+								<th width="10%">Factura</th>	
+								<th width="10%">Fecha ingreso</th>
+								<th width="5%">Neto</th>
+								<th width="5%">Iva</th>
+                                <th width="5%">Total</th>							
 								<th width="5%"> </th>
-								<th width="5%"> </th>
+								<th width="5%"> </th>							
 								</tr>
 								</thead>
 								<tbody id="tablaBody"></tbody></table>
@@ -100,7 +100,8 @@
 	<script src="js/main.js"></script>
 	<!-- The javascript plugin to display page loading on top-->
 	<script src="js/plugins/pace.min.js"></script>
-	<script type="text/javascript" src="js/ver_productos.js?vknet28"></script>
+    <script type="text/javascript" src="js/funciones.js?vknet29"></script>
+	<script type="text/javascript" src="js/ver_facturas.js?vknet29"></script>
 	<?php include "./js/table.php"; ?>
 
 

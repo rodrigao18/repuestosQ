@@ -56,9 +56,13 @@
 						<form method="POST" id="formularioGuardar">
 							<input type="hidden" class="form-control" id="id" name="id">						
 							<div class="form-row">
-										<div class="form-group col-md-4">
-											<label>Código producto</label>
-											<input type="text" class="form-control" id="codigoProducto" name="codigoProducto" onblur="comprobarProducto()"  placeholder="Ingrese código">
+										<div class="form-group col-md-2">
+											<label>Código interno</label>
+											<input type="text" class="form-control" id="codigoProducto" name="codigoProveedor" onblur="comprobarProducto()" required placeholder="Ingrese código interno">
+										</div>
+										<div class="form-group col-md-2">
+											<label>Código proveedor</label>
+											<input type="text" class="form-control" id="codigoProveedor" name="codigoProveedor" onblur="comprobarCodigoPro()" required placeholder="Ingrese código proveedor">
 										</div>
 										<div class="form-group col-md-4">
 											<label>Proveedor</label>

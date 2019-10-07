@@ -1,0 +1,105 @@
+var editando = false;
+var MARGEN;
+//funcion para tranformar una celda editable
+function transformarEnEditable(nodo,indice) {
+
+	//El nodo recibido es SPAN
+
+	if (editando == false) {
+		//*-editar el nombre del producto s el indice es igual a 1
+		if(indice==1){
+				
+			var nodoTd = nodo.parentNode; //Nodo TD
+			var nodoTr = nodoTd.parentNode; //Nodo TR
+			var nodosEnTr = nodoTr.getElementsByTagName('td');
+			var nombreEditable = nodoTd.textContent;
+			var nuevoCodigoHtmlNombre= '<td> <textarea type="text" rows="3" id="nombre" style="width:100%;" onkeyup="salir(event,this,1)" onkeypress="pulsar(event,this,1)">' + nombreEditable + '</textarea>  </td>';
+			console.log(nombreEditable);
+			nodoTd.innerHTML = nuevoCodigoHtmlNombre;
+
+			}
+
+		
+		editando = "true";
+	} else {
+		alert('Solo se puede editar una línea. Recargue la página para poder editar otra');
+	}
+
+
+}
+
+function pulsar(e, nodo,editaNombre) {
+
+	if (e.keyCode === 13 && !e.shiftKey) {
+		e.preventDefault();
+	//*-editar nombre 	
+	if(editaNombre==1){
+
+		var nodoTd = nodo.parentNode; //Nodo TD
+		var nodoTr = nodoTd.parentNode; //Nodo TR		
+		var nodosEnTr = nodoTr.getElementsByTagName('td');
+    var nombreProducto = document.getElementById('nombre').value;
+    var idOrdenR = nodosEnTr[0].textContent;		
+		var nombreEditable = document.getElementById('nombre').value;
+		
+
+		$.notify({
+			title: "Nombre modificado : ",
+			message: "Se actualizó la información de la factura",
+			icon: 'fas fa-check'
+		}, {
+				type: "info",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 1000,
+				timer: 2000
+			});
+
+	//		updateProductoModificado(nombreProducto,idOrdenR);
+
+			var nuevoCodigoHtmlNombre = '<td> <span onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombreEditable + '</span> </td>';
+        
+			nodoTd.innerHTML = nuevoCodigoHtmlNombre;
+
+	//*-sino edito precio	
+	}else{
+       
+	
+
+}
+		
+
+		editando = false;
+
+	}
+}
+//*-salir de la celda editable si no deseo editar
+function salir(event, nodo,salirEscape){
+  if (event.code === 'Escape' || event.keyCode === 27) {
+	console.log('escape');
+	event.preventDefault();
+
+	if(salirEscape==1){
+
+		var nodoTd = nodo.parentNode; //Nodo TD
+		var nodoTr = nodoTd.parentNode; //Nodo TR		
+		var nodosEnTr = nodoTr.getElementsByTagName('td');
+    var nombreProducto = document.getElementById('nombre').value;
+    var idOrdenR = nodosEnTr[0].textContent;		
+		var nombreEditable = document.getElementById('nombre').value;
+			var nuevoCodigoHtmlNombre = '<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;"> ' + nombreEditable + '</span> </td>';
+			nodoTd.innerHTML = nuevoCodigoHtmlNombre;
+
+
+	}
+		editando = false;
+	  }
+}
+
+
+

@@ -9,6 +9,7 @@ $sql=$data['sql'];
 
 if($tag == 'array_datos'){ arrayDeDatos($sql);} 		//cargar un array de datos;
 if($tag == 'crud')     { crud($sql);} 					//cargar un array de datos;
+if($tag == 'insert_return_id')     { insertID($sql);} 	//cargar insert que devuelve un ID;
 if($tag == 'proveedor'){ cargarSelectProveedor($sql);}  //cargar proveedor en el select;
 if($tag == 'categoria'){ cargarSelectCategoria($sql);}  //cargar categoria en el select;
 if($tag == 'marca')    {	 cargarSelectMarca($sql);} 	//cargar marca en el select;
@@ -29,7 +30,17 @@ function arrayDeDatos($sql) {
 	echo json_encode($arreglo_usuario);	
 
 	}
-//funcion para hacer un insert - update - delete;
+//funcion hacer un insert y nos devuelve el Ultimo ID;
+function insertID($sql)	{
+
+	  $c= new conectar();
+      $conect = $c->conexion();
+      mysqli_set_charset($conect,"utf8");
+      $result = mysqli_query($conect,$sql) or die ('Consulta fallida :');
+	  echo mysqli_insert_id($conect);
+      mysqli_close($conect);
+
+}
 
 function crud($sql)	{
 

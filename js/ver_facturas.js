@@ -1,43 +1,47 @@
-var PROVEEDOR;
-
-function cargarCategoria(e) {
-	
-	e.preventDefault();
-	var sql ='SELECT id,nombre FROM proveedores ';
-	$.ajax({
-		type: 'POST',
-		url: 'php/consulta.php',
-		data: {sql:sql, tag: 'array_de_datos' },
-		success: function (data) {
-			var arreglo = JSON.parse(data);
-
-			var arr = new Array();
-
-			for (var i = 0; i < arreglo.length; i++) {
-				arr[arreglo[i][0].toString()] = arreglo[i][1];
-
-			}
-			PROVEEDOR = arr;
-			console.error(PROVEEDOR[2]);
-			cargarProductos();
-
-		},
-		error: function (request, status, error) {
-			alert("Error: Could not cargarProveedores");
-		}
-	});
-}
+var PROVEEDORES;
 
 
 
-//*-cargar datos mediante async wait()
-let cargarProductos = async () => { 
+let proveedores = async () => {
+
 	const baseUrl = 'php/consultaFetch.php';
-	let consulta=`SELECT id,codigo,nombre,codigo_proveedor,costo,proveedor, ubicacion,stock_m,stock FROM productos`;
+    let consulta=`	SELECT id,nombre FROM proveedores`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.
+		let array = JSON.parse(data);
+		var arr = new Array();
+		for (var i = 0; i < array.length; i++) {
+			arr[array[i][0].toString()] = array[i][1];
+
+			}		
+		PROVEEDORES=arr;
 	
+		const cargarFAct = await cargarFacturas();
+		//*-promesa de la funcion denguaje la ejecuto a la espera
+		//*-de la respuesta del servidor.	
+
+		
+	} catch (error) {
+		console.log('error en la conexion ', error);
+	}	
+}
+
+//*-cargar datos mediante async wait()
+let cargarFacturas = async () => { 
+	const baseUrl = 'php/consultaFetch.php';
+    let consulta=`SELECT f.id,id_proveedor,p.rut,numero_factura,fecha_ingreso,neto,iva,total 
+    FROM facturas f inner join proveedores p on p.id=f.id_proveedor ORDER BY f.id ASC`;
+	 
+	
+	const sql = {sql: consulta, tag: `array_datos`} 
+
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -45,8 +49,8 @@ let cargarProductos = async () => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);		
-		console.log(array);		
-		tablaProductos(array);
+     
+		const tablaFactutass = await tablaFacturas(array);
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		const botones = await lenguaje();	
@@ -56,20 +60,21 @@ let cargarProductos = async () => {
 	}
 	
 }
-//*-productos
-let tablaProductos = (arreglo) => {
+
+let tablaFacturas = (arreglo) => {
 	let tbody = document.getElementById('tablaBody');
 	
 	for (let i of arreglo) { 
+	//console.error(PROVEEDORES[i['id_proveedor']]);	
 		tbody.innerHTML +=
 		`<tr>		   
-		   <td>${i['codigo']}</td>
-		   <td>${i['codigo_proveedor']}</td>
-		   <td>${i['nombre']}</td>
-		   <td>${i['costo']}</td>
-		   <td>${PROVEEDOR[i['proveedor']]}</td>		  
-		   <td>${i['stock_m']}</td>		
-		   <td>${i['stock']}</td>				  
+		<td>${PROVEEDORES[i['id_proveedor']]}</td>
+		   <td>${i['rut']}</td>
+		   <td>${i['numero_factura']}</td>
+		   <td>${i['fecha_ingreso']}</td>
+		   <td>${formatearNumeros(i['neto'])}</td>
+		   <td>${formatearNumeros(i['iva'])}</td>		
+		   <td>${formatearNumeros(i['total'])}</td>				  
 		   <td><form method="POST" action="editar_productos.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
 			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
@@ -81,7 +86,8 @@ let tablaProductos = (arreglo) => {
 
  }
 
- function lenguaje() {
+
+function lenguaje() {
 
 	var f = new Date();
 	var fecha = f.getDate() + "-" + (f.getMonth() + 1) + "-" + f.getFullYear();
@@ -136,29 +142,4 @@ let tablaProductos = (arreglo) => {
 
 }
 
-
-function eliminarProducto(e, id) {
-	e.preventDefault();
-	var sql = 'DELETE from productos where id =' + id;
-	$.ajax({
-		type: 'POST',
-		url: 'php/consulta.php',
-		data: {
-			sql: sql, tag: 'crud_datos' },
-		success: function (data) {
-			// console.log(data);
-			if (data == 1) {
-				alert('Borrado exitoso');
-				cargar_productos(e);
-			} else {
-				alert('No Borrado');
-			}
-		},
-		error: function (request, status, error) {
-			alert("Error: Could not eliminarProducto");
-		}
-	});
-
-}
-
-window.onload = cargarCategoria
+window.onload = proveedores

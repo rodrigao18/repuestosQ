@@ -102,7 +102,7 @@
 								</div>
 								<div class="form-group col-md-6">
 									<label>Numero factura </label>
-									<input type="number" class="form-control" id="factura">
+									<input type="number" class="form-control" min=0 value="1" required id="factura">
 								</div>
 
 							</div>
@@ -117,7 +117,7 @@
 							<div class="input-group-prepend">
 							<div class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></div>
 							</div>
-							<input class="form-control form-control-sm " id="buscar" name="buscar" onkeyup="prebusqueda();" type="text" placeholder="Buscar" aria-label="Search">
+							<input class="form-control form-control-sm " id="buscar" name="buscar" onkeyup="prebusqueda('detalle');" type="text" placeholder="Buscar" aria-label="Search">
 						</div>
 					
 					</div>
@@ -142,13 +142,13 @@
 					<table class="table" id="tablaC">
 						<thead class="thead-dark">
 							<tr>
-								<th>Item</th>
-								<th>Codigo</th>
-								<th><i class="fas fa-edit"></i> Cantidad</th>
-								<th><i class="fas fa-edit"></i> Nombre</th>
-								<th>Precio Unitario</th>
-								<th>Precio Total</th>
-								<th></th>
+								<th width="5%">Item</th>
+								<th width="10%">Cod.Interno</th>
+								<th width="5%"><i class="fas fa-edit"></i> Cantidad</th>
+								<th width="20%"><i class="fas fa-edit"></i> Nombre</th>
+								<th width="10%">Precio Unitario</th>
+								<th width="10%">Precio Total</th>
+								<th width="10%"></th>
 							</tr>
 
 						</thead>
@@ -182,7 +182,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<button id="btn-finalizar" class="btn btn-info float-right" onclick="finalizarCotizacion(event)"><i class="fas fa-save"></i> Finalizar</button>
+					<button id="btn-finalizar" class="btn btn-info float-right" onclick="comprobarFactura(event)"><i class="fas fa-save"></i> Guardar factura</button>
 					<br><br>
 				</div>
 			</div>
@@ -200,7 +200,7 @@
 	<script src="js/plugins/pace.min.js"></script>
 
     <script type="text/javascript" src="js/funciones.js?vknet32"></script>
-
+	<script type="text/javascript" src="js/editarVenta.js?vknet32"></script>
 	<script type="text/javascript" src="js/ingresar_facturas.js?vknet32"></script>
 	<!-- Page specific javascripts-->
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
