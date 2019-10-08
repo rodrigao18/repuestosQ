@@ -91,7 +91,7 @@ let tablaProductos = (array) => {
 			'	<th scope="col" width="10%">Stock</th>' +	
 			'	<th scope="col" width="1%">Cantidad</th>' +
 			'	<th scope="col" width="10%">Costo</th>' +
-			'	<th scope="col" width="10%">Margen</th>' +
+			'	<th id="checkMargen" width="10%">Margen</th>' +
 			'	<th scope="col" width="10%"> Descuento</th>' +
 			'	<th scope="col" width="10%"> Precio venta</th>' +		
 			'	<th scope="col" width="10%"> </th>' +
@@ -99,7 +99,7 @@ let tablaProductos = (array) => {
 			'</thead>' +
 			'<tbody id="tablaBody"></tbody>' +
 			'</table>');
-
+		let	chekeadoTodoEntregado = "";
 		for (var i = 0; i < array.length; i++) {
 			var id_producto = array[i]['id'];
 			var nombre = array[i]['nombre'];			
@@ -123,7 +123,7 @@ let tablaProductos = (array) => {
 				'<td>' + stock + '</td>' +
 				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '" min=0 type="number" value="1"></td>' +
 				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled type="number" value=' + costo + '></td>' +
-				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '"  type="number" value=' + margen + '></td>' +
+				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" type="number" value=' + margen + '></td>' +
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
 				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '" disabled type="number" value=' + costo + '></td>' +		
 				'<td style="display:none;">'+id_producto+'</td>' +
@@ -133,7 +133,7 @@ let tablaProductos = (array) => {
 				'</tr>');
 		}
 				$('[data-toggle="tooltip"]').tooltip();
-
+				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
 }
 
 //comprobar el descuento en la tabla descuento historico
@@ -143,6 +143,19 @@ let comprobar_descuento_historico  = (id_btn) => {
 	var id_group_boton=id_boton;
 	document.getElementById(id_group_boton).style.display = "none"; //DESAPARECER EL BOTON
 	document.getElementById("div_descuento" + 1).style.display = "inline-flex";
+}
+
+let calcular_margen = (id,id_precio_venta) =>{
+
+let id_margen= id.id;
+let margen = document.getElementById(id_margen).value;
+const costo = document.getElementById('cos'+id_precio_venta).value;
+
+//c*(100/100-r);
+let precio_final = costo*(100/(margen-100));
+
+document.getElementById('ven'+id_precio_venta).value=redondeo(precio_final,0);
+
 }
 function validar_descuento(id, descuento_max, id_precio_venta, id_precio_final) {
 
@@ -170,7 +183,46 @@ function calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_
 
 }
 
+let actualizarPrecioVenta = async (idP,precioVent) => {
 
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`UPDATE PRODUCTOS set precio_venta=${precioVent} WHERE id=${idP}`;
+
+	const sql   = {sql: consulta, tag: `crud`}	
+
+	console.error(consulta);
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.	
+
+			
+			$.notify({
+				title: "Update: ",
+				message: "Se actualizo el precio de venta:",
+				icon: 'fas fa-check'
+			}, {
+				type: "success",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 2000,
+				timer: 3000
+			});	
+		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+
+}
 //agragar  productos a la tabla factura
 let agregarProductos =  (e,btn) => {
 
@@ -193,8 +245,16 @@ let agregarProductos =  (e,btn) => {
 	let cantidad = document.getElementById('can' + idTabla).value;
 	let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
 	let precioTotal = cantidad * precio_venta;
-	
+	let idProd = table.rows[idTabla].cells[9].innerHTML;
 	ITEM++;
+
+	var estadoEntr = "";
+	estadoEntr = document.getElementById('checkEnt').checked;
+
+	if(estadoEntr == true){
+		actualizarPrecioVenta(idProd,precio_venta);
+	}
+	
 
 	$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
 	'<td>' + ITEM + '</td>' +
@@ -298,7 +358,7 @@ let insertFactura = async (id) => {
 			if (data == 1 && contador==nFilas) {
 				porcentaje = (exito / nFilas) * 100;
 						
-					swal("Cotizacion creada", "" + porcentaje + "% de los datos fueron guardados", "success");
+					swal("Factura creada", "" + porcentaje + "% de los datos fueron guardados", "success");
 						//window.location.href = "ver_proveedores.php";
 					setTimeout('window.location.href = "ver_proveedores.php"', 2000);
 	
@@ -397,12 +457,9 @@ let recalcularValores = () => {
   
 	}
 	  
-	 let ivaresult=parseInt(formatearNumeros(valorTotal*0.19));	
-	 console.error('ivaresult ' + ivaresult);		
-	  //asignamos los nuevos valores
-	  $("#totalNeto").val(formatearNumeros(valorTotal));
-	  let iva =document.getElementById('iva').value=ivaresult;
-	  $("#totalF").val(formatearNumeros(valorTotal*1.19));
+	$("#totalNeto").val(formatearNumeros(valorTotal));
+	$("#iva").val(formatearNumeros(valorTotal*0.19));
+	$("#totalF").val(formatearNumeros(valorTotal*1.19));
   
 	  //if(guardar){actualizarMontos();} //actualizamos para que guarde en la tabla
 

@@ -75,7 +75,7 @@ let tablaFacturas = (arreglo) => {
 		   <td>${formatearNumeros(i['neto'])}</td>
 		   <td>${formatearNumeros(i['iva'])}</td>		
 		   <td>${formatearNumeros(i['total'])}</td>				  
-		   <td><form method="POST" action="editar_productos.php">
+		   <td><form method="POST" action="editar_facturas.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
 			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
 			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
@@ -118,7 +118,7 @@ function lenguaje() {
 			"sortAscending": ": activate to sort column ascending",
 			"sortDescending": ": activate to sort column descending"
 		},
-		"order": [[1, "desc"]],
+		"order": [[1, "asc"]],
 		"stateSave":true
 	});
 

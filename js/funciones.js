@@ -27,7 +27,7 @@ function convertirNumeros(str) {
 
 //FUNCION PARA CONVERTIR LOS NUMEROS DE COMAS A NORMAL;
 function formatearNumeros(str) {
-	var numero =new Intl.NumberFormat('es-MX').format(Math.round(str));
+	var numero =new Intl.NumberFormat('en-US').format(Math.round(str));
 	return numero;
 }
 //sacar gion al rut
