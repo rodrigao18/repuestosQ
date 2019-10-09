@@ -149,12 +149,22 @@ let calcular_margen = (id,id_precio_venta) =>{
 
 let id_margen= id.id;
 let margen = document.getElementById(id_margen).value;
-const costo = document.getElementById('cos'+id_precio_venta).value;
+let ultimoNum=(margen % 100)%10;
+let primerNum=Math.floor(margen/100);
+console.error('primer numero ' + primerNum);
+console.error('ultimo ' + ultimoNum);
+
+let l = Math.pow(10, Math.floor(Math.log(margen)/Math.log(10))-1); 
+let b = Math.floor(margen/l);
+let seundoNumero = b-Math.floor(b/10)*10;
+
+console.error('seundoNumero' + seundoNumero);
+// const costo = document.getElementById('cos'+id_precio_venta).value;
 
 //c*(100/100-r);
-let precio_final = costo*(100/(margen-100));
+// let precio_final = costo*(100/(margen-100));
 
-document.getElementById('ven'+id_precio_venta).value=redondeo(precio_final,0);
+// document.getElementById('ven'+id_precio_venta).value=redondeo(precio_final,0);
 
 }
 function validar_descuento(id, descuento_max, id_precio_venta, id_precio_final) {
