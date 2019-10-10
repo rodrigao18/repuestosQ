@@ -14,10 +14,20 @@ function transformarEnEditable(nodo,indice) {
 			var nodosEnTr = nodoTr.getElementsByTagName('td');
 			var nombreEditable = nodoTd.textContent;
 			var nuevoCodigoHtmlNombre= '<td> <textarea type="text" rows="3" id="nombre" style="width:100%;" onkeyup="salir(event,this,1)" onkeypress="pulsar(event,this,1)">' + nombreEditable + '</textarea>  </td>';
-			console.log(nombreEditable);
+			
 			nodoTd.innerHTML = nuevoCodigoHtmlNombre;
 
 			}
+			if(indice==2){
+				var nodoTd = nodo.parentNode; //Nodo TD
+				var nodoTr = nodoTd.parentNode; //Nodo TR
+				var nodosEnTr = nodoTr.getElementsByTagName('td');
+				var codigoPrEditable = nodoTd.textContent;
+				var nuevoCodigoHtmlCodigoPr= '<td> <textarea type="text" rows="3" id="codigo" style="width:100%;" onkeyup="salir(event,this,2)" onkeypress="pulsar(event,this,2)">' + codigoPrEditable + '</textarea>  </td>';
+				
+				nodoTd.innerHTML = nuevoCodigoHtmlCodigoPr;		
+			}
+			
 
 		
 		editando = "true";
@@ -60,16 +70,45 @@ function pulsar(e, nodo,editaNombre) {
 				timer: 2000
 			});
 
-	//		updateProductoModificado(nombreProducto,idOrdenR);
+		
 
 			var nuevoCodigoHtmlNombre = '<td> <span onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombreEditable + '</span> </td>';
         
 			nodoTd.innerHTML = nuevoCodigoHtmlNombre;
 
 	//*-sino edito precio	
-	}else{
+	}else if(editaNombre==2){
        
-	
+		var nodoTd = nodo.parentNode; //Nodo TD
+		var nodoTr = nodoTd.parentNode; //Nodo TR		
+		var nodosEnTr = nodoTr.getElementsByTagName('td');
+    	var nombreProducto = document.getElementById('codigo').value;
+    	var idOrdenR = nodosEnTr[0].textContent;		
+		var codigoEditable = document.getElementById('codigo').value;
+		var idProducto = nodosEnTr[7].textContent;
+
+		$.notify({
+			title: "Código modificado : ",
+			message: "Se actualizó la información de la factura",
+			icon: 'fas fa-barcode'
+		}, {
+				type: "success",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 1000,
+				timer: 2000
+			});
+
+			editarCodiProveedor(idProducto,codigoEditable);
+
+			var nuevoCodigoHtmlNombre = '<td> <span onclick="transformarEnEditable(this,2)" style="cursor:pointer;">' + codigoEditable + '</span> </td>';
+        
+			nodoTd.innerHTML = nuevoCodigoHtmlNombre;
 
 }
 		
@@ -97,6 +136,20 @@ function salir(event, nodo,salirEscape){
 
 
 	}
+	if(salirEscape==2){
+
+		var nodoTd = nodo.parentNode; //Nodo TD
+		var nodoTr = nodoTd.parentNode; //Nodo TR		
+		var nodosEnTr = nodoTr.getElementsByTagName('td');
+    var nombreProducto = document.getElementById('codigo').value;
+    var idOrdenR = nodosEnTr[0].textContent;		
+		var codigoEditable = document.getElementById('codigo').value;
+			var nuevoCodigoHtmlNombre = '<td> <span class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;"> ' + codigoEditable + '</span> </td>';
+			nodoTd.innerHTML = nuevoCodigoHtmlNombre;
+
+
+	}
+
 		editando = false;
 	  }
 }

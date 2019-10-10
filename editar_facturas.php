@@ -117,7 +117,7 @@
 							<div class="input-group-prepend">
 							<div class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></div>
 							</div>
-							<input class="form-control form-control-sm " id="buscar" name="buscar" onkeyup="prebusqueda('detalle');" type="text" placeholder="Buscar" aria-label="Search">
+							<input class="form-control form-control-sm " disabled id="buscar" name="buscar" onkeyup="prebusqueda('detalle');" type="text" placeholder="Buscar" aria-label="Search">
 						</div>
 					
 					</div>
@@ -142,7 +142,7 @@
 					<table class="table" id="tablaC">
 						<thead class="thead-dark">
 							<tr>
-								<th width="5%">Item</th>
+								<th width="5%">Cod.Proveedor</th>
 								<th width="10%">Cod.Interno</th>
 								<th width="5%"><i class="fas fa-edit"></i> Cantidad</th>
 								<th width="20%"><i class="fas fa-edit"></i> Nombre</th>
@@ -182,7 +182,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<button id="btn-finalizar" class="btn btn-info float-right" onclick="comprobarFactura(event)"><i class="fas fa-save"></i> Guardar factura</button>
+					<button id="btn-finalizar" class="btn btn-success float-right" onclick="comprobarFactura(event)"><i class="fas fa-edit"></i> editar factura</button>
 					<br><br>
 				</div>
 			</div>

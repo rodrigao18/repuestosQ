@@ -142,7 +142,7 @@
 					<table class="table" id="tablaC">
 						<thead class="thead-dark">
 							<tr>
-								<th width="5%">Item</th>
+								<th width="5%">Cod.Proveedor</th>
 								<th width="10%">Cod.Interno</th>
 								<th width="5%"><i class="fas fa-edit"></i> Cantidad</th>
 								<th width="20%"><i class="fas fa-edit"></i> Nombre</th>

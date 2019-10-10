@@ -121,9 +121,9 @@ let tablaProductos = (array) => {
 				'<td>' + codigoProveedor + '</td>' +
 				'<td>' + nombre + '</td>' +
 				'<td>' + stock + '</td>' +
-				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '" min=0 type="number" value="1"></td>' +
-				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled type="number" value=' + costo + '></td>' +
-				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" type="number" value=' + margen + '></td>' +
+				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '" disabled min=0 type="number" value="1"></td>' +
+				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '"  onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + costo + '></td>' +
+				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeyup="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
 				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '" disabled type="number" value=' + costo + '></td>' +		
 				'<td style="display:none;">'+id_producto+'</td>' +
@@ -136,7 +136,11 @@ let tablaProductos = (array) => {
 				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
 }
 
-//comprobar el descuento en la tabla descuento historico
+let cantidadCosto = (id) => {
+	let costo=document.getElementById('cos'+id).value;
+	document.getElementById('ven'+id).value=costo;
+
+}
 let comprobar_descuento_historico  = (id_btn) => {
 
 	var id_boton = id_btn.id;
@@ -145,28 +149,37 @@ let comprobar_descuento_historico  = (id_btn) => {
 	document.getElementById("div_descuento" + 1).style.display = "inline-flex";
 }
 
-let calcular_margen = (id,id_precio_venta) =>{
+let calcular_margen = (id,id_costo) =>{
 
-let id_margen= id.id;
-let margen = document.getElementById(id_margen).value;
-let ultimoNum=(margen % 100)%10;
-let primerNum=Math.floor(margen/100);
-console.error('primer numero ' + primerNum);
-console.error('ultimo ' + ultimoNum);
+	let id_margen= id.id;
 
-let l = Math.pow(10, Math.floor(Math.log(margen)/Math.log(10))-1); 
-let b = Math.floor(margen/l);
-let seundoNumero = b-Math.floor(b/10)*10;
+	let precio_costo=document.getElementById('cos'+id_costo).value;
 
-console.error('seundoNumero' + seundoNumero);
-// const costo = document.getElementById('cos'+id_precio_venta).value;
+	let precio_final;	
+	let margen = document.getElementById(id_margen).value;
+	let ultimoNum=(margen % 100)%10;
+	let primerNum=Math.floor(margen/100);
 
-//c*(100/100-r);
-// let precio_final = costo*(100/(margen-100));
+	let l = Math.pow(10, Math.floor(Math.log(margen)/Math.log(10))-1); 
+	let b = Math.floor(margen/l);
+	let seundoNumero = b-Math.floor(b/10)*10;
 
-// document.getElementById('ven'+id_precio_venta).value=redondeo(precio_final,0);
+	let porcentaje=((seundoNumero.toString())+(ultimoNum))/100;
+
+	if(primerNum==1){
+		let porcosto=redondeo(porcentaje*precio_costo,0);
+		precio_final=precio_costo*2;
+		document.getElementById('ven'+id_costo).value=precio_final+porcosto;
+	}
+	if(primerNum==2){
+		let porcosto=redondeo(porcentaje*precio_costo,0);
+		precio_final=precio_costo*3;
+		document.getElementById('ven'+id_costo).value=precio_final+porcosto;
+	} 
 
 }
+
+
 function validar_descuento(id, descuento_max, id_precio_venta, id_precio_final) {
 
 	var precio_venta = document.getElementById('cos'+id_precio_venta).value;//document.getElementById("pres" + id_precio_venta).value //PRECIO VENTA
@@ -251,10 +264,12 @@ let agregarProductos =  (e,btn) => {
 	$('#buscar').val('');
 
 	let codigo_producto = table.rows[idTabla].cells[0].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+	let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
 	let nombre = table.rows[idTabla].cells[2].innerHTML;
 	let cantidad = document.getElementById('can' + idTabla).value;
+	let precio_costo = document.getElementById('cos' + idTabla).value; // ID DEL SELECT PRECIO;
 	let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
-	let precioTotal = cantidad * precio_venta;
+	let precioTotal = cantidad * precio_costo;
 	let idProd = table.rows[idTabla].cells[9].innerHTML;
 	ITEM++;
 
@@ -267,18 +282,18 @@ let agregarProductos =  (e,btn) => {
 	
 
 	$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
-	'<td>' + ITEM + '</td>' +
+	'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
 	'<td>' + codigo_producto + '</td>' +
-	//'<td width="10%"> <input class="form-control" id="can'+ITEM+'" type="number" onclick="modificarCantidad(this,'+ITEM+')" value="'+cantidad+'">  </td>' +
 	'<td><input style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+')  type="number" min=1 value="'+cantidad+'"></td>' +
 	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
+	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
 	'<td><input class="form-control" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
 	'<td><button class="btn  btn-danger" id="' + ITEM + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+	'<td style="display:none;">'+idProd+'</td>' +
 	'</tr>');
 
 		$('[data-toggle="tooltip"]').tooltip();
-		agregarNumeracionItem();
+	//	agregarNumeracionItem();
  		recalcularValores();
 
 }
@@ -293,6 +308,28 @@ let cantidadCalculo = (id) =>{
 	recalcularValores();
 
 } 
+let editarCodiProveedor = async (idProducto,codigoPrEditable) => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`UPDATE PRODUCTOS SET codigo_proveedor="${codigoPrEditable}" WHERE id=${idProducto}`;
+
+	const sql   = {sql: consulta, tag: `crud`}	
+
+	console.error(consulta);		  
+
+	try {
+	//*-llamar ajax al servidor mediate api fetch.
+	const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+	//*-request de los datos en formato texto(viene todo el request)
+	const data = await response.text();
+	//*-se parsea solo la respuesta del Json enviada por el servidor.	
+	
+	} catch (error) { console.log('error en la conexion ', error); }
+
+}
+
+
 
 let guardar = async (e) => {
 
@@ -342,21 +379,20 @@ let insertFactura = async (id) => {
 
 	for (var i = 0; i < nFilas; i++) {
 
-		let codigo = tablaC.rows[i].cells[1].innerHTML;
+		let codigoProveedor = tablaC.rows[i].cells[0].textContent;
+		let codigoInterno = tablaC.rows[i].cells[1].innerHTML;
 		let cantidad =document.getElementById('cant'+(i+1)).value;
 		let nombre = tablaC.rows[i].cells[3].innerText;
 		let precioUnitario = convertirNumeros(document.getElementById('vent'+(i+1)).value);		
 		let totalUnitario = convertirNumeros(document.getElementById('prect'+(i+1)).value);
-		
+	
 
 		const baseUrl = 'php/consultaFetch.php';
 
-		let consulta=`INSERT INTO facturas_relacional (codigoProducto,precioUnitario,cantidad,totalUnitario,idfactura,nombreProducto)
-				  VALUES("${codigo}",${precioUnitario},${cantidad},${totalUnitario},${id},"${nombre}")`;
+		let consulta=`INSERT INTO facturas_relacional (codigoProveedor,codigoProducto,precioUnitario,cantidad,totalUnitario,idfactura,nombreProducto)
+				  VALUES("${codigoProveedor.trim()}","${codigoInterno}",${precioUnitario},${cantidad},${totalUnitario},${id},"${nombre}")`;
 
-		const sql   = {sql: consulta, tag: `crud`}	
-
-		console.error(consulta);
+		const sql   = {sql: consulta, tag: `crud`}		
 
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
