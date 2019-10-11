@@ -82,9 +82,9 @@ let  bucarProductos = async () => {
 let tablaProductos = (array) => {
 
 	$("#salidaTabla").append('<button class="btn btn-sm btn-primary float-right" onclick = regresar(event)  data-toggle="tooltip" data-placement="top" title="" data-original-title="Regresar a resumen" ><i class="fas fa-chevron-left"></i>  </button>' +		
-			'<table  class="table table-striped" id="tabla" >' +
+			'<table  class="table-responsive  table-striped" id="tabla" >' +
 			'<thead>' +
-			'<tr>' +
+			'<tr class="table-success">' +
 			'	<th scope="col" width="10%">Cód.Interno</th>' +
 			'	<th scope="col" width="10%">Cód.Proveedor</th>' +
 			'	<th scope="col" width="10%">Nombre</th>' +	

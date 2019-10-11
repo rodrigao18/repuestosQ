@@ -16,6 +16,9 @@ if($tag == 'marca')    {	 cargarSelectMarca($sql);} 	//cargar marca en el select
 if($tag == 'array_region'){ regiones($sql);} 		    //cargar regiones en editar cliente;
 if($tag == 'array_provincias'){ provincias($sql);} 		//cargar provincias en editar cliente;
 if($tag == 'array_comunas'){ comunas($sql);} 			//cargar comunas en editar cliente;
+if($tag == 'array_clientes'){ clientes($sql);} 			//cargar clientes en ventas;
+
+
 
 //funciones para consulta SELECT
 function arrayDeDatos($sql) {
@@ -137,5 +140,18 @@ function comunas($sql)	     {
 	
 		}			
 
+//*-mostrar las los clientes en el select
+function clientes($sql)	     {
 
+	$c= new conectar();
+	$conect = $c->conexion();  
+		mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;   
+	$result = mysqli_query($conect,$sql) or die ('Consulta fallida :');       
+	$arreglo_usuario=array();
+		echo '<option value="0">Seleccione cliente</option>';
+			while($fila=mysqli_fetch_array($result)){	echo '<option value="'.$fila["id"].'">'.$fila["nombre"].'</option>'; }
+		mysqli_free_result($result);
+	mysqli_close($conect);
+	
+		}	
 ?>

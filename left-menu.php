@@ -82,7 +82,7 @@
 			<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-store"></i><span class="app-menu__label">Ventas</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
 					<li><a class="treeview-item" href="ver_ventas.php"><i class="icon fas fa-angle-right"></i> Ver ventas</a></li>
-					<li><a class="treeview-item" href="ingresar_ventas.php"><i class="icon fas fa-angle-right"></i> Ingresar ventas </a></li>
+					<li><a class="treeview-item" href="ingresar_venta.php"><i class="icon fas fa-angle-right"></i> Ingresar ventas </a></li>
 					<li><a class="treeview-item" href="productos_masVendidos.php"><i class="icon fas fa-angle-right"></i> Productos mas vendidos</a></li>
 					
 
