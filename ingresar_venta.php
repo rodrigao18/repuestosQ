@@ -148,12 +148,43 @@
 								<td></td>
 								<td></td>
 								<td></td>
+								<td width="10%">Total venta</td>
+								<td width="20%"><input type="text" class="form-control" id="totalF" ></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
 								<td width="10%">Total</td>
-								<td width="20%"><input type="text" class="form-control" id="totalF" disabled></td>
+								<td width="20%"><input type="text" disabled class="form-control" id="totalapagar" ></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td width="10%">Desc. % </td>
+								<td width="20%"><div class="input-group">
+								<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-percentage" aria-hidden="true"></i></div>
+								</div>
+								<input class="form-control form-control-sm " id="descuentoPorcentaje" name="porcentaje" onkeyup="calcularDescuentoPerc(event);" type="text">
+								</div></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td width="10%">Desc. $ </td>
+								<td width="20%"><div class="input-group">
+								<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-dollar-sign" aria-hidden="true"></i></div>
+								</div>
+								<input class="form-control form-control-sm " id="descuentoPesos" name="pesos" onkeyup="calcularDescuentoPesos();" type="text">
+								</div></td>
 							</tr>
 						</tbody>
 					</table>
-					<button id="btn-finalizar" class="btn btn-info float-right" onclick="comprobarFactura(event)"><i class="fas fa-save"></i> Guardar factura</button>
+					<button id="btn-finalizar" class="btn btn-success float-right" onclick="comprobarFactura(event)"><i class="fas fa-dollar-sign"></i> Realizar Venta</button>
 					<br><br>
 				</div>
 			</div>

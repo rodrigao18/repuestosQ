@@ -121,7 +121,7 @@ let tablaProductos = (array) => {
 				'<td>' + codigoProveedor + '</td>' +
 				'<td>' + nombre + '</td>' +
 				'<td>' + stock + '</td>' +
-				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '" disabled min=0 type="number" value="1"></td>' +
+				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '"  disabled min=0 type="number" value="1"></td>' +
 				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '"  onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + costo + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeyup="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
