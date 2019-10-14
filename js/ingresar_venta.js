@@ -52,9 +52,9 @@ let  bucarProductos = async () => {
 
 		if(isNaN(buscar) || buscar.indexOf(" ") !== -1) {
 
-			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%"`;
+			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%"`;
 		}else{
-			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%"`;
+			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%"`;
 		}
 	
 		const sql = {sql: consulta, tag: `array_datos`} 
@@ -106,6 +106,7 @@ let tablaProductos = (array) => {
 			var precioVenta=array[i]['precio_venta'];
 			var margen = array[i]['margen_contado'];
 			var stock = array[i]['stock'];
+			var descripcion=array[i]['descripcion'];
 			var descuento_html = '<div style="display:none;right: .9em; " id="' + 'div_descuento' + parseFloat(i + 1) + '"class="col input-group">' +
 			'<input class="form-control" id="' + 'des' + parseFloat(i + 1) + '"  type="number"' +
 			'onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="0">' +
@@ -117,7 +118,7 @@ let tablaProductos = (array) => {
 			$("#tablaBody").append('<tr>' +
 				'<td>' + codigo + '</td>' +
 				'<td>' + codigoProveedor + '</td>' +
-				'<td>' + nombre + '</td>' +
+				`<td style="cursor:pointer;"><span onmouseover=obser('${descripcion.split(" ")}')>${nombre}</span></td>`+
 				'<td>' + stock + '</td>' +
 				'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=cantidadCalculo('+(i+1)+',1)  min=1 type="number" value="1"></td>' +
 				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + costo + '></td>' +
@@ -125,6 +126,7 @@ let tablaProductos = (array) => {
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
 				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '" disabled type="number" value=' + precioVenta + '></td>' +		
 				'<td style="display:none;">'+id_producto+'</td>' +
+				'<td style="display:none;">'+descripcion+'</td>' +
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
 				'</td>' +
@@ -132,6 +134,13 @@ let tablaProductos = (array) => {
 		}
 				$('[data-toggle="tooltip"]').tooltip();
 				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
+}
+
+
+let obser = (nombre) => {
+	let nombreOri=nombre;
+	
+	document.getElementById('obsProducto').innerHTML=nombreOri.replace(/,/g," ");
 }
 
 let agregarProductos =  (e,btn) => {
@@ -484,8 +493,9 @@ let finalizarVenta = async () => {
 
 		const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,fecha_nulo,observacion)
-	VALUES(${ID_VENDEDOR},NOW(),${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido},${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}")`;
+	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,fecha_nulo,observacion,medio_pago,id_turno)
+	VALUES(${ID_VENDEDOR},NOW(),${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
+	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",NULL,${ID_TURNO})`;
 	
 	
 
@@ -545,4 +555,5 @@ for (var i = 0; i < nFilas; i++) {
 			}
 
 
-}		
+}
+

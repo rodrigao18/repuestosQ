@@ -78,7 +78,7 @@
 
 							<div class="form-row">
                             <label for="comment">Observacion de la venta:</label>
-                                <textarea class="form-control" rows="3" id="observacion" onkeyup="this.value=mayusculas(this.value)"></textarea>
+                                <textarea class="form-control" rows="2" id="observacion" onkeyup="this.value=mayusculas(this.value)"></textarea>
 							</div>
                             <br>
 						</form>
@@ -105,6 +105,10 @@
 			<div class="col-md-12" id="tablaProductos">
 				<div class="tile">
 					<div id="salidaTabla"></div>
+					<br>
+					<div class="tile">
+					<div id="obsProducto"></div>
+					</div>
 				</div>
 			</div>
 
@@ -159,6 +163,16 @@
 								<td width="20%"><input type="text" disabled class="form-control" id="totalapagar" ></td>
 							</tr>
 							<tr>
+							<td colspan="3"></td>
+							<td width="15%">Modo pago</td>
+							<td width="25%"> <select class="form-control" id="selectModoPago">
+												<option value="1"> EFECTIVO</option>
+												<option value="2"> DEBITO</option>
+												<option value="3"> CREDITO</option>											
+											</select>
+							</td>
+						</tr>
+							<tr>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -211,7 +225,9 @@
     <?php include "./js/table.php"; ?>
 	<script type="text/javascript">
         var ID_VENDEDOR =<?php echo $idVendedor;?>;
-        var NIVEL = <?php echo $nivel; ?>; // obtenemos el tipo de usuario      
+		var NIVEL = <?php echo $nivel; ?>; // obtenemos el tipo de usuario 
+		var ID_TURNO = <?php echo $idTurno;?>;
+		var TIPO_TURNO = <?php echo $idTipoTurno;?>;     
 		window.onload = cargarDatos();
 
 	</script>

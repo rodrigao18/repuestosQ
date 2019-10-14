@@ -124,7 +124,7 @@
 							</div>	
 							<div class="form-group">
                             <label for="comment">Descripcion:</label>
-                                <textarea class="form-control" rows="3" id="descripcion" onkeyup="this.value=mayusculas(this.value)"></textarea>
+                                <textarea class="form-control" rows="3" id="descripcion" onkeyup="this.value=mayusculas(this.value)" value="SIN DESCRIPCION"></textarea>
                          </div> 						
 							<!--Parte de Clientes Dinamicos-->						
 							<br>

@@ -41,7 +41,7 @@
 
 		<div class="app-title">
 			<div>
-				 <img src="imagenes/logo_laptop-pc.png" alt="">
+				 <img src="imagenes/marcasautos.jpg" alt="">
 				<p> versión 1.0</p>
 				<?php date_default_timezone_set("America/Santiago"); setlocale(LC_ALL, "es_ES"); ?>
 				<?php $fecha =strftime("%d-%m-%Y"); ?>
