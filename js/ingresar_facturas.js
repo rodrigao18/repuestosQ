@@ -188,14 +188,14 @@ function validar_descuento(id, descuento_max, id_precio_venta, id_precio_final) 
 	var valor_descuento = document.getElementById(id_descuento).value //SACO EL VALOR DEL INPUT GRACIAS AL ID ENVIADO DESDE LA FUNCION;
 
 
-	if (valor_descuento > descuento_max) { //VALIDO QUE EL VALOR DEL DESCUENTO SEA MENOR AL VALOR REAL DEL DESCUENTO Y QUE SEA MAYOR A CERO;
-		swal("No puede aplicar un descuento superior al predeterminado","","info");
-		$('#' + id_descuento).val(0); //VUELVO EL VALOR DEL INPUT DESCUENTO A 0;
-		$('#ven' + id_precio_final).val(precio_venta);
-		return;
-	} else {
-		calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_final);
-	}
+		if (valor_descuento > descuento_max) { //VALIDO QUE EL VALOR DEL DESCUENTO SEA MENOR AL VALOR REAL DEL DESCUENTO Y QUE SEA MAYOR A CERO;
+			swal("No puede aplicar un descuento superior al predeterminado","","info");
+			$('#' + id_descuento).val(0); //VUELVO EL VALOR DEL INPUT DESCUENTO A 0;
+			$('#ven' + id_precio_final).val(precio_venta);
+			return;
+		} else {
+			calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_final);
+		}
 }
 
 function calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_f) {
@@ -328,8 +328,6 @@ let editarCodiProveedor = async (idProducto,codigoPrEditable) => {
 	} catch (error) { console.log('error en la conexion ', error); }
 
 }
-
-
 
 let guardar = async (e) => {
 

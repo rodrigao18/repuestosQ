@@ -167,7 +167,7 @@
 								<div class="input-group-prepend">
 								<div class="input-group-text"><i class="fas fa-percentage" aria-hidden="true"></i></div>
 								</div>
-								<input class="form-control form-control-sm " id="descuentoPorcentaje" name="porcentaje" onkeyup="calcularDescuentoPerc(event);" type="text">
+								<input class="form-control form-control-sm " id="descuentoPorcentaje"  onkeyup="calcularDescuentoPerc(event);" type="number" value=0>
 								</div></td>
 							</tr>
 							<tr>
@@ -179,12 +179,12 @@
 								<div class="input-group-prepend">
 								<div class="input-group-text"><i class="fas fa-dollar-sign" aria-hidden="true"></i></div>
 								</div>
-								<input class="form-control form-control-sm " id="descuentoPesos" name="pesos" onkeyup="calcularDescuentoPesos();" type="text">
+								<input class="form-control form-control-sm " id="descuentoPesos"  onkeyup="calcularDescuentoPesos();" type="text" value=0>
 								</div></td>
 							</tr>
 						</tbody>
 					</table>
-					<button id="btn-finalizar" class="btn btn-success float-right" onclick="comprobarFactura(event)"><i class="fas fa-dollar-sign"></i> Realizar Venta</button>
+					<button id="btn-finalizar" class="btn btn-success float-right" onclick="Confirmarventa(event)"><i class="fas fa-dollar-sign"></i> Realizar Venta</button>
 					<br><br>
 				</div>
 			</div>
@@ -206,7 +206,8 @@
 	<script type="text/javascript" src="js/ingresar_venta.js?vknet32"></script>
 	<!-- Page specific javascripts-->
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
-    <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
+    <!-- <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script> -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <?php include "./js/table.php"; ?>
 	<script type="text/javascript">
         var ID_VENDEDOR =<?php echo $idVendedor;?>;

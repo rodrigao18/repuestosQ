@@ -182,8 +182,8 @@ let agregarProductos =  (e,btn) => {
 	'</tr>');
 
 		$('[data-toggle="tooltip"]').tooltip();
-	//	agregarNumeracionItem();
- 	//	recalcularValores();
+		agregarNumeracionItem();
+ 		recalcularValores();
 
 }
 
@@ -409,10 +409,7 @@ let calcularDescuentoPerc = (e) =>{
 			var desc=(convertirNumeros(totales)) * (descuento/100);	
 			document.getElementById('descuentoPesos').value=formatearNumeros(redondeo(desc,0));
 			var etotades=convertirNumeros(totales) - desc;	
-			var totalDescuento=document.getElementById('totalF').value=formatearNumeros(etotades);
-		
-
-	
+			var totalDescuento=document.getElementById('totalF').value=formatearNumeros(etotades);	
 		}
 		recalcularIva();
 	}
@@ -445,3 +442,107 @@ function agregarNumeracionItem() {
 	}
 
 }
+
+let Confirmarventa = (e) => {
+	const evento = e.preventDefault();
+	swal({
+		title: "Realizar venta",
+		text: "¿esta seguro de realizar la venta ?",
+		icon: "info",
+		buttons: true,
+		dangerMode: true,
+	})
+	.then((willDelete) => {
+		if (willDelete) {
+			finalizarVenta();
+		} else {
+			return;
+		}
+
+	});	
+}
+
+let finalizarVenta = async () => {
+
+	let nFilas = $("#tablaBodyCotizacion > tr").length;
+	
+	if (nFilas <= 0) {
+		swal("No hay productos en la tabla, no pude finalizar","","info");
+	}
+		let estadoVenta = document.getElementById('selectDocumento').value;
+		let cliente = document.getElementById('selectClientes').value;
+		let neto = $("#totalNeto").val();
+		let netoConvertido = convertirNumeros(neto);
+		let descuento = document.getElementById('descuentoPorcentaje').value;
+		let descuento_pesos = document.getElementById('descuentoPesos').value;
+		let iva = $("#iva").val();
+		let ivaConvertido = convertirNumeros(iva);
+		let totalFinal = $("#totalF").val();
+		let totalFinalConvertido = convertirNumeros(totalFinal);
+		let totalsindes=document.getElementById('totalapagar').value;
+		let observacion = document.getElementById('observacion').value;
+
+		const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,fecha_nulo,observacion)
+	VALUES(${ID_VENDEDOR},NOW(),${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido},${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}")`;
+	
+	
+
+	const sql   = {sql: consulta, tag: `insert_return_id`}		
+
+	
+				try {
+				//*-llamar ajax al servidor mediate api fetch.
+				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+				//*-request de los datos en formato texto(viene todo el request)
+				const data = await response.text();
+				//*-se parsea solo la respuesta del Json enviada por el servidor.
+				insertProductos(data);	
+				
+				} catch (error) { console.log('error en la conexion ', error); }
+
+		}
+
+let insertProductos = async (id) => {
+
+	var tablaC = document.getElementById("tablaBodyCotizacion"),
+	rIndex;
+	var nFilas = $("#tablaBodyCotizacion > tr").length;
+
+
+for (var i = 0; i < nFilas; i++) {
+
+	var codigo = tablaC.rows[i].cells[1].innerHTML;
+	var cantidad = tablaC.rows[i].cells[2].innerText; //usamos innerText para obtener solo el valor
+	var nombre = tablaC.rows[i].cells[3].innerText;
+	var precioUnitario = tablaC.rows[i].cells[4].innerHTML;
+	var precioUnitarioConvertido = convertirNumeros(precioUnitario);
+	var totalUnitario = tablaC.rows[i].cells[5].innerHTML;
+	var totalUnitarioConvertido = convertirNumeros(totalUnitario);
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto)
+	VALUES("${codigo}",${precioUnitarioConvertido},${cantidad},${totalUnitarioConvertido},${id},"${nombre}")`;
+	
+	
+
+	const sql   = {sql: consulta, tag: `insert_return_id`}		
+
+	
+				try {
+				//*-llamar ajax al servidor mediate api fetch.
+				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+				//*-request de los datos en formato texto(viene todo el request)
+				const data = await response.text();
+				//*-se parsea solo la respuesta del Json enviada por el servidor.
+			
+				
+				} catch (error) { console.log('error en la conexion ', error); }
+
+		
+			}
+
+
+}		
