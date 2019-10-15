@@ -182,10 +182,10 @@ let agregarProductos =  (e,btn) => {
 	$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
 	'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
 	'<td>' + codigo_producto + '</td>' +
-	'<td><input style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+')  type="number" min=1 value="'+cantidad+'"></td>' +
+	'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+')  type="number" min=1 value="'+cantidad+'"></td>' +
 	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
-	'<td><input class="form-control" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
+	'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
+	'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
 	'<td><button class="btn  btn-danger" id="' + idProd + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 	'<td style="display:none;">'+idProd+'</td>' +
 	'</tr>');
@@ -490,12 +490,12 @@ let finalizarVenta = async () => {
 		let totalFinalConvertido = convertirNumeros(totalFinal);
 		let totalsindes=document.getElementById('totalapagar').value;
 		let observacion = document.getElementById('observacion').value;
-
+		let medio_pago=document.getElementById('selectModoPago').value;
 		const baseUrl = 'php/consultaFetch.php';
 
 	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,fecha_nulo,observacion,medio_pago,id_turno)
 	VALUES(${ID_VENDEDOR},NOW(),${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
-	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",NULL,${ID_TURNO})`;
+	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",${medio_pago},${ID_TURNO})`;
 	
 	
 
@@ -508,7 +508,9 @@ let finalizarVenta = async () => {
 				//*-request de los datos en formato texto(viene todo el request)
 				const data = await response.text();
 				//*-se parsea solo la respuesta del Json enviada por el servidor.
-				insertProductos(data);	
+				console.error(data);	
+				if (!isNaN(data)) {	 	insertProductos(data);	}
+				
 				
 				} catch (error) { console.log('error en la conexion ', error); }
 
@@ -522,13 +524,16 @@ let insertProductos = async (id) => {
 
 
 for (var i = 0; i < nFilas; i++) {
-
+	console.error(document.querySelector("input[name='can1']").value);
+	let input=`input[name=can${(i+1)}]`;
+	let inputPreU=`input[name=preU${(i+1)}]`;
+	let inputTotU=`input[name=totU${(i+1)}]`;
 	var codigo = tablaC.rows[i].cells[1].innerHTML;
-	var cantidad = tablaC.rows[i].cells[2].innerText; //usamos innerText para obtener solo el valor
+	var cantidad = `${document.querySelector(input).value}` //usamos innerText para obtener solo el valor
 	var nombre = tablaC.rows[i].cells[3].innerText;
-	var precioUnitario = tablaC.rows[i].cells[4].innerHTML;
+	var precioUnitario = `${document.querySelector(inputPreU).value}`
 	var precioUnitarioConvertido = convertirNumeros(precioUnitario);
-	var totalUnitario = tablaC.rows[i].cells[5].innerHTML;
+	var totalUnitario = `${document.querySelector(inputTotU).value}`
 	var totalUnitarioConvertido = convertirNumeros(totalUnitario);
 
 	const baseUrl = 'php/consultaFetch.php';
@@ -538,8 +543,8 @@ for (var i = 0; i < nFilas; i++) {
 	
 	
 
-	const sql   = {sql: consulta, tag: `insert_return_id`}		
-
+				const sql   = {sql: consulta, tag: `crud`}		
+				console.error(sql);
 	
 				try {
 				//*-llamar ajax al servidor mediate api fetch.
@@ -547,7 +552,7 @@ for (var i = 0; i < nFilas; i++) {
 				//*-request de los datos en formato texto(viene todo el request)
 				const data = await response.text();
 				//*-se parsea solo la respuesta del Json enviada por el servidor.
-			
+				console.error('venta echa');	
 				
 				} catch (error) { console.log('error en la conexion ', error); }
 
