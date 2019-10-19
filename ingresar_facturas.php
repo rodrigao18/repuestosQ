@@ -121,6 +121,10 @@
 						</div>
 					
 					</div>
+					<div class="form-group col-md-6">
+						<a class="btn btn-success" href="ingresar_productos_nuevos.php" target="_blank" id="agregarProducto"><i class="fas fa-cart-plus"></i> Agregar Producto</a>
+					</div>
+
 					</div>
 					</div>
 

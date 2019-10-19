@@ -2,9 +2,37 @@ var ITEM = 0;
 
 let cargarDatos = () => {
 
-    clientes();
+	clientes();
+	ultimoVenta();
 
 } 
+
+let ultimoVenta = async () => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+    let consulta=`SELECT (id+1) as id FROM ventas ORDER BY id DESC LIMIT 1 `;
+
+    const sql = {sql: consulta, tag: `array_datos`}  
+
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		
+		let array = JSON.parse(data);
+		let ultima_boleta=array[0]['id'];
+		console.error(ultima_boleta);
+
+		document.getElementById('ultima_boleta').innerHTML=`Número correlativo siguiente : ${ultima_boleta}`;
+      
+        //const provinciass = await provincias(array);
+        
+    } catch (error) { console.log('error en la conexion ', error); }
+    
+
+}
 
 let clientes =  async() => {
 
@@ -18,7 +46,7 @@ let clientes =  async() => {
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
 		//*-request de los datos en formato texto(viene todo el request)
 		const data = await response.text();
-	
+		
 		$('#selectClientes').html(data).fadeIn();
       
         //const provinciass = await provincias(array);
@@ -182,9 +210,9 @@ let agregarProductos =  (e,btn) => {
 	$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
 	'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
 	'<td>' + codigo_producto + '</td>' +
-	'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+')  type="number" min=1 value="'+cantidad+'"></td>' +
+	'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
 	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-	'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
+	'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
 	'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
 	'<td><button class="btn  btn-danger" id="' + idProd + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 	'<td style="display:none;">'+idProd+'</td>' +
@@ -192,7 +220,8 @@ let agregarProductos =  (e,btn) => {
 
 		$('[data-toggle="tooltip"]').tooltip();
 		agregarNumeracionItem();
- 		recalcularValores();
+		 recalcularValores();
+		 document.getElementById('obsProducto').innerHTML="";
 
 }
 
@@ -307,15 +336,20 @@ let recalcularValores = () => {
 }
 
 let cantidadCalculo = (id,indice) =>{
+	let input=`input[name=can${(id)}]`;
+	var cantidad = `${document.querySelector(input).value}`
 	
-	let cantidad=document.getElementById('cant'+id).value;
 	if(indice==1){
+		
 		let precioVen=convertirNumeros(document.getElementById('cos'+id).value);
 		let precioT=cantidad*precioVen;
 		document.getElementById('ven'+id).value=(precioT);
 	}else{
+	
+		console.error(cantidad);
 		let precioVen=convertirNumeros(document.getElementById('vent'+id).value);
 		let precioT=cantidad*precioVen;
+		console.error('precioT ' + precioT);
 		document.getElementById('prect'+id).value=formatearNumeros(precioT);
 	}
 	
@@ -411,10 +445,14 @@ let actualizaMargen = async (idP,margen) => {
 let calcularDescuentoPerc = (e) =>{
 
 	if (e.keyCode === 13) {
+		
 		e.preventDefault();
+
 		let totales = document.getElementById('totalF').value;
 		let descuento = document.getElementById('descuentoPorcentaje').value;
-		if(!isNaN(descuento)){	
+
+		if(!isNaN(descuento)){
+
 			var desc=(convertirNumeros(totales)) * (descuento/100);	
 			document.getElementById('descuentoPesos').value=formatearNumeros(redondeo(desc,0));
 			var etotades=convertirNumeros(totales) - desc;	
@@ -524,7 +562,8 @@ let insertProductos = async (id) => {
 
 
 for (var i = 0; i < nFilas; i++) {
-	console.error(document.querySelector("input[name='can1']").value);
+
+	
 	let input=`input[name=can${(i+1)}]`;
 	let inputPreU=`input[name=preU${(i+1)}]`;
 	let inputTotU=`input[name=totU${(i+1)}]`;
@@ -539,9 +578,8 @@ for (var i = 0; i < nFilas; i++) {
 	const baseUrl = 'php/consultaFetch.php';
 
 	let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto)
-	VALUES("${codigo}",${precioUnitarioConvertido},${cantidad},${totalUnitarioConvertido},${id},"${nombre}")`;
-	
-	
+
+	VALUES("${codigo}",${precioUnitarioConvertido},${cantidad},${totalUnitarioConvertido},${id},"${nombre}")`;	
 
 				const sql   = {sql: consulta, tag: `crud`}		
 				console.error(sql);
@@ -552,12 +590,33 @@ for (var i = 0; i < nFilas; i++) {
 				//*-request de los datos en formato texto(viene todo el request)
 				const data = await response.text();
 				//*-se parsea solo la respuesta del Json enviada por el servidor.
-				console.error('venta echa');	
+				swal("Venta creada", "los datos fueron guardados exitosamente", "success");
+				setTimeout('location.reload()', 3000);
 				
 				} catch (error) { console.log('error en la conexion ', error); }
 
 		
 			}
+
+
+}
+
+let quitarDescuento = (e) => {
+
+	const evento = e.preventDefault();
+	let totalFijo = document.getElementById('totalapagar').value;
+
+	let desIva=document.getElementById('totalapagar').value;
+	let neto = (convertirNumeros(desIva) / (1.19));
+	let iva = convertirNumeros(desIva)-neto;
+	console.error(iva);
+	//console.error(redondeo(neto,0));
+	document.getElementById('iva').value=formatearNumeros(redondeo(iva,0));
+	document.getElementById('totalNeto').value=formatearNumeros(redondeo(neto,0));
+	//document.getElementById('totalF').value=formatearNumeros(redondeo(totalFijo,0));
+	document.getElementById('totalF').value=formatearNumeros(neto + iva);
+	document.getElementById('descuentoPorcentaje').value=0;
+	document.getElementById('descuentoPesos').value=0;
 
 
 }

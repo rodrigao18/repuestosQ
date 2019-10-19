@@ -28,6 +28,7 @@
 			<div>
 				<h1><i class="fas fa-list"></i> Ingresar venta </h1>
 				<p>Ingresar venta</p>
+				<h2 id="ultima_boleta" class="mt-3"></h2>
 				
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
@@ -152,14 +153,14 @@
 								<td></td>
 								<td></td>
 								<td></td>
-								<td width="10%">Total venta</td>
+								<td width="10%">Total a pagar</td>
 								<td width="20%"><input type="text" class="form-control" id="totalF" ></td>
 							</tr>
 							<tr>
 								<td></td>
 								<td></td>
 								<td></td>
-								<td width="10%">Total</td>
+								<td width="10%">Total venta</td>
 								<td width="20%"><input type="text" disabled class="form-control" id="totalapagar" ></td>
 							</tr>
 							<tr>
@@ -199,6 +200,8 @@
 						</tbody>
 					</table>
 					<button id="btn-finalizar" class="btn btn-success float-right" onclick="Confirmarventa(event)"><i class="fas fa-dollar-sign"></i> Realizar Venta</button>
+
+					<button id="btn-finalizar" class="btn btn-primary float-right mr-5" onclick="quitarDescuento(event)"><i class="fas fa-percentage"></i> Quitar Descuento</button>
 					<br><br>
 				</div>
 			</div>
