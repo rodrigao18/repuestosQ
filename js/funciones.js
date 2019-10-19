@@ -47,10 +47,7 @@ function sacarPuntosGuionRut(str) {
 
 }
 //formatear fechas (08/08/2018 a 08-08-2018):
-function formatear_fecha(fecha) {
-	var fecha = fecha.replace(/^(\d{4})(\d{2})(\d{2})$/g, '$1-$2-$3');
-	return fecha;
-}
+
 //*-convertir fecha pasada por un post;
 function convert_fecha(str) {
     var fechaConver;
