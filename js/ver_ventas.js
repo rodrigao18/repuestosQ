@@ -73,7 +73,7 @@ let tablaVentas = (arreglo) => {
 		   <td>${i['fecha']}</td>		   
 		   <td>${i['hora']}</td>			
 		   <td>${formatearNumeros(i['total'])}</td>				  
-		   <td><form method="POST" action="editar_facturas.php">
+		   <td><form method="POST" action="detalle_venta.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
 			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
 			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
@@ -140,4 +140,109 @@ function lenguaje() {
 
 }
 
+
+function eliminarProducto(e, id) {
+	e.preventDefault();
+	swal({
+		title: "Eliminar producto",
+		text: "¿esta seguro de eliminar el producto ?",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	})
+	.then((willDelete) => {
+		if (willDelete) {
+			borrarVenta(id);
+		} else {
+			return;
+		}
+
+	});	
+
+}
+
+let borrarVenta =async (idP) =>{
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`DELETE FROM VENTAS  WHERE id=${idP}`;
+
+	const sql   = {sql: consulta, tag: `crud`}	
+
+	console.error(consulta);
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.	
+
+			
+			// $.notify({
+			// 	title: "Update: ",
+			// 	message: "Se actualizo el precio de venta:",
+			// 	icon: 'fas fa-check'
+			// }, {
+			// 	type: "success",
+			// 	placement: {
+			// 		from: "top",
+			// 		align: "right"
+			// 	},
+			// 	offset: 70,
+			// 	spacing: 70,
+			// 	z_index: 1031,
+			// 	delay: 2000,
+			// 	timer: 3000
+			// });	
+
+			const borraVrelacional = borrVentaRe (idP);
+		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+}
+
+
+let borrVentaRe = async (idP) => {
+
+	const baseUrl = 'php/consultaFetch.php';
+	let consulta=`DELETE FROM VENTAS_RELACIONAL  WHERE id_venta=${idP}`;
+
+	const sql   = {sql: consulta, tag: `crud`}	
+
+	console.error(consulta);
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.	
+
+			
+			$.notify({
+				title: "Borrado: ",
+				message: "Se Borro la venta:",
+				icon: 'fas fa-check'
+			}, {
+				type: "success",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 2000,
+				timer: 3000
+			});	
+
+			
+		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+
+}
 window.onload = cargarVentas

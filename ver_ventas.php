@@ -100,6 +100,8 @@
 	<script src="js/plugins/pace.min.js"></script>
     <script type="text/javascript" src="js/funciones.js?vknet29"></script>
 	<script type="text/javascript" src="js/ver_ventas.js?vknet29"></script>
+	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<?php include "./js/table.php"; ?>
 
 
