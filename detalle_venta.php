@@ -159,8 +159,9 @@
 
 	<!-- Page specific javascripts-->
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
-	<!--<script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
-	<!--<script type="text/javascript" src="js/notificacion.js"></script> -->
+	<!--<script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>-->
+	<script type="text/javascript" src="js/notificacion.js"></script>
+	<script type="text/javascript" src="js/funciones.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script type="text/javascript">
 

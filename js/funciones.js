@@ -100,7 +100,11 @@ function soloRut(string){
     return out;
 }
 }
-
+//formatear fechas (08/08/2018 a 08-08-2018):
+function formatear_fecha(fecha) {
+	var fecha = fecha.replace(/^(\d{4})(\d{2})(\d{2})$/g, '$1-$2-$3');
+	return fecha;
+}
 
 //funcion que pasar de minusculas a Mayusculas
 function mayusculas(tx){
