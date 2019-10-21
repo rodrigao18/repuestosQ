@@ -1,42 +1,80 @@
-var PROVEEDORES;
+var VENDEDORES;
+var CLIENTES;
 
 
 
-// let proveedores = async () => {
+let vendedor = async () => {
 
-// 	const baseUrl = 'php/consultaFetch.php';
-//     let consulta=`	SELECT id,nombre FROM proveedores`;
+	const baseUrl = 'php/consultaFetch.php';
+    let consulta=`	SELECT id_vendedor,nombreVendedor FROM vendedores`;
 	 
 	
-// 	const sql = {sql: consulta, tag: `array_datos`} 
-// 	try {
-// 		//*-llamar ajax al servidor mediate api fetch.
-// 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-// 		//*-request de los datos en formato texto(viene todo el request)
-// 		const data = await response.text();
-// 		//*-se parsea solo la respuesta del Json enviada por el servidor.
-// 		let array = JSON.parse(data);
-// 		var arr = new Array();
-// 		for (var i = 0; i < array.length; i++) {
-// 			arr[array[i][0].toString()] = array[i][1];
+	const sql = {sql: consulta, tag: `array_datos`} 
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.
+		let array = JSON.parse(data);
+		console.error(array);
+		var arr = new Array();
+		for (var i = 0; i < array.length; i++) {
+			arr[array[i][0].toString()] = array[i][1];
 
-// 			}		
-// 		PROVEEDORES=arr;
+			}		
+		VENDEDORES=arr;
+		console.error(VENDEDORES);
+		const clie = await clientes();	
 	
-// 		const cargarFAct = await cargarFacturas();
-// 		//*-promesa de la funcion denguaje la ejecuto a la espera
-// 		//*-de la respuesta del servidor.	
+
+		//*-promesa de la funcion denguaje la ejecuto a la espera
+		//*-de la respuesta del servidor.	
 
 		
-// 	} catch (error) {
-// 		console.log('error en la conexion ', error);
-// 	}	
-// }
+	} catch (error) {
+		console.log('error en la conexion ', error);
+	}	
+}
+
+
+let clientes = async () => {
+
+	const baseUrl = 'php/consultaFetch.php';
+    let consulta=`	SELECT id,nombre FROM clientes`;
+	 
+	
+	const sql = {sql: consulta, tag: `array_datos`} 
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.
+		let array = JSON.parse(data);
+		
+		var arrs = new Array();
+		for (var i = 0; i < array.length; i++) {
+			arrs[array[i][0].toString()] = array[i][1];
+
+			}		
+		CLIENTES=arrs;
+		console.error(CLIENTES);	
+		const vende = await cargarVentas();
+		//*-promesa de la funcion denguaje la ejecuto a la espera
+		//*-de la respuesta del servidor.	
+
+		
+	} catch (error) {
+		console.log('error en la conexion ', error);
+	}	
+}
+
 
 //*-cargar datos mediante async wait()
 let cargarVentas = async () => { 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_vendedor,DATE(fecha_venta) as fecha,TIME(fecha_venta) as hora, total 
+    let consulta=`SELECT id,id_vendedor,id_cliente,DATE(fecha_venta) as fecha,neto,iva, total 
     FROM ventas`;
 	 
 	
@@ -49,12 +87,12 @@ let cargarVentas = async () => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);		
-     
+		
 		const tablaFactutass = await tablaVentas(array);
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		const botones = await lenguaje();	
-		
+	
 	} catch (error) {
 		console.log('error en la conexion ', error);
 	}
@@ -64,14 +102,23 @@ let cargarVentas = async () => {
 let tablaVentas = (arreglo) => {
 	let tbody = document.getElementById('tablaBody');
 	
+
 	for (let i of arreglo) { 
-	//console.error(PROVEEDORES[i['id_proveedor']]);	
+		let estadoColumna;
+		console.error("estado " + VENDEDORES[i['id_vendedor']]);
+		if(CLIENTES[i['id_cliente']]!=undefined){			
+			estadoColumna=CLIENTES[i['id_cliente']];
+		}if(CLIENTES[i['id_cliente']]==undefined){
+			estadoColumna=`<span class='badge badge-danger'>Sin cliente</span>`;
+		}
+		
 		tbody.innerHTML +=
         `<tr>
             <td>${i['id']}</td>			   
-		    <td>${i['id_vendedor']}</td>		  
-		   <td>${i['fecha']}</td>		   
-		   <td>${i['hora']}</td>			
+			<td>${VENDEDORES[i['id_vendedor']]}</td>
+			<td>${estadoColumna}</td>
+		   <td>${formatearNumeros(i['neto'])}</td>
+		   <td>${formatearNumeros(i['iva'])}</td>					
 		   <td>${formatearNumeros(i['total'])}</td>				  
 		   <td><form method="POST" action="detalle_venta.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
@@ -245,4 +292,4 @@ let borrVentaRe = async (idP) => {
 
 
 }
-window.onload = cargarVentas
+window.onload = vendedor

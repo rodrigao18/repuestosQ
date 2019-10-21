@@ -70,10 +70,11 @@
 								<table class="table table-striped " id="tablaProductos">
 								<thead>
 								<tr>
-                                <th width="10%">N ° Boleta</th>
-								<th width="20%">Vendedor</th>
-								<th width="10%">Fecha venta</th>	
-								<th width="10%">Hora venta</th>								
+                                <th width="10%">Boleta</th>
+								<th width="15%">Vendedor</th>
+								<th width="10%">Cliente</th>	
+								<th width="10%">Neto</th>
+								<th width="10%">Iva</th>										
                                 <th width="5%">Total</th>							
 								<th width="5%"> </th>
 								<th width="5%"> </th>							
