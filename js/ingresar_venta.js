@@ -1,9 +1,17 @@
 var ITEM = 0; 
 
-let cargarDatos = () => {
+let cargarDatos = async() => {
 
-	clientes();
-	ultimoVenta();
+	console.error('TIPO_TURNO ' + TIPO_TURNO );
+	if (TIPO_TURNO == 0) {
+		swal('Precaución', 'Debe iniciar turno para ingresar una venta', 'info');
+		setTimeout(function () {
+			window.location = 'ver_productos.php'
+		}, 2000);
+	}
+	
+	const client = await clientes();
+	const ulvent = await   ultimoVenta();
 
 } 
 

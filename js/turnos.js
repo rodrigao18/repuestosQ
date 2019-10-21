@@ -94,7 +94,7 @@ function inicioTurno(e) {
 				if (data == 1) {
 					swal("Turno iniciado", "Se ha iniciado el primer turno", "success");
 					console.log('se ha creado el primer turno');
-					window.location = 'ingresar_ventas.php';
+					window.location = 'ingresar_venta.php';
 				}
 
 			},
@@ -143,11 +143,11 @@ function consultarVentasTurnoAnterior(index,tipoTurno) {
 	//	var sql = 'SELECT  sum(total) as totalVenta  from ventas  where id_turno=' + (ID_TURNO-1) + ' and medio_pago = 1';
 		 //haremos 2 turnos
 		 if (tipoTurno == 1) {
-			 var sql = 'SELECT  sum(totalVenta) as totalVenta  from ventas v inner join turnos t on t.id=v.id_turno  where v.id_turno=' + (ID_TURNO - 1) + ' and v.medio_pago = 1 and t.tipo_turno=1';
+			 var sql = 'SELECT  sum(total) as totalVenta  from ventas v inner join turnos t on t.id=v.id_turno  where v.id_turno=' + (ID_TURNO - 1) + ' and v.medio_pago = 1 and t.tipo_turno=1';
 		 }
 		 //haremos solo un turno
 		 if (tipoTurno == 2) {
-			var sql = 'SELECT  sum(totalVenta) as totalVenta  from ventas v inner join turnos t on t.id=v.id_turno  where v.id_turno=' + (ID_TURNO-1) + ' and v.medio_pago = 1 and t.tipo_turno=1';
+			var sql = 'SELECT  sum(total) as totalVenta  from ventas v inner join turnos t on t.id=v.id_turno  where v.id_turno=' + (ID_TURNO-1) + ' and v.medio_pago = 1 and t.tipo_turno=1';
 		 }
 		
 	}
@@ -566,7 +566,7 @@ function inicialTurno2() {
 					timer: 2000
 				});
 			}
-			window.location = 'ingresar_ventas.php';
+			window.location = 'ingresar_venta.php';
 		},
 		error: function (request, status, error) {
 			console.error("Error: Could not finalizarCotizacion");
@@ -616,7 +616,7 @@ function finDeturno(e) {
 						timer: 2000
 					});
 				}
-				window.location = 'ingresar_ventas.php';
+				window.location = 'index.php';
 			},
 
 			error: function (request, status, error) {
