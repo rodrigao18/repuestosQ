@@ -197,8 +197,7 @@ function tablaProductos(arreglo) {
 			'	<td>' + columnaEditable + '</td>' +
 			'	<td>' + cantidad + '</td>' +
 			'	<td>' + precioMostrar + '</td>' +
-			'	<td>' + totalMostrar + '</td>' +
-			
+			'	<td>' + totalMostrar + '</td>' +			
 			'	</tr>');
 	}
 //	convertirPaginaDeEstados();
