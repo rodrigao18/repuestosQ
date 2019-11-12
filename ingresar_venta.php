@@ -108,7 +108,9 @@
 					<div id="salidaTabla"></div>
 					<br>
 					<div class="tile">
-					<div id="obsProducto"></div>
+					<div>
+					<input type="hidden" id="idprodescripcion">
+					<textarea class="form-control" rows="1" id="obsProducto" onkeypress="editarDescripcion(event)"></textarea></div>
 					</div>
 				</div>
 			</div>

@@ -4,7 +4,7 @@ let cargarProductos = async (id) => {
 
 	ID=id;	
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,codigo,nombre,descripcion,costo,proveedor,ubicacion,categoria,marca,stock_m,stock,margen_contado,margen_oferta,margen_credito
+    let consulta=`SELECT id,codigo,codigo_proveedor,nombre,descripcion,costo,proveedor,ubicacion,categoria,marca,stock_m,stock,margen_contado,margen_oferta,margen_credito
     FROM productos where id=${id}`;	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
@@ -97,6 +97,7 @@ let Marca = async (id) => {
 let Productos = (array) => {
 
 	document.getElementById('codigoProducto').value=array[0]['codigo'];
+	document.getElementById('codProveedor').value=array[0]['codigo_proveedor'];
 	document.getElementById('nombreProducto').value=array[0]['nombre'];
 	document.getElementById('ubicacion').value=array[0]['ubicacion'];
 	document.getElementById('costo').value=array[0]['costo'];
@@ -113,7 +114,7 @@ let Productos = (array) => {
 let editarProductos = async (e) => {
 
 	const evento = e.preventDefault();
-	let codigo=document.getElementById('codigoProducto').value;
+	let codigo_proveedor=document.getElementById('codProveedor').value;
 	let proveedor=document.getElementById('select_proveedor').value;
 	let categoria=document.getElementById('select_categoria').value;
 	let marca=document.getElementById('select_marca').value;
@@ -129,7 +130,7 @@ let editarProductos = async (e) => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`UPDATE productos set proveedor=${proveedor},nombre="${nombre}",descripcion="${descripcion}",ubicacion="${ubicacion}",categoria=${categoria},
+	let consulta=`UPDATE productos set codigo_proveedor=${codigo_proveedor}, proveedor=${proveedor},nombre="${nombre}",descripcion="${descripcion}",ubicacion="${ubicacion}",categoria=${categoria},
 	marca=${marca},costo=${costo},stock_m=${stock_minimo},stock=${stock},
 	margen_contado=${margen_contado},margen_oferta=${margen_oferta},margen_credito=${margen_credito} WHERE id=${ID}`;
     	

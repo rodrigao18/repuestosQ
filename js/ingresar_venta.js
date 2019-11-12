@@ -88,9 +88,9 @@ let  bucarProductos = async () => {
 
 		if(isNaN(buscar) || buscar.indexOf(" ") !== -1) {
 
-			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%"`;
+			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion,marca,ubicacion,descuento FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%"`;
 		}else{
-			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%"`;
+			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion,marca,ubicacion,descuento FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%"`;
 		}
 	
 		const sql = {sql: consulta, tag: `array_datos`} 
@@ -118,34 +118,53 @@ let tablaProductos = (array) => {
 			'<table  class="table-responsive  table-striped" id="tabla" >' +
 			'<thead class="thead-dark">' +
 			'<tr class="table-success">' +
-			'	<th scope="col" width="10%">Cód.Interno</th>' +
-			'	<th scope="col" width="10%">Cód.Proveedor</th>' +
-			'	<th scope="col" width="10%">Nombre</th>' +	
-			'	<th scope="col" width="10%">Stock</th>' +	
-			'	<th scope="col" width="1%">Cantidad</th>' +
-			'	<th scope="col" width="10%">Costo</th>' +
+			'	<th  width="10%">Cód.Interno</th>' +
+			'	<th  width="10%">Cód.Proveedor</th>' +
+			'	<th  width="10%">Nombre</th>' +	
+			'	<th  width="10%">Stock</th>' +
+			'	<th  width="10%">Ubicaion</th>' +
+			'	<th  width="10%">Marca</th>' +	
+			'	<th  width="1%">Cantidad</th>' +
+			'	<th  width="10%">Costo+iva</th>' +
 			'	<th id="checkMargen" width="10%">Margen</th>' +
-			'	<th scope="col" width="10%"> Descuento</th>' +
-			'	<th scope="col" width="10%"> Precio venta</th>' +		
-			'	<th scope="col" width="10%"> </th>' +
+			'	<th  width="10%"> Descuento</th>' +
+			'	<th  width="10%"><span id="spandesc"></span></th>' +		
+			'	<th  width="10%"> </th>' +
 			'</tr>' +
 			'</thead>' +
 			'<tbody id="tablaBody"></tbody>' +
 			'</table>');
 		let	chekeadoTodoEntregado = "";
+		let toogle=``;
 		for (var i = 0; i < array.length; i++) {
 			var id_producto = array[i]['id'];
 			var nombre = array[i]['nombre'];			
 			var codigo = array[i]['codigo'];
 			var codigoProveedor = array[i]['codigo_proveedor'];
 			var costo = array[i]['costo'];
+			var costo_iva=costo*(1.19);
+			var descuento =array[i]['descuento'];
+			
+			if(descuento > 0 ){
+
+			document.getElementById('spandesc').innerHTML=`Precio`;	
+
+			 toogle=`data-toggle="tooltip" data-placement="top" title="Precio con un ${descuento}%"`;
+
+			}else if(descuento==0){
+
+				toogle=`data-toggle="tooltip" data-placement="top" title="Precio sin descuento"`;	
+
+			}
 			var precioVenta=array[i]['precio_venta'];
 			var margen = array[i]['margen_contado'];
 			var stock = array[i]['stock'];
+			var ubicacion = array[i]['ubicacion'];
+			var marca = array[i]['marca'];
 			var descripcion=array[i]['descripcion'];
 			var descuento_html = '<div style="display:none;right: .9em; " id="' + 'div_descuento' + parseFloat(i + 1) + '"class="col input-group">' +
 			'<input class="form-control" id="' + 'des' + parseFloat(i + 1) + '"  type="number"' +
-			'onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="0">' +
+			'onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="'+descuento+'">' +
 			'</div>';
 
 			var btn_descuento_html = '<button class="btn btn-danger btn-mini float-left" id="' + 'btn_des' + parseFloat(i + 1) + '" onclick="comprobar_descuento_historico (this)">  <i class="fas fa-sort-amount-down"></i>  Descuento </button>';
@@ -154,13 +173,15 @@ let tablaProductos = (array) => {
 			$("#tablaBody").append('<tr>' +
 				'<td>' + codigo + '</td>' +
 				'<td>' + codigoProveedor + '</td>' +
-				`<td style="cursor:pointer;"><span onmouseover=obser('${descripcion.split(" ")}')>${nombre}</span></td>`+
+				`<td style="cursor:pointer;"><span id="${id_producto}" onmouseover=obser(this,'${descripcion.split(" ")}')>${nombre}</span></td>`+
 				'<td>' + stock + '</td>' +
+				'<td>' + ubicacion + '</td>' +
+				'<td>' + marca + '</td>' +
 				'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=cantidadCalculo('+(i+1)+',1)  min=1 type="number" value="1"></td>' +
-				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + costo + '></td>' +
+				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + redondeo(costo_iva,0) + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
-				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '" disabled type="number" value=' + precioVenta + '></td>' +		
+				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '" '+toogle+'  type="number" value=' + precioVenta + '></td>' +		
 				'<td style="display:none;">'+id_producto+'</td>' +
 				'<td style="display:none;">'+descripcion+'</td>' +
 				'<td>' +
@@ -168,70 +189,120 @@ let tablaProductos = (array) => {
 				'</td>' +
 				'</tr>');
 		}
-				$('[data-toggle="tooltip"]').tooltip();
+				
 				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
+				$('[data-toggle="tooltip"]').tooltip();
 }
 
+	//PASAR EL MOUSE POR EL NOMBRE DEL PRODUCTO
+	let obser = (id,nombre) => {
 
-let obser = (nombre) => {
-	let nombreOri=nombre;
-	
-	document.getElementById('obsProducto').innerHTML=nombreOri.replace(/,/g," ");
-}
-
-let agregarProductos =  (e,btn) => {
-
-	// comprobarFactura();
-
-	$("#tablaProductos").show();
-	$("#salidaTabla").hide();
-
-	let evento = e.preventDefault();
-	let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
-	
-	
-	var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
-	
-	//borramos el input buscar
-	$('#buscar').val('');
-
-	let codigo_producto = table.rows[idTabla].cells[0].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
-	let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
-	let nombre = table.rows[idTabla].cells[2].innerHTML;
-	let cantidad = document.getElementById('cant' + idTabla).value;
-	let margen = document.getElementById('mar' + idTabla).value;
-	let precio_costo = document.getElementById('cos' + idTabla).value; // ID DEL SELECT PRECIO;
-	let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
-	let precioTotal = cantidad * precio_venta;
-	let idProd = table.rows[idTabla].cells[9].innerHTML;
-	ITEM++;
-
-	var estadoEntr = "";
-	estadoEntr = document.getElementById('checkEnt').checked;
-
-	if(estadoEntr == true){
-		actualizarPrecioVenta(idProd,precio_venta);
+		let idpro=id.id;
+		
+		let nombreOri=nombre;
+		
+		document.getElementById('obsProducto').value=nombreOri.replace(/,/g," ");
+		document
+		.getElementById('idprodescripcion').value=idpro;
 	}
-		actualizaMargen(idProd,margen);
-	
 
-	$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
-	'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
-	'<td>' + codigo_producto + '</td>' +
-	'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
-	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-	'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
-	'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
-	'<td><button class="btn  btn-danger" id="' + idProd + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
-	'<td style="display:none;">'+idProd+'</td>' +
-	'</tr>');
+	//EDITAR LA DESCRIPCION EN LA VENTA
+	let editarDescripcion=async (e) =>{
 
-		$('[data-toggle="tooltip"]').tooltip();
-		agregarNumeracionItem();
-		 recalcularValores();
-		 document.getElementById('obsProducto').innerHTML="";
+		if(e.keyCode==13){
+		let descripcion = document.getElementById('obsProducto').value;
+		let idProducto =  document.getElementById('idprodescripcion').value;
+		
+		const baseUrl = 'php/consultaFetch.php';
 
-}
+		let consulta=`UPDATE PRODUCTOS set descripcion="${descripcion}" WHERE id=${idProducto}`;
+
+		const sql   = {sql: consulta, tag: `crud`}	
+
+		console.error(consulta);
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+				$.notify({
+					title: "Update: ",
+					message: "Se actualizo la descripcion del producto:",
+					icon: 'fas fa-check'
+				}, {
+					type: "success",
+					placement: {
+						from: "top",
+						align: "right"
+					},
+					offset: 70,
+					spacing: 70,
+					z_index: 1031,
+					delay: 2000,
+					timer: 3000
+				});				
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+
+			
+		}
+		
+	}
+	let agregarProductos =  (e,btn) => {
+
+		// comprobarFactura();
+
+		$("#tablaProductos").show();
+		$("#salidaTabla").hide();
+
+		let evento = e.preventDefault();
+		let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
+		
+		
+		var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
+		
+		//borramos el input buscar
+		$('#buscar').val('');
+
+		let codigo_producto = table.rows[idTabla].cells[0].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+		let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+		let nombre = table.rows[idTabla].cells[2].innerHTML;
+		let cantidad = document.getElementById('cant' + idTabla).value;
+		let margen = document.getElementById('mar' + idTabla).value;
+		let precio_costo = document.getElementById('cos' + idTabla).value; // ID DEL SELECT PRECIO;
+		let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
+		let precioTotal = cantidad * precio_venta;
+		let idProd = table.rows[idTabla].cells[11].innerHTML;
+		let descuento = document.getElementById(`des${idTabla}`).value;
+		ITEM++;
+
+		var estadoEntr = "";
+		estadoEntr = document.getElementById('checkEnt').checked;
+
+		if(estadoEntr == true){
+			actualizarPrecioVenta(idProd,precio_venta,descuento);
+		}
+			actualizaMargen(idProd,margen);
+		
+
+		$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
+		'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
+		'<td>' + codigo_producto + '</td>' +
+		'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
+		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
+		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
+		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
+		'<td><button class="btn  btn-danger" id="' + idProd + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+		'<td style="display:none;">'+idProd+'</td>' +
+		'</tr>');
+
+			$('[data-toggle="tooltip"]').tooltip();
+			agregarNumeracionItem();
+			recalcularValores();
+			document.getElementById('obsProducto').value="";
+
+	}
 
 let removerItem = (id) => {
 	$("#tablaBodyCotizacion > tr").each(function () {
@@ -369,11 +440,11 @@ let cantidadCosto = (id) => {
 	document.getElementById('ven'+id).value=costo;
 
 }
-let actualizarPrecioVenta = async (idP,precioVent) => {
+let actualizarPrecioVenta = async (idP,precioVent,descuento) => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`UPDATE PRODUCTOS set precio_venta=${precioVent} WHERE id=${idP}`;
+	let consulta=`UPDATE PRODUCTOS set precio_venta=${precioVent} , descuento=${descuento} WHERE id=${idP}`;
 
 	const sql   = {sql: consulta, tag: `crud`}	
 

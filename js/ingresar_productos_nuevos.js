@@ -23,7 +23,7 @@
 
 //cargar marca del equipo
 function marca(){
-	var sql = 'SELECT id,marca FROM marca';
+	var sql = 'SELECT id,marca FROM marca order by marca asc ';
 	//AJAX	
 	$.ajax({
 	type: 'POST',
@@ -105,8 +105,7 @@ function addDatos(){
 				if (data == 1) { 
 					var dato = document.getElementById('in_dato').value="";	
 					swal("Dato creado", "los datos fueron guardados exitosamente", "success");
-					setTimeout('location.reload()', 1500);
-					//$("#myModal").modal('hide');
+					marca();
 				 }				
 			},
 			error: function (request, status, error) {

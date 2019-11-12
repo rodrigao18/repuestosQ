@@ -56,15 +56,19 @@
 						<form method="POST" id="formularioGuardar">
 							<input type="hidden" class="form-control" id="id" name="id">						
 							<div class="form-row">
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-3">
 											<label>Código producto</label>
 											<input type="text" class="form-control" id="codigoProducto" name="codigoProducto" disabled  placeholder="Ingrese código">
 										</div>
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-3">
+											<label>Cod Proveedor</label>
+											<input type="text" class="form-control" id="codProveedor" name="codProveedor"  placeholder="Ingrese cod proveedor">
+										</div>
+										<div class="form-group col-md-3">
 											<label>Proveedor</label>
 											<select class="form-control" id="select_proveedor"  name="select_proveedor"></select>
 										</div>
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-3">
 											<label>Nombre producto</label>
 											<input type="text" class="form-control" id="nombreProducto" name="nombreProducto" onkeyup="this.value=mayusculas(this.value)" placeholder="Ingrese Nombre del producto">
 										</div>
