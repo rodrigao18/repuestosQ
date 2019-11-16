@@ -90,10 +90,10 @@ let tablaProductos = (array) => {
 			'	<th scope="col" width="10%">Nombre</th>' +	
 			'	<th scope="col" width="10%">Stock</th>' +	
 			'	<th scope="col" width="1%">Cantidad</th>' +
-			'	<th scope="col" width="10%">Costo+IVA</th>' +
+			'	<th scope="col" width="10%">Costo</th>' +
 			'	<th id="checkMargen" width="10%">Margen</th>' +
 			'	<th scope="col" width="10%"> Descuento</th>' +
-			'	<th scope="col" width="10%"> Precio venta</th>' +		
+			'	<th scope="col" width="10%"> Precio venta<span id="iva"></span></th>' +		
 			'	<th scope="col" width="10%"> </th>' +
 			'</tr>' +
 			'</thead>' +
@@ -106,11 +106,12 @@ let tablaProductos = (array) => {
 			var codigo = array[i]['codigo'];
 			var codigoProveedor = array[i]['codigo_proveedor'];
 			var costo = array[i]['costo'];
-			var costo_iva=costo*(1.19);
+			//var costo_iva=costo*(1.19);
 			var descuento =array[i]['descuento']; 				
 			var precio_venta = array[i]['precio_venta'];
 			var margen = array[i]['margen_contado'];
 			var stock = array[i]['stock'];
+			
 			var descuento_html = '<div style="display:none;right: .9em; " id="' + 'div_descuento' + parseFloat(i + 1) + '"class="col input-group">' +
 			'<input class="form-control" id="' + 'des' + parseFloat(i + 1) + '"  type="number" onclick="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"' +
 			'onkeyup="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="'+descuento+'">' +
@@ -125,7 +126,7 @@ let tablaProductos = (array) => {
 				'<td>' + nombre + '</td>' +
 				'<td>' + stock + '</td>' +
 				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '"  disabled min=0 type="number" value="1"></td>' +
-				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '"  onClick=cantidadCosto(event,'+(i+1)+') onkeyup=cantidadCosto(event,'+(i+1)+')  type="number" value=' + redondeo(costo_iva,0) + '></td>' +
+				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '"  onClick=cantidadCosto(event,'+(i+1)+') onkeyup=cantidadCosto(event,'+(i+1)+')  type="number" value=' + redondeo(costo,0) + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeyup="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
 				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '" disabled type="number" value=' + precio_venta + '></td>' +		
@@ -178,7 +179,8 @@ let calcular_margen = (id,id_costo) =>{
 	if(primerNum==1){
 		let porcosto=redondeo(porcentaje*precio_costo,0);
 		precio_final=precio_costo*2;
-		document.getElementById('ven'+id_costo).value=precio_final+porcosto;
+		document.getElementById('ven'+id_costo).value=redondeo((precio_final+porcosto)*1.19,0);
+		document.getElementById('iva').innerHTML=`+iva`;
 	}
 	if(primerNum==2){
 		let porcosto=redondeo(porcentaje*precio_costo,0);
@@ -519,7 +521,9 @@ let recalcularValores = () => {
 	}
 	  
 	$("#totalNeto").val(formatearNumeros(valorTotal));
-	$("#iva").val(formatearNumeros(valorTotal*0.19));
+	//$("#iva").val(formatearNumeros(valorTotal*0.19));
+	let iva = document.getElementById('ivaTotal').value=formatearNumeros(redondeo(valorTotal*0.19,0));
+	console.error('iva ' + iva);
 	$("#totalF").val(formatearNumeros(valorTotal*1.19));
   
 	  //if(guardar){actualizarMontos();} //actualizamos para que guarde en la tabla
