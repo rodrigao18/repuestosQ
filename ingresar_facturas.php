@@ -175,7 +175,7 @@
 								<td></td>
 								<td></td>
 								<td width="10%">iva</td>
-								<td width="20%"><input type="text" class="form-control" id="iva" disabled></td>
+								<td width="20%"><input type="text" class="form-control" id="ivaTotal" disabled></td>
 							</tr>
 							<tr>
 								<td></td>
