@@ -13,6 +13,62 @@
 
 	<!-- Estilos tablas cotizacion -->
 	<link rel="stylesheet" href="css/ventas.css">
+	<style>
+	.users {
+	table-layout: fixed;
+	width: 100%;
+	white-space: nowrap;
+	}
+	.users td {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	}
+	.cabezera{
+		background-color:#980;
+	}
+
+/* Column widths are based on these cells */
+.row-1 {
+  width: 7.6%;
+}
+.row-2 {
+  width: 7.6%;
+}
+.row-3{
+  width: 7.6%;
+}
+.row-4 {
+  width: 7.6%;
+}
+.row-5 {
+  width: 7.6%;
+}
+.row-6 {
+  width: 7.6%;
+}
+.row-7 {
+  width: 7.6%;
+}
+.row-8 {
+  width: 7.6%;
+}
+.row-9 {
+  width: 7.6%;
+}
+.row-10 {
+  width: 7.6%;
+}
+.row-11 {
+  width: 7.6%;
+}
+.row-12 {
+  width: 7.6%;
+}
+.row-13 {
+  width: 7.6%;
+}
+	</style>
 </head>
 
 <body class="app sidebar-mini rtl">

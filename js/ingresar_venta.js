@@ -114,76 +114,74 @@ let  bucarProductos = async () => {
 
 let tablaProductos = (array) => {
 
-	$("#salidaTabla").append('<button class="btn btn-sm btn-primary float-right" onclick = regresar(event)  data-toggle="tooltip" data-placement="top" title="" data-original-title="Regresar a resumen" ><i class="fas fa-chevron-left"></i>  </button>' +		
-			'<table  class="table-responsive  table-striped" id="tabla" >' +
-			'<thead class="thead-dark">' +
+	$("#salidaTabla").append('<div class="scroll"><button class="btn btn-sm btn-primary float-right" onclick = regresar(event)  data-toggle="tooltip" data-placement="top" title="" data-original-title="Regresar a resumen" ><i class="fas fa-chevron-left"></i>  </button>' +		
+			'<table  class="users table-striped" id="tablaBuscar" >' +
+			'<thead class="cabezera">' +
 			'<tr class="table-success">' +
-			'	<th  width="10%">Cód.Interno</th>' +
-			'	<th  width="10%">Cód.Proveedor</th>' +
-			'	<th  width="10%">Nombre</th>' +	
-			'	<th  width="10%">Stock</th>' +
-			'	<th  width="10%">Ubicaion</th>' +
-			'	<th  width="10%">Marca</th>' +	
-			'	<th  width="1%">Cantidad</th>' +
-			'	<th  width="10%">Costo+iva</th>' +
-			'	<th id="checkMargen" width="10%">Margen</th>' +
-			'	<th  width="10%"> Descuento</th>' +
-			'	<th  width="10%"><span id="spandesc"></span></th>' +		
-			'	<th  width="10%"> </th>' +
+			'	<th  class="row-1 ">Cód.Interno</th>' +
+			'	<th  class="row-2 ">Cód.Pro.</th>' +
+			'	<th  class="row-3 ">Nombre</th>' +	
+			'	<th  class="row-4 ">Stock</th>' +
+			'	<th  class="row-5 ">Ubicaion</th>' +
+			'	<th  class="row-6 ">Marca</th>' +	
+			'	<th  class="row-7 ">Cantidad</th>' +
+			'	<th  class="row-8 ">Costo</th>' +
+			'	<th  class="row-9 " id="checkMargen" width="10%">Margen</th>' +
+			'	<th  class="row-10"> Descuento</th>' +
+			'	<th  class="row-11" id="chPrecioSin" width="10%">Prec+iva</th>' +		
+			'	<th  class="row-12" id="chPrecioCon" width="10%">Prec+iva-25%</th>' +
+			'	<th  class="row-13"> </th>' +
 			'</tr>' +
 			'</thead>' +
 			'<tbody id="tablaBody"></tbody>' +
-			'</table>');
+			'</table></div>');
 		let	chekeadoTodoEntregado = "";
+		let	chPrecioSinDes = "";
+		let	chPrecioConDes = "";
 		let toogle=``;
 		for (var i = 0; i < array.length; i++) {
 			var id_producto = array[i]['id'];
 			var nombre = array[i]['nombre'];			
 			var codigo = array[i]['codigo'];
 			var codigoProveedor = array[i]['codigo_proveedor'];
-			var costo = array[i]['costo'];
-			var costo_iva=costo*(1.19);
+			var costo = array[i]['costo'];			
 			var descuento =array[i]['descuento'];
 			
-			if(descuento > 0 ){
-
-			document.getElementById('spandesc').innerHTML=`Precio`;	
-
-			 toogle=`data-toggle="tooltip" data-placement="top" title="Precio con un ${descuento}%"`;
-
-			}else if(descuento==0){
-
-				toogle=`data-toggle="tooltip" data-placement="top" title="Precio sin descuento"`;	
-
-			}
+		
 			var precioVenta=array[i]['precio_venta'];
+			let precioIva=precioVenta*(0.25);
+			let precioFinal=precioVenta-precioIva;
+
 			var margen = array[i]['margen_contado'];
 			var stock = array[i]['stock'];
 			var ubicacion = array[i]['ubicacion'];
 			var marca = array[i]['marca'];
 			var descripcion=array[i]['descripcion'];
-			var descuento_html = '<div style="display:none;right: .9em; " id="' + 'div_descuento' + parseFloat(i + 1) + '"class="col input-group">' +
-			'<input class="form-control" id="' + 'des' + parseFloat(i + 1) + '"  type="number"' +
-			'onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="'+descuento+'">' +
-			'</div>';
+			// var descuento_html = '<div style="display:none;right: .9em; " id="' + 'div_descuento' + parseFloat(i + 1) + '"class="col input-group">' +
+			// '<input class="form-control" id="' + 'des' + parseFloat(i + 1) + '"  type="number"' +
+			// 'onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="'+descuento+'">' +
+			// '</div>';
 
-			var btn_descuento_html = '<button class="btn btn-danger btn-mini float-left" id="' + 'btn_des' + parseFloat(i + 1) + '" onclick="comprobar_descuento_historico (this)">  <i class="fas fa-sort-amount-down"></i>  Descuento </button>';
+			// var btn_descuento_html = '<button class="btn btn-danger btn-mini float-left" id="' + 'btn_des' + parseFloat(i + 1) + '" onclick="comprobar_descuento_historico (this)">  <i class="fas fa-sort-amount-down"></i>  Descuento </button>';
 
 			//BODY DE LA TABLA AGREGAR PRODUCTOS;
 			$("#tablaBody").append('<tr>' +
-				'<td>' + codigo + '</td>' +
-				'<td>' + codigoProveedor + '</td>' +
-				`<td style="cursor:pointer;"><span id="${id_producto}" onmouseover=obser(this,'${descripcion.split(" ")}')>${nombre}</span></td>`+
+				'<td id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
+				'<td id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
+				`<td id="nomPro${parseFloat(i + 1)}" style="cursor:pointer;"><span id="${id_producto}" onmouseover=obser(this,'${descripcion.split(" ")}')>${nombre}</span></td>`+
 				'<td>' + stock + '</td>' +
 				'<td>' + ubicacion + '</td>' +
 				'<td>' + marca + '</td>' +
 				'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=cantidadCalculo('+(i+1)+',1)  min=1 type="number" value="1"></td>' +
-				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + redondeo(costo_iva,0) + '></td>' +
-				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
-				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
-				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '" '+toogle+'  type="number" value=' + precioVenta + '></td>' +		
-				'<td style="display:none;">'+id_producto+'</td>' +
-				'<td style="display:none;">'+descripcion+'</td>' +
+				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + costo + '></td>' +
+				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" '+
+				'min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
+				'<td><input style="width:70px" class="form-control" id="' + 'des' + parseFloat(i + 1) + '" '+
+				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="25" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +						
+				'<td><input class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
+				'<td><input class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '"   type="number" value=' + precioFinal + '></td>' +					
+				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
+				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
 				'</td>' +
@@ -191,6 +189,8 @@ let tablaProductos = (array) => {
 		}
 				
 				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
+				document.getElementById('chPrecioSin').innerHTML = 'Precio sin <input id="chPreSin" ' + chPrecioSinDes + ' type="radio"  name="optradio" onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion sin descuento">'
+				document.getElementById('chPrecioCon').innerHTML = 'Precio con <input id="chPreCon" ' + chPrecioConDes + ' type="radio"  name="optradio"  onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion con descuento">'
 				$('[data-toggle="tooltip"]').tooltip();
 }
 
@@ -204,6 +204,14 @@ let tablaProductos = (array) => {
 		document.getElementById('obsProducto').value=nombreOri.replace(/,/g," ");
 		document
 		.getElementById('idprodescripcion').value=idpro;
+	}
+
+	//FUNCION CHECK PRECIOS
+	let comprobarChck = (index) =>{
+
+	console.error(document.getElementById('chPreSin').checked);
+	console.error(document.getElementById('chPreCon').checked);	
+
 	}
 
 	//EDITAR LA DESCRIPCION EN LA VENTA
@@ -252,28 +260,54 @@ let tablaProductos = (array) => {
 	let agregarProductos =  (e,btn) => {
 
 		// comprobarFactura();
-
+		
 		$("#tablaProductos").show();
 		$("#salidaTabla").hide();
 
 		let evento = e.preventDefault();
 		let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
-		
+		let precio_venta=0;
 		
 		var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
 		
 		//borramos el input buscar
 		$('#buscar').val('');
 
-		let codigo_producto = table.rows[idTabla].cells[0].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
-		let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
-		let nombre = table.rows[idTabla].cells[2].innerHTML;
+		let codigo_producto = document.getElementById('codiP'+idTabla).innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+	
+		let codigo_proveedor = document.getElementById('codPro'+idTabla).innerHTML;
+		
+		let nombre =document.getElementById(`nomPro${idTabla}`).textContent;
+		
+		let idProd = document.getElementById(`idPro${idTabla}`).innerHTML;
+	
+		// let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+		// let nombre = table.rows[idTabla].cells[2].innerHTML;
 		let cantidad = document.getElementById('cant' + idTabla).value;
 		let margen = document.getElementById('mar' + idTabla).value;
 		let precio_costo = document.getElementById('cos' + idTabla).value; // ID DEL SELECT PRECIO;
-		let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
+
+		console.error('precio sin' + document.getElementById('chPreSin').checked);
+		console.error('precio con' + document.getElementById('chPreCon').checked);	
+		if(document.getElementById('chPreSin').checked==false && document.getElementById('chPreCon').checked==false){
+
+			swal("Advertencia","debe elejir un precio", "warning");
+			return;
+		}
+		if(document.getElementById('chPreSin').checked==true){
+			console.error('entro a precio sin');
+			precio_venta = document.getElementById('venSin' + idTabla).value;
+
+		}else if(document.getElementById('chPreCon').checked==true){
+			console.error('entro a precio con');
+			precio_venta = document.getElementById('venCon' + idTabla).value;
+			console.error('precio_venta ' + precio_venta);
+		}		 
+
+		
+		
 		let precioTotal = cantidad * precio_venta;
-		let idProd = table.rows[idTabla].cells[11].innerHTML;
+		// let idProd = table.rows[idTabla].cells[11].innerHTML;
 		let descuento = document.getElementById(`des${idTabla}`).value;
 		ITEM++;
 
@@ -381,7 +415,9 @@ let calcular_margen = (id,id_costo) =>{
 	if(primerNum==1){
 		let porcosto=redondeo(porcentaje*precio_costo,0);
 		precio_final=precio_costo*2;
-		document.getElementById('ven'+id_costo).value=precio_final+porcosto;
+		let precio1=precio_final+porcosto;
+		let preMarIva=precio1*1.19;
+		document.getElementById('ven'+id_costo).value=preMarIva;
 	}
 	if(primerNum==2){
 		let porcosto=redondeo(porcentaje*precio_costo,0);
