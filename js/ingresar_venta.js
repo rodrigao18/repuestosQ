@@ -179,7 +179,7 @@ let tablaProductos = (array) => {
 				'<td><input style="width:70px" class="form-control" id="' + 'des' + parseFloat(i + 1) + '" '+
 				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="25" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +						
 				'<td><input class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
-				'<td><input class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '"   type="number" value=' + precioFinal + '></td>' +					
+				'<td><input class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(precioFinal,0) + '></td>' +					
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
 				'<td>' +
@@ -359,7 +359,7 @@ function validar_descuento(e,id, descuento_max, id_precio_venta, id_precio_final
 
 	if (e.keyCode === 13 && !e.shiftKey) {
 		e.preventDefault();
-		var precio_venta = document.getElementById('ven'+id_precio_venta).value;//document.getElementById("pres" + id_precio_venta).value //PRECIO VENTA
+		var precio_venta = document.getElementById('venSin'+id_precio_venta).value;//document.getElementById("pres" + id_precio_venta).value //PRECIO VENTA
 
 		id_descuento = id.id; // SE OBTIENE EL ID DESDE EL INPUT DESCUENTO  CON  LA PROPIEDAD THIS
 		var valor_descuento = document.getElementById(id_descuento).value //SACO EL VALOR DEL INPUT GRACIAS AL ID ENVIADO DESDE LA FUNCION;
@@ -368,7 +368,7 @@ function validar_descuento(e,id, descuento_max, id_precio_venta, id_precio_final
 		if (valor_descuento > descuento_max) { //VALIDO QUE EL VALOR DEL DESCUENTO SEA MENOR AL VALOR REAL DEL DESCUENTO Y QUE SEA MAYOR A CERO;
 			swal("No puede aplicar un descuento superior al predeterminado","","info");
 			$('#' + id_descuento).val(0); //VUELVO EL VALOR DEL INPUT DESCUENTO A 0;
-			$('#ven' + id_precio_final).val(precio_venta);
+			$('#venSin' + id_precio_final).val(precio_venta);
 			return;
 		} else {
 			calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_final);
@@ -391,7 +391,7 @@ function calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_
 	var precio_final1 = parseFloat(valor_descuento / 100) * parseInt(precio_venta);
 	var precio_final=parseInt(precio_venta)-parseInt(precio_final1);
 	
-	$('#ven' + id_precio_f).val(precio_final);
+	$('#venSin' + id_precio_f).val(precio_final);
 
 }
 
@@ -417,12 +417,12 @@ let calcular_margen = (id,id_costo) =>{
 		precio_final=precio_costo*2;
 		let precio1=precio_final+porcosto;
 		let preMarIva=precio1*1.19;
-		document.getElementById('ven'+id_costo).value=preMarIva;
+		document.getElementById('venSin'+id_costo).value=redondeo(preMarIva,0);
 	}
 	if(primerNum==2){
 		let porcosto=redondeo(porcentaje*precio_costo,0);
 		precio_final=precio_costo*3;
-		document.getElementById('ven'+id_costo).value=precio_final+porcosto;
+		document.getElementById('venSin'+id_costo).value=redondeo(precio_final+porcosto,0);
 	} 
 
 }
