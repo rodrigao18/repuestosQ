@@ -112,6 +112,40 @@
 				</div>
 			</div>
 		</div>
+
+				<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Ingresar  <span id="producto"></span></h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">       
+        <div id="salidaModal">
+		<input type="hidden" id="dato_in">          
+        </div>
+        <div id="filaProductos">
+            <div class="form-row">
+                <div class="form-group col-md-12">               
+                <input type="text" class="form-control" id="in_dato" onkeyup="this.value=mayusculas(this.value)" placeholder="Ingrese dato">
+                </div>             
+            </div>             		
+        </div>	
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button"  id="addPromocion"  class="btn btn-success" onclick=addDatos()>Añadir</button>
+        </div>
+        
+      </div>
+    </div>
+  </div> 
 	</main>
 	<!-- Essential javascripts for application to work-->
 	<script src="js/jquery-3.2.1.min.js"></script>

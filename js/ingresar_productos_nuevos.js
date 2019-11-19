@@ -1,7 +1,7 @@
 //CARGAR CATEGORIA
  function cargar_categoria() {
 
-	var sql = 'SELECT id,nombre_categoria FROM categoria';
+	var sql = 'SELECT id,nombre_categoria FROM categoria order by nombre_categoria asc';
 	//AJAX	
 	$.ajax({
 	type: 'POST',
@@ -66,11 +66,9 @@ function agregar_tipo(index){
 	console.error('index '+ index);
    document.getElementById('dato_in').value=index;
    if(index==1){
-	   document.getElementById('producto').innerHTML="TIPO PRODUCTO";
+	   document.getElementById('producto').innerHTML="Marca";
    }else if(index==2){
-	   document.getElementById('producto').innerHTML="MARCA";
-   }else if(index==3){
-	   document.getElementById('producto').innerHTML="MODELO";
+	   document.getElementById('producto').innerHTML="Categoria";
    }
    
    $("#myModal").modal();
@@ -82,15 +80,21 @@ function agregar_tipo(index){
 
 //ingresar datos desde el modal
 function addDatos(){
+
+	var sql='';
+	var dato='';
 	if ($("#in_dato").val() == "" ) {
 		swal("Error", "Ingrese un dato", "error");
 }else{
 	var index=document.getElementById('dato_in').value;
 
 	 if(index==1){
-		var dato = document.getElementById('in_dato').value;	
-		var sql = 'INSERT INTO marca(marca) VALUES ("'+dato+'") ';
-	} else {
+		 dato = document.getElementById('in_dato').value;	
+		 sql = 'INSERT INTO marca(marca) VALUES ("'+dato+'") ';
+	} else if(index==2) {
+
+		dato = document.getElementById('in_dato').value;	
+		sql = 'INSERT INTO categoria(nombre_categoria) VALUES ("'+dato+'") ';
 	}	
 		$.ajax({
 			type: 'POST',
@@ -105,7 +109,12 @@ function addDatos(){
 				if (data == 1) { 
 					var dato = document.getElementById('in_dato').value="";	
 					swal("Dato creado", "los datos fueron guardados exitosamente", "success");
-					marca();
+					if(index==1){
+						marca();
+					}else{
+						cargar_categoria();
+					}
+					
 				 }				
 			},
 			error: function (request, status, error) {

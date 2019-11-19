@@ -80,7 +80,13 @@
 										</div>
 										<div class="form-group col-md-3">
 											<label>Categoría</label>
-											<select class="form-control" id="select_categoria"  name="select_categoria"></select>
+											<div class="input-group">																
+											<select class="form-control" id="select_categoria"> </select>
+											<div class="input-group-append">
+											<button  target="_blank" class="btn btn-primary" id="addTipo_categoria" onclick="agregar_tipo(2)" data-toggle="tooltip" title="agregar" type="button"><i class="fas fa-plus"></i> </button>
+											</div>
+										</div>
+
 										</div>
 
 										<div class="form-group col-md-3">
@@ -97,6 +103,7 @@
 											<input type="number" class="form-control" id="costo" name="costo" min="0" placeholder="Ingrese ultimo costo" value="0">
 										</div>
 							</div>
+
 
 							<div class="form-row">
 							<div class="form-group col-md-3">

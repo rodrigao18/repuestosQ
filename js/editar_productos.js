@@ -93,6 +93,73 @@ let Marca = async (id) => {
 
 }
 
+//cargar modal
+function agregar_tipo(index){
+	console.error('index '+ index);
+   document.getElementById('dato_in').value=index;
+   if(index==1){
+	   document.getElementById('producto').innerHTML="Marca";
+   }else if(index==2){
+	   document.getElementById('producto').innerHTML="Categoria";
+   }
+   
+   $("#myModal").modal();
+   $('body').on('shown.bs.modal', '#myModal', function () {
+	   $('input:visible:enabled:first', this).focus();
+   })
+
+}
+
+//ingresar datos desde el modal
+function addDatos(){
+
+	var sql='';
+	var dato='';
+	if ($("#in_dato").val() == "" ) {
+		swal("Error", "Ingrese un dato", "error");
+}else{
+	var index=document.getElementById('dato_in').value;
+
+	 if(index==1){
+		 dato = document.getElementById('in_dato').value;	
+		 sql = 'INSERT INTO marca(marca) VALUES ("'+dato+'") ';
+	} else if(index==2) {
+
+		dato = document.getElementById('in_dato').value;	
+		sql = 'INSERT INTO categoria(nombre_categoria) VALUES ("'+dato+'") ';
+	}	
+		$.ajax({
+			type: 'POST',
+			url: 'php/consulta.php',
+			async: false,
+			data: {
+				tag: 'crud_productos',
+				sql: sql
+			},
+			success: function (data) {
+			
+				if (data == 1) { 
+					var dato = document.getElementById('in_dato').value="";	
+					swal("Dato creado", "los datos fueron guardados exitosamente", "success");
+					cargarProductos(ID);
+					// if(index==1){
+					// 	marca();
+					// }else{
+					// 	cargar_categoria();
+					// }
+					
+				 }				
+			},
+			error: function (request, status, error) {
+				console.error("Error");
+			}
+
+		});
+
+	}
+
+ }
+
 //*-llenar los input-*//
 let Productos = (array) => {
 
