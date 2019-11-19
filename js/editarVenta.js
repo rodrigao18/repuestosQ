@@ -49,9 +49,10 @@ function pulsar(e, nodo,editaNombre) {
 		var nodoTr = nodoTd.parentNode; //Nodo TR		
 		var nodosEnTr = nodoTr.getElementsByTagName('td');
     var nombreProducto = document.getElementById('nombre').value;
-    var idOrdenR = nodosEnTr[0].textContent;		
+	var idOrdenR = nodosEnTr[0].textContent;		
+	var idProducto = nodosEnTr[7].textContent;
 		var nombreEditable = document.getElementById('nombre').value;
-		
+	console.error('idProducto ' + idProducto);	
 
 		$.notify({
 			title: "Nombre modificado : ",
@@ -71,6 +72,7 @@ function pulsar(e, nodo,editaNombre) {
 			});
 
 		
+			editarNonmbre(idProducto,nombreEditable);
 
 			var nuevoCodigoHtmlNombre = '<td> <span onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombreEditable + '</span> </td>';
         
@@ -86,7 +88,7 @@ function pulsar(e, nodo,editaNombre) {
     	var idOrdenR = nodosEnTr[0].textContent;		
 		var codigoEditable = document.getElementById('codigo').value;
 		var idProducto = nodosEnTr[7].textContent;
-
+		
 		$.notify({
 			title: "Código modificado : ",
 			message: "Se actualizó la información de la factura",

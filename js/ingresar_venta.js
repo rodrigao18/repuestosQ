@@ -33,7 +33,7 @@ let ultimoVenta = async () => {
 		let ultima_boleta=array[0]['id'];
 		console.error(ultima_boleta);
 
-		document.getElementById('ultima_boleta').innerHTML=`Número correlativo siguiente : ${ultima_boleta}`;
+		document.getElementById('ultima_boleta').value=ultima_boleta;
       
         //const provinciass = await provincias(array);
         
@@ -715,6 +715,29 @@ for (var i = 0; i < nFilas; i++) {
 
 
 }
+
+let editarNonmbre = async(idProducto,nombreEditable) => {
+
+				const baseUrl = 'php/consultaFetch.php';
+
+				let consulta=`UPDATE PRODUCTOS set nombre="${nombreEditable}" WHERE id=${idProducto}`;
+
+				const sql   = {sql: consulta, tag: `crud`}		
+				console.error(sql);
+	
+				try {
+				//*-llamar ajax al servidor mediate api fetch.
+				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+				//*-request de los datos en formato texto(viene todo el request)
+				const data = await response.text();
+				//*-se parsea solo la respuesta del Json enviada por el servidor.				
+				
+				} catch (error) { console.log('error en la conexion ', error); }
+
+		
+	}
+
+
 
 let quitarDescuento = (e) => {
 

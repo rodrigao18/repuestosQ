@@ -84,7 +84,9 @@
 			<div>
 				<h1><i class="fas fa-list"></i> Ingresar venta </h1>
 				<p>Ingresar venta</p>
-				<h2 id="ultima_boleta" class="mt-3"></h2>
+				<br>
+				<label>Ultimo número de boleta</label>
+				<h2 class="mt-3"><input type="number" id="ultima_boleta" value=""></h2>
 				
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
