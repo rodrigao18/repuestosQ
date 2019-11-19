@@ -361,7 +361,7 @@ let guardar = async (e) => {
 	let fecha_vencimiento=document.getElementById('fecha_vencimiento').value;
 	let factura = document.getElementById('factura').value;
 	let neto = document.getElementById('totalNeto').value;
-	let iva = document.getElementById('iva').value;
+	let iva = document.getElementById('ivaTotal').value;
 	let total = document.getElementById('totalF').value;
 	const baseUrl = 'php/consultaFetch.php';
 
@@ -423,7 +423,7 @@ let insertFactura = async (id) => {
 						
 					swal("Factura creada", "" + porcentaje + "% de los datos fueron guardados", "success");
 						//window.location.href = "ver_proveedores.php";
-					setTimeout('window.location.href = "ver_proveedores.php"', 2000);
+					setTimeout('window.location.href = "ver_facturas.php"', 2000);
 	
 					}	
 			

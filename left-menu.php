@@ -188,7 +188,8 @@
 	<?php
             $menuFacturas='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-clipboard-list"></i><span class="app-menu__label">Facturas</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="ver_facturas.php"><i class="icon fas fa-angle-right"></i> Ver facturas</a></li>					
+					<li><a class="treeview-item" href="ver_facturas.php"><i class="icon fas fa-angle-right"></i> Ver facturas</a></li>	
+					<li><a class="treeview-item" href="ver_facturas_compras.php"><i class="icon fas fa-angle-right"></i> Facturas de compras</a></li>					
 				
 				</ul>
 			</li>';
