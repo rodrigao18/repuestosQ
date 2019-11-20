@@ -189,8 +189,8 @@ let tablaProductos = (array) => {
 		}
 				
 				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
-				document.getElementById('chPrecioSin').innerHTML = 'Precio sin <input id="chPreSin" ' + chPrecioSinDes + ' type="radio"  name="optradio" onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion sin descuento">'
-				document.getElementById('chPrecioCon').innerHTML = 'Precio con <input id="chPreCon" ' + chPrecioConDes + ' type="radio"  name="optradio"  onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion con descuento">'
+				// document.getElementById('chPrecioSin').innerHTML = 'Precio sin <input id="chPreSin" ' + chPrecioSinDes + ' type="radio"  name="optradio" onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion sin descuento">'
+				// document.getElementById('chPrecioCon').innerHTML = 'Precio con <input id="chPreCon" ' + chPrecioConDes + ' type="radio"  name="optradio"  onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion con descuento">'
 				$('[data-toggle="tooltip"]').tooltip();
 }
 
@@ -204,14 +204,6 @@ let tablaProductos = (array) => {
 		document.getElementById('obsProducto').value=nombreOri.replace(/,/g," ");
 		document
 		.getElementById('idprodescripcion').value=idpro;
-	}
-
-	//FUNCION CHECK PRECIOS
-	let comprobarChck = (index) =>{
-
-	console.error(document.getElementById('chPreSin').checked);
-	console.error(document.getElementById('chPreCon').checked);	
-
 	}
 
 	//EDITAR LA DESCRIPCION EN LA VENTA
@@ -285,28 +277,10 @@ let tablaProductos = (array) => {
 		// let nombre = table.rows[idTabla].cells[2].innerHTML;
 		let cantidad = document.getElementById('cant' + idTabla).value;
 		let margen = document.getElementById('mar' + idTabla).value;
-		let precio_costo = document.getElementById('cos' + idTabla).value; // ID DEL SELECT PRECIO;
-
-		console.error('precio sin' + document.getElementById('chPreSin').checked);
-		console.error('precio con' + document.getElementById('chPreCon').checked);	
-		if(document.getElementById('chPreSin').checked==false && document.getElementById('chPreCon').checked==false){
-
-			swal("Advertencia","debe elejir un precio", "warning");
-			return;
-		}
-		if(document.getElementById('chPreSin').checked==true){
-			console.error('entro a precio sin');
-			precio_venta = document.getElementById('venSin' + idTabla).value;
-
-		}else if(document.getElementById('chPreCon').checked==true){
-			console.error('entro a precio con');
-			precio_venta = document.getElementById('venCon' + idTabla).value;
-			console.error('precio_venta ' + precio_venta);
-		}		 
-
+		let precio_sin = document.getElementById('venSin' + idTabla).value; // ID DEL SELECT PRECIO;
+		let precio_Con= document.getElementById('venCon' + idTabla).value;
 		
-		
-		let precioTotal = cantidad * precio_venta;
+		let precioTotal = cantidad * precio_sin;
 		// let idProd = table.rows[idTabla].cells[11].innerHTML;
 		let descuento = document.getElementById(`des${idTabla}`).value;
 		ITEM++;
@@ -325,29 +299,30 @@ let tablaProductos = (array) => {
 		'<td>' + codigo_producto + '</td>' +
 		'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
-		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
-		'<td><button class="btn  btn-danger" id="' + idProd + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +
+		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
+		'<td><button class="btn  btn-danger" id="' + ITEM + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
 		'</tr>');
 
 			$('[data-toggle="tooltip"]').tooltip();
-			agregarNumeracionItem();
+			//`agregarNumeracionItem();
 			recalcularValores();
 			document.getElementById('obsProducto').value="";
 
 	}
 
-let removerItem = (id) => {
-	$("#tablaBodyCotizacion > tr").each(function () {
+	let removerItem = async(id) => {
+			var idRe = id.id;		
+			
+			$("#fila" + idRe).remove();		
 
-		var idRe = id.id;		
-		console.error("idRe: " + idRe);
-		$("#fila" + idRe).remove();
-		
-	});
-	recalcularValores();
-}
+			var tablaC = document.getElementById("tablaBodyCotizacion"),
+			rIndex;
+			var nFilas = $("#tablaBodyCotizacion > tr").length;
+
+			const recal = await recalcularValores();
+	}
 //*-boton volver en la tabla busqueda-*//
 let regresar = (e)=> {
 	const evento = e.preventDefault();
@@ -435,7 +410,8 @@ let recalcularValores = () => {
 
 	let tablaC = document.getElementById("tablaBodyCotizacion"),
 	  rIndex;
-	let nFilas = $("#tablaBodyCotizacion > tr").length;
+	let nFilas = $("#tablaBodyCotizacion > tr").length;	
+
 	for (let i = 0; i < nFilas; i++) {
 	  valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
 	  console.log("valor total: " + valorTotal);

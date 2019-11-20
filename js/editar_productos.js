@@ -197,7 +197,7 @@ let editarProductos = async (e) => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`UPDATE productos set codigo_proveedor=${codigo_proveedor}, proveedor=${proveedor},nombre="${nombre}",descripcion="${descripcion}",ubicacion="${ubicacion}",categoria=${categoria},
+	let consulta=`UPDATE productos set codigo_proveedor="${codigo_proveedor}", proveedor=${proveedor},nombre="${nombre.trim()}.",descripcion="${descripcion}",ubicacion="${ubicacion}",categoria=${categoria},
 	marca=${marca},costo=${costo},stock_m=${stock_minimo},stock=${stock},
 	margen_contado=${margen_contado},margen_oferta=${margen_oferta},margen_credito=${margen_credito} WHERE id=${ID}`;
     	

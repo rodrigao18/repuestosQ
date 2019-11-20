@@ -147,8 +147,8 @@
 								<th width="5%"><i class="fas fa-edit"></i> Cantidad</th>
 								<th width="20%"><i class="fas fa-edit"></i> Nombre</th>
 								<th width="10%">Precio Unitario</th>
-								<th width="10%">Precio Total</th>
 								<th width="10%"></th>
+								<th width="10%">Precio Total</th>
 							</tr>
 
 						</thead>

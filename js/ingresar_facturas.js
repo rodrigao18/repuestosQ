@@ -95,6 +95,7 @@ let tablaProductos = (array) => {
 			'	<th scope="col" width="10%"> Descuento</th>' +
 			'	<th scope="col" width="10%"> Precio venta<span id="iva"></span></th>' +		
 			'	<th scope="col" width="10%"> </th>' +
+			'	<th scope="col" width="10%"> </th>' +
 			'</tr>' +
 			'</thead>' +
 			'<tbody id="tablaBody"></tbody>' +
@@ -133,6 +134,9 @@ let tablaProductos = (array) => {
 				'<td style="display:none;">'+id_producto+'</td>' +
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
+				'<td><form target="_blank" method="POST" action="editar_productos.php">'+
+				'<button type="submit" class="btn btn-secondary" data-toggle="tooltip"'+
+				'data-placement="top" title="Editar" name="id" value='+id_producto+'><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>'+				
 				'</td>' +
 				'</tr>');
 		}
@@ -300,14 +304,14 @@ let agregarProductos =  (e,btn) => {
 	}
 	
 
-	$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
+	$("#tablaBodyCotizacion").append('<tr id="fila' + codigo_producto + '">' +
 	'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
 	'<td>' + codigo_producto + '</td>' +
 	'<td><input style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+')  type="number" min=1 value="'+cantidad+'"></td>' +
 	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
 	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
 	'<td><input class="form-control" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
-	'<td><button class="btn  btn-danger" id="' + ITEM + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+	'<td><button class="btn  btn-danger" id="' + codigo_producto + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 	'<td style="display:none;">'+idProd+'</td>' +
 	'</tr>');
 
@@ -316,100 +320,142 @@ let agregarProductos =  (e,btn) => {
  		recalcularValores();
 
 }
+	//ELIMAR ITEM DE LA TABLA FACTURA
+	let removerItem = (id) => {
 
-let cantidadCalculo = (id) =>{
-	
-	let cantidad=document.getElementById('cant'+id).value;
-	let precioVen=convertirNumeros(document.getElementById('vent'+id).value);
-	let precioT=cantidad*precioVen;
-	document.getElementById('prect'+id).value=formatearNumeros(precioT);
-	console.error('precioT' + precioT);
-	recalcularValores();
-
-} 
-let editarCodiProveedor = async (idProducto,codigoPrEditable) => {
-
-	const baseUrl = 'php/consultaFetch.php';
-
-	let consulta=`UPDATE PRODUCTOS SET codigo_proveedor="${codigoPrEditable}" WHERE id=${idProducto}`;
-
-	const sql   = {sql: consulta, tag: `crud`}	
-
-	console.error(consulta);		  
-
-	try {
-	//*-llamar ajax al servidor mediate api fetch.
-	const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-	//*-request de los datos en formato texto(viene todo el request)
-	const data = await response.text();
-	//*-se parsea solo la respuesta del Json enviada por el servidor.	
-	
-	} catch (error) { console.log('error en la conexion ', error); }
-
-}
-
-let guardar = async (e) => {
-
-	const evento = e.preventDefault();
-	var nFilas = $("#tablaBodyCotizacion > tr").length;
-	if (nFilas <= 0) {
-		swal("No hay productos en la tabla, no puede guardar","","info");
-		return;
+		let btn=id.id;
+		$("#fila" + btn).remove();
 	}
 
-	let fecha_emision=document.getElementById('fecha_emision').value;
-	let fecha_vencimiento=document.getElementById('fecha_vencimiento').value;
-	let factura = document.getElementById('factura').value;
-	let neto = document.getElementById('totalNeto').value;
-	let iva = document.getElementById('ivaTotal').value;
-	let total = document.getElementById('totalF').value;
-	const baseUrl = 'php/consultaFetch.php';
+	let cantidadCalculo = (id) =>{
+		
+		let cantidad=document.getElementById('cant'+id).value;
+		let precioVen=convertirNumeros(document.getElementById('vent'+id).value);
+		let precioT=cantidad*precioVen;
+		document.getElementById('prect'+id).value=formatearNumeros(precioT);
+		console.error('precioT' + precioT);
+		recalcularValores();
 
-	let consulta=`INSERT INTO facturas (id_proveedor,fecha_emision,fecha_vencimiento,fecha_ingreso,neto,iva,total,numero_factura)
-				  VALUES(${ID},"${fecha_emision}","${fecha_vencimiento}",NOW(),${convertirNumeros(neto)},${convertirNumeros(iva)},${convertirNumeros(total)},${factura})`;
-
-	const sql   = {sql: consulta, tag: `insert_return_id`}	
-
-	console.error(consulta);		  
-
-	try {
-	//*-llamar ajax al servidor mediate api fetch.
-	const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-	//*-request de los datos en formato texto(viene todo el request)
-	const data = await response.text();
-	//*-se parsea solo la respuesta del Json enviada por el servidor.
-	
-	const insertFacturaa = await insertFactura(data);			
-	
-	} catch (error) { console.log('error en la conexion ', error); }
-
-}
-
-let insertFactura = async (id) => {
-
-	let tablaC = document.getElementById("tablaBodyCotizacion"),
-	rIndex;
-	let nFilas = $("#tablaBodyCotizacion > tr").length;
-	let contador=0;
-	let porcentaje=0, exito=0;
-
-
-	for (var i = 0; i < nFilas; i++) {
-
-		let codigoProveedor = tablaC.rows[i].cells[0].textContent;
-		let codigoInterno = tablaC.rows[i].cells[1].innerHTML;
-		let cantidad =document.getElementById('cant'+(i+1)).value;
-		let nombre = tablaC.rows[i].cells[3].innerText;
-		let precioUnitario = convertirNumeros(document.getElementById('vent'+(i+1)).value);		
-		let totalUnitario = convertirNumeros(document.getElementById('prect'+(i+1)).value);
-	
+	} 
+	let editarCodiProveedor = async (idProducto,codigoPrEditable) => {
 
 		const baseUrl = 'php/consultaFetch.php';
 
-		let consulta=`INSERT INTO facturas_relacional (codigoProveedor,codigoProducto,precioUnitario,cantidad,totalUnitario,idfactura,nombreProducto)
-				  VALUES("${codigoProveedor.trim()}","${codigoInterno}",${precioUnitario},${cantidad},${totalUnitario},${id},"${nombre}")`;
+		let consulta=`UPDATE PRODUCTOS SET codigo_proveedor="${codigoPrEditable}" WHERE id=${idProducto}`;
 
-		const sql   = {sql: consulta, tag: `crud`}		
+		const sql   = {sql: consulta, tag: `crud`}	
+
+		console.error(consulta);		  
+
+		try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.	
+		
+		} catch (error) { console.log('error en la conexion ', error); }
+
+	}
+
+	let guardar = async (e) => {
+
+		const evento = e.preventDefault();
+		var nFilas = $("#tablaBodyCotizacion > tr").length;
+		if (nFilas <= 0) {
+			swal("No hay productos en la tabla, no puede guardar","","info");
+			return;
+		}
+
+		let fecha_emision=document.getElementById('fecha_emision').value;
+		let fecha_vencimiento=document.getElementById('fecha_vencimiento').value;
+		let factura = document.getElementById('factura').value;
+		let neto = document.getElementById('totalNeto').value;
+		let iva = document.getElementById('ivaTotal').value;
+		let total = document.getElementById('totalF').value;
+		const baseUrl = 'php/consultaFetch.php';
+
+		let consulta=`INSERT INTO facturas (id_proveedor,fecha_emision,fecha_vencimiento,fecha_ingreso,neto,iva,total,numero_factura)
+					VALUES(${ID},"${fecha_emision}","${fecha_vencimiento}",NOW(),${convertirNumeros(neto)},${convertirNumeros(iva)},${convertirNumeros(total)},${factura})`;
+
+		const sql   = {sql: consulta, tag: `insert_return_id`}	
+
+		console.error(consulta);		  
+
+		try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.
+		
+		const insertFacturaa = await insertFactura(data);			
+		
+		} catch (error) { console.log('error en la conexion ', error); }
+
+	}
+
+	let insertFactura = async (id) => {
+
+		let tablaC = document.getElementById("tablaBodyCotizacion"),
+		rIndex;
+		let nFilas = $("#tablaBodyCotizacion > tr").length;
+		let contador=0;
+		let porcentaje=0, exito=0;
+
+
+		for (var i = 0; i < nFilas; i++) {
+
+			let codigoProveedor = tablaC.rows[i].cells[0].textContent;
+			let codigoInterno = tablaC.rows[i].cells[1].innerHTML;
+			let cantidad =document.getElementById('cant'+(i+1)).value;
+			let nombre = tablaC.rows[i].cells[3].innerText;
+			let precioUnitario = convertirNumeros(document.getElementById('vent'+(i+1)).value);		
+			let totalUnitario = convertirNumeros(document.getElementById('prect'+(i+1)).value);
+		
+
+			const baseUrl = 'php/consultaFetch.php';
+
+			let consulta=`INSERT INTO facturas_relacional (codigoProveedor,codigoProducto,precioUnitario,cantidad,totalUnitario,idfactura,nombreProducto)
+					VALUES("${codigoProveedor.trim()}","${codigoInterno}",${precioUnitario},${cantidad},${totalUnitario},${id},"${nombre}")`;
+
+			const sql   = {sql: consulta, tag: `crud`}		
+
+			try {
+				//*-llamar ajax al servidor mediate api fetch.
+				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+				//*-request de los datos en formato texto(viene todo el request)
+				const data = await response.text();
+				//*-se parsea solo la respuesta del Json enviada por el servidor.
+				contador++; exito++;
+				if (data == 1 && contador==nFilas) {
+					porcentaje = (exito / nFilas) * 100;
+							
+						swal("Factura creada", "" + porcentaje + "% de los datos fueron guardados", "success");
+							//window.location.href = "ver_proveedores.php";
+						setTimeout('window.location.href = "ver_facturas.php"', 2000);
+		
+						}	
+				
+				} catch (error) { console.log('error en la conexion ', error); }
+
+		
+		}
+
+	}
+
+	let comprobarFactura= async  (e) => { 
+
+
+		if(document.getElementById('factura').value!= ""){   
+
+		let factura = $("#factura").val();
+		
+		const baseUrl = 'php/consultaFetch.php';
+			
+		let consulta=`SELECT count(*) FROM facturas where numero_factura=${factura}`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
 
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
@@ -417,115 +463,79 @@ let insertFactura = async (id) => {
 			//*-request de los datos en formato texto(viene todo el request)
 			const data = await response.text();
 			//*-se parsea solo la respuesta del Json enviada por el servidor.
-			contador++; exito++;
-			if (data == 1 && contador==nFilas) {
-				porcentaje = (exito / nFilas) * 100;
+			let array = JSON.parse(data);
+			
+			let existe = array[0][0]; 
+
+			if (existe < 1) {
+				guardar(e);
+				
+				} else {
+					$.notify({
+						title: "Precaucion: ",
+						message: "El Numero de la FACTURA  ya existe en la base de datos:",
+						icon: 'fas fa-exclamation-circle'
+					}, {
+						type: "danger",
+						placement: {
+							from: "top",
+							align: "right"
+						},
+						offset: 70,
+						spacing: 70,
+						z_index: 1031,
+						delay: 2000,
+						timer: 3000
+					});
+						document.getElementById('rutCliente').focus();
+						$("#rutCliente").val=='';
 						
-					swal("Factura creada", "" + porcentaje + "% de los datos fueron guardados", "success");
-						//window.location.href = "ver_proveedores.php";
-					setTimeout('window.location.href = "ver_facturas.php"', 2000);
-	
-					}	
+					}
+				
 			
-			} catch (error) { console.log('error en la conexion ', error); }
-
-	
-	}
-
-}
-
-let comprobarFactura= async  (e) => { 
-
-
-    if(document.getElementById('factura').value!= ""){   
-
-	let factura = $("#factura").val();
-	 
-    const baseUrl = 'php/consultaFetch.php';
-        
-    let consulta=`SELECT count(*) FROM facturas where numero_factura=${factura}`;
-
-    const sql = {sql: consulta, tag: `array_datos`} 
-
-    try {
-		//*-llamar ajax al servidor mediate api fetch.
-		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-		//*-request de los datos en formato texto(viene todo el request)
-		const data = await response.text();
-		//*-se parsea solo la respuesta del Json enviada por el servidor.
-        let array = JSON.parse(data);
-        
-        let existe = array[0][0]; 
-
-        if (existe < 1) {
-			guardar(e);
-			
-            } else {
-                $.notify({
-                    title: "Precaucion: ",
-                    message: "El Numero de la FACTURA  ya existe en la base de datos:",
-                    icon: 'fas fa-exclamation-circle'
-                }, {
-                    type: "danger",
-                    placement: {
-                        from: "top",
-                        align: "right"
-                    },
-                    offset: 70,
-                    spacing: 70,
-                    z_index: 1031,
-                    delay: 2000,
-                    timer: 3000
-                });
-                    document.getElementById('rutCliente').focus();
-                    $("#rutCliente").val=='';
-					
-                 }
-      		
+		} catch (error) { console.log('error en la conexion ', error); }
 		
-    } catch (error) { console.log('error en la conexion ', error); }
-    
-}    else{ let rutCliente = $("#factura").val(); console.error(rutCliente);   }
+	}    else{ let rutCliente = $("#factura").val(); console.error(rutCliente);   }
 
-}
-
-//*-boton volver en la tabla busqueda-*//
-let regresar = (e)=> {
-	const evento = e.preventDefault();
-	$("#volverBtn").show(); // mostramos nuevamente  los botones
-	$("#tablaProductos").hide(); //tabla donde se buscan los productos
-}
-let agregarNumeracionItem = () =>{
-
-	let tablaC = document.getElementById("tablaBodyCotizacion");
-		// 		rIndex;
-	let nFilas = $("#tablaBodyCotizacion > tr").length;
-	for (let i = 0; i < nFilas; i++) {
-		tablaC.rows[i].cells[0].innerHTML = i + 1;
-		 	}
-}
-
-let recalcularValores = () => {
-
-	let columnaValorTotal = 5;
-	let valorTotal=0;
-	let netoTotal;
-	
-	let tablaC = document.getElementById("tablaBodyCotizacion"),
-	  rIndex;
-	let nFilas = $("#tablaBodyCotizacion > tr").length;
-	for (let i = 0; i < nFilas; i++) {
-	  valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
-	  console.log("valor total: " + valorTotal);
-  
 	}
-	  
-	$("#totalNeto").val(formatearNumeros(valorTotal));
-	//$("#iva").val(formatearNumeros(valorTotal*0.19));
-	let iva = document.getElementById('ivaTotal').value=formatearNumeros(redondeo(valorTotal*0.19,0));
-	console.error('iva ' + iva);
-	$("#totalF").val(formatearNumeros(valorTotal*1.19));
-  
-	  //if(guardar){actualizarMontos();} //actualizamos para que guarde en la tabla
 
-}
+	//*-boton volver en la tabla busqueda-*//
+	let regresar = (e)=> {
+		const evento = e.preventDefault();
+		$("#volverBtn").show(); // mostramos nuevamente  los botones
+		$("#tablaProductos").hide(); //tabla donde se buscan los productos
+	}
+	let agregarNumeracionItem = () =>{
+
+		let tablaC = document.getElementById("tablaBodyCotizacion");
+			// 		rIndex;
+		let nFilas = $("#tablaBodyCotizacion > tr").length;
+		for (let i = 0; i < nFilas; i++) {
+			tablaC.rows[i].cells[0].innerHTML = i + 1;
+				}
+	}
+
+	let recalcularValores = () => {
+
+		let columnaValorTotal = 5;
+		let valorTotal=0;
+		let netoTotal;
+		
+		let tablaC = document.getElementById("tablaBodyCotizacion"),
+		rIndex;
+		let nFilas = $("#tablaBodyCotizacion > tr").length;
+		for (let i = 0; i < nFilas; i++) {
+		valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
+		console.log("valor total: " + valorTotal);
+	
+		}
+		
+		$("#totalNeto").val(formatearNumeros(valorTotal));
+		//$("#iva").val(formatearNumeros(valorTotal*0.19));
+		let iva = document.getElementById('ivaTotal').value=formatearNumeros(redondeo(valorTotal*0.19,0));
+		console.error('iva ' + iva);
+		$("#totalF").val(formatearNumeros(valorTotal*1.19));
+	
+		//if(guardar){actualizarMontos();} //actualizamos para que guarde en la tabla
+
+	}
