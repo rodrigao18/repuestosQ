@@ -183,7 +183,7 @@
 								<th width="5%"><i class="fas fa-edit"></i> Cant.</th>
 								<th width="20%"><i class="fas fa-edit"></i> Nombre</th>
 								<th width="10%">Precio Con %</th>
-								<th width="10%">Precio Sin $</th>
+								<th width="10%">Precio Sin %</th>
 								<th width="10%"></th>
 							</tr>
 
