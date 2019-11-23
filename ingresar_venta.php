@@ -185,13 +185,15 @@
 					<table class="table" id="tablaC">
 						<thead class="thead-dark">
 							<tr>
-								<th width="5%">Cod.Proveedor</th>
-								<th width="10%">Cod.Interno</th>
+								<th width="5%">Cod.Pro</th>
+								<th width="5%">Cod.Int</th>
 								<th width="5%"><i class="fas fa-edit"></i> Cant.</th>
-								<th width="20%"><i class="fas fa-edit"></i> Nombre</th>
+								<th width="30%"><i class="fas fa-edit"></i> Nombre</th>
+								<th width="10%"><i class="fas fa-edit"></i> Precio unitario</th>
 								<th width="10%">Precio Sin Descuento.</th>
+								<th width="10%">Descuento</th>
 								<th width="10%">Precio Con Descuento.</th>
-								<th width="10%"></th>
+								<th width="5%"></th>
 							</tr>
 
 						</thead>

@@ -1,5 +1,5 @@
 var ITEM = 0; 
-
+var MARCAS;
 let cargarDatos = async() => {
 
 	console.error('TIPO_TURNO ' + TIPO_TURNO );
@@ -14,6 +14,40 @@ let cargarDatos = async() => {
 	const ulvent = await   ultimoVenta();
 
 } 
+
+
+
+	let marcas = async() => {
+		const baseUrl = 'php/consultaFetch.php';
+
+		let consulta=`SELECT id,marca FROM marca order by marca asc`;
+	
+		const sql = {sql: consulta, tag: `array_datos`}  
+	
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			
+			let array = JSON.parse(data);
+			var arr = new Array();
+
+			for (var i = 0; i < array.length; i++) {
+				arr[array[i][0].toString()] = array[i][1];
+
+			}
+			MARCAS = arr;
+
+			console.error(MARCAS[1]);
+			
+			//const provinciass = await provincias(array);
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+
+	}
+
+
 
 let ultimoVenta = async () => {
 
@@ -56,7 +90,7 @@ let clientes =  async() => {
 		const data = await response.text();
 		
 		$('#selectClientes').html(data).fadeIn();
-      
+		const marc = await marcas();
         //const provinciass = await provincias(array);
         
     } catch (error) { console.log('error en la conexion ', error); }
@@ -173,7 +207,7 @@ let tablaProductos = (array) => {
 				`<td id="nomPro${parseFloat(i + 1)}" style="cursor:pointer;"><span id="${id_producto}" onmouseover=obser(this,'${descripcion.split(" ")}')>${nombre}</span></td>`+
 				'<td>' + stock + '</td>' +
 				'<td>' + ubicacion + '</td>' +
-				'<td>' + marca + '</td>' +
+				'<td>' + MARCAS[marca] + '</td>' +
 				'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=cantidadCalculo('+(i+1)+',1)  min=1 type="number" value="1"></td>' +
 				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + costo + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" '+
@@ -187,6 +221,7 @@ let tablaProductos = (array) => {
 				'<td><input style="width:100px; background: #4dbd5f;color:#fff" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +							
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
+				'<td id="' + 'desOcul' + parseFloat(i + 1) + '" style="display:none;">0</td>' +							
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="comprobarRepetidos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
 				'</td>' +
@@ -209,8 +244,11 @@ let tablaProductos = (array) => {
 					let idTabla=id.id;
 					let cantidad = document.getElementById(`cant${indice}`).value;
 					let precioFinal=document.getElementById(idTabla).value;
-					console.error('precioFinal ' + precioFinal);
+					let costoConIva = document.getElementById(`cos${indice}`).value*(1.19);
 
+					console.error('costo con iva ' + redondeo(costoConIva,0));
+					let descuento=redondeo(costoConIva,0)-precioFinal;
+					document.getElementById(`desOcul${indice}`).innerHTML=descuento;					
 					let total = cantidad*precioFinal;
 					document.getElementById(`total${indice}`).value=total;
 				}
@@ -337,7 +375,9 @@ let tablaProductos = (array) => {
 		let margen = document.getElementById('mar' + idTabla).value;
 		let precio_sin = document.getElementById('total' + idTabla).value; // ID DEL SELECT PRECIO;
 		let precio_Con= document.getElementById('venCon' + idTabla).value;
-		
+		let desOcul=document.getElementById(`desOcul${idTabla}`).innerHTML;
+
+		console.error(desOcul);
 		let precioTotal = cantidad * precio_sin;
 		// let idProd = table.rows[idTabla].cells[11].innerHTML;
 		let descuento = document.getElementById(`des${idTabla}`).value;
@@ -357,7 +397,9 @@ let tablaProductos = (array) => {
 		'<td>' + codigo_producto + '</td>' +
 		'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
+		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'precuni' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
 		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
+		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'desc' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
 		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +		
 		'<td><button class="btn  btn-danger" id="' + ITEM + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
@@ -514,7 +556,7 @@ let cantidadCalculo = (id,indice) =>{
 		let precioVen=convertirNumeros(document.getElementById('prect'+id).value);
 		let precioT=cantidad*precioVen;
 		console.error('precioT ' + precioT);
-		document.getElementById('total'+id).value=formatearNumeros(precioT);
+		document.getElementById('prect'+id).value=formatearNumeros(precioT);
 	}
 	
 	recalcularValores();
