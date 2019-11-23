@@ -127,10 +127,12 @@ let tablaProductos = (array) => {
 			'	<th  class="row-7 ">Cantidad</th>' +
 			'	<th  class="row-8 ">Costo</th>' +
 			'	<th  class="row-9 " id="checkMargen" width="10%">Margen</th>' +
-			'	<th  class="row-10"> Descuento</th>' +
-			'	<th  class="row-11" id="chPrecioSin" width="10%">Prec+iva</th>' +		
-			'	<th  class="row-12" id="chPrecioCon" width="10%">Prec+iva-25%</th>' +
-			'	<th  class="row-13"> </th>' +
+			'	<th  class="row-10"> Desc. %</th>' +
+			'	<th  class="row-11">Prec.Ven.Final</th>' +
+			'	<th  class="row-12" id="chPrecioSin" width="10%">Prec+iva</th>' +		
+			'	<th  class="row-13" id="chPrecioCon" width="10%">Prec+iva-25%</th>' +
+			'	<th  class="row-14" id="total" width="10%">Total</th>' +
+			'	<th  class="row-15"> </th>' +
 			'</tr>' +
 			'</thead>' +
 			'<tbody id="tablaBody"></tbody>' +
@@ -178,21 +180,77 @@ let tablaProductos = (array) => {
 				'min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'des' + parseFloat(i + 1) + '" '+
 				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="25" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +						
-				'<td><input class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
-				'<td><input class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(precioFinal,0) + '></td>' +					
+				'<td><input style="width:100px;background: #478a00;color:#fff" class="form-control" id="' + 'desPes' + parseFloat(i + 1) + '" onkeypress=calDescuento(event,this,'+(i+1)+') '+
+				'type="number" min="0"  value=' + precioVenta + '> </td>' +						
+				'<td><input style="background: #478a51;color:#fff" class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
+				'<td><input style="background: #4db000;color:#fff" class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(precioFinal,0) + '></td>' +
+				'<td><input style="width:100px; background: #4dbd5f;color:#fff" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +							
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
 				'<td>' +
-				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
+				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="comprobarRepetidos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
 				'</td>' +
 				'</tr>');
+				
 		}
 				
 				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
 				// document.getElementById('chPrecioSin').innerHTML = 'Precio sin <input id="chPreSin" ' + chPrecioSinDes + ' type="radio"  name="optradio" onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion sin descuento">'
 				// document.getElementById('chPrecioCon').innerHTML = 'Precio con <input id="chPreCon" ' + chPrecioConDes + ' type="radio"  name="optradio"  onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion con descuento">'
 				$('[data-toggle="tooltip"]').tooltip();
-}
+
+
+}	
+
+			let calDescuento = (e,id,indice) => {
+
+				if(e.keyCode==13){
+
+					let idTabla=id.id;
+					let cantidad = document.getElementById(`cant${indice}`).value;
+					let precioFinal=document.getElementById(idTabla).value;
+					console.error('precioFinal ' + precioFinal);
+
+					let total = cantidad*precioFinal;
+					document.getElementById(`total${indice}`).value=total;
+				}
+
+			}
+
+
+			let comprobarRepetidos = (e,btn) =>{
+				var evento =e.preventDefault();
+				let idTabla = btn.id; 
+				var codigo;
+				var codigoTemp ;
+				var tablaC = document.getElementById('tablaBody'),
+				rIndex;
+				//*-codigo de barras de la primera tabla
+				 codigo = document.getElementById(`codiP${idTabla}`).innerHTML;
+				console.error('codigo comprobar + ' + codigo);
+				var tablaTemp=document.getElementById('tablaBodyCotizacion'),
+				rIndex;
+				var nFilas = $("#tablaBodyCotizacion > tr").length;
+				if(nFilas==0){agregarProductos(idTabla);}
+				if(nFilas>0){
+						for (let i = 0; i < nFilas; i++) { 
+						codigoTemp = tablaTemp.rows[i].cells[1].innerText;
+						console.error('codigoTemp ' + codigoTemp);
+						if(codigoTemp==codigo){
+							$("#tablaProductos").show();
+							$("#salidaTabla").hide();
+							return;
+							// swal('Advertencia', 'ya ingreso este producto', 'warning');
+							// return;
+						}else{
+							agregarProductos(idTabla);
+							return;
+						}
+				
+					}
+				}		
+
+			}
 
 	//PASAR EL MOUSE POR EL NOMBRE DEL PRODUCTO
 	let obser = (id,nombre) => {
@@ -249,15 +307,15 @@ let tablaProductos = (array) => {
 		}
 		
 	}
-	let agregarProductos =  (e,btn) => {
+	let agregarProductos =  (idTabla) => {
 
 		// comprobarFactura();
 		
 		$("#tablaProductos").show();
 		$("#salidaTabla").hide();
 
-		let evento = e.preventDefault();
-		let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
+		//let evento = e.preventDefault();
+		//let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
 		let precio_venta=0;
 		
 		var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
@@ -277,7 +335,7 @@ let tablaProductos = (array) => {
 		// let nombre = table.rows[idTabla].cells[2].innerHTML;
 		let cantidad = document.getElementById('cant' + idTabla).value;
 		let margen = document.getElementById('mar' + idTabla).value;
-		let precio_sin = document.getElementById('venSin' + idTabla).value; // ID DEL SELECT PRECIO;
+		let precio_sin = document.getElementById('total' + idTabla).value; // ID DEL SELECT PRECIO;
 		let precio_Con= document.getElementById('venCon' + idTabla).value;
 		
 		let precioTotal = cantidad * precio_sin;
@@ -299,8 +357,8 @@ let tablaProductos = (array) => {
 		'<td>' + codigo_producto + '</td>' +
 		'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +
-		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
+		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
+		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +		
 		'<td><button class="btn  btn-danger" id="' + ITEM + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
 		'</tr>');
@@ -309,7 +367,7 @@ let tablaProductos = (array) => {
 			//`agregarNumeracionItem();
 			recalcularValores();
 			document.getElementById('obsProducto').value="";
-
+			
 	}
 
 	let removerItem = async(id) => {
@@ -322,7 +380,7 @@ let tablaProductos = (array) => {
 			var nFilas = $("#tablaBodyCotizacion > tr").length;
 
 			const recal = await recalcularValores();
-	}
+		}
 //*-boton volver en la tabla busqueda-*//
 let regresar = (e)=> {
 	const evento = e.preventDefault();
@@ -427,21 +485,36 @@ let recalcularValores = () => {
 }
 
 let cantidadCalculo = (id,indice) =>{
+	console.error('id ' + id);
+	console.error('indice ' + indice);
 	let input=`input[name=can${(id)}]`;
-	var cantidad = `${document.querySelector(input).value}`
+	var cantidad=0;
+	if(indice==1){
+
+		 cantidad = document.getElementById(`cant${id}`).value;
+		 console.error('cantidad ' +  cantidad);
+
+	}else{
+		
+		 cantidad = `${document.querySelector(input).value}`;
+	}
+
 	
 	if(indice==1){
 		
-		let precioVen=convertirNumeros(document.getElementById('cos'+id).value);
+		let precioVen=convertirNumeros(document.getElementById('venSin'+id).value);
 		let precioT=cantidad*precioVen;
-		document.getElementById('ven'+id).value=(precioT);
+
+		console.error('precioT ' +  precioT);
+		document.getElementById('total'+id).value=(precioT);
+
 	}else{
 	
 		console.error(cantidad);
-		let precioVen=convertirNumeros(document.getElementById('vent'+id).value);
+		let precioVen=convertirNumeros(document.getElementById('prect'+id).value);
 		let precioT=cantidad*precioVen;
 		console.error('precioT ' + precioT);
-		document.getElementById('prect'+id).value=formatearNumeros(precioT);
+		document.getElementById('total'+id).value=formatearNumeros(precioT);
 	}
 	
 	recalcularValores();

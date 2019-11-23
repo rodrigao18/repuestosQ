@@ -16,13 +16,13 @@
 	<style>
 	.users {
 	table-layout: fixed;
-	width: 100%;
-	white-space: nowrap;
+	/* width: 100%; */
+	/* white-space: nowrap; */
 	}
 	.users td {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	/* white-space: nowrap; */
+	/* overflow: hidden; */
+	/* text-overflow: ellipsis; */
 	}
 	.cabezera{
 		background-color:#980;
@@ -37,6 +37,7 @@
 }
 .row-3{
   width: 7.6%;
+  text-align:center;
 }
 .row-4 {
   width: 7.6%;
@@ -68,6 +69,12 @@
 .row-13 {
   width: 7.6%;
 }
+.row-14 {
+  width: 7.6%;
+}
+.row-15 {
+  width: 7.6%;
+}
 	</style>
 </head>
 
@@ -86,7 +93,7 @@
 				<p>Ingresar venta</p>
 				<br>
 				<label>Ultimo número de boleta</label>
-				<h2 class="mt-3"><input type="number" id="ultima_boleta" value=""></h2>
+				<h3 class="mt-3"><input type="number" id="ultima_boleta" value=""></h3>
 				
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
@@ -182,8 +189,8 @@
 								<th width="10%">Cod.Interno</th>
 								<th width="5%"><i class="fas fa-edit"></i> Cant.</th>
 								<th width="20%"><i class="fas fa-edit"></i> Nombre</th>
-								<th width="10%">Precio Con %</th>
-								<th width="10%">Precio Sin %</th>
+								<th width="10%">Precio Sin Descuento.</th>
+								<th width="10%">Precio Con Descuento.</th>
 								<th width="10%"></th>
 							</tr>
 

@@ -226,11 +226,11 @@ function calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_
 
 }
 
-let actualizarPrecioVenta = async (idP,precioVent,descuento) => {
+let actualizarPrecioVenta = async (idP,precioVent,descuento,margen) => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`UPDATE PRODUCTOS set precio_venta=${precioVent} , descuento=${descuento} WHERE id=${idP}`;
+	let consulta=`UPDATE PRODUCTOS set precio_venta=${precioVent} , descuento=${descuento},margen_contado=${margen} WHERE id=${idP}`;
 
 	const sql   = {sql: consulta, tag: `crud`}	
 
@@ -291,16 +291,17 @@ let agregarProductos =  (e,btn) => {
 	let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
 	let precioTotal = cantidad * precio_costo;
 	let idProd = table.rows[idTabla].cells[9].innerHTML;
+	let margen = document.getElementById(`mar${idTabla}`).value;
 	let descuento=document.getElementById(`des${idTabla}`).value;
 
-	console.error('descuento ' + descuento);
+	console.error('margen ' + margen);
 	ITEM++;
 
 	var estadoEntr = "";
 	estadoEntr = document.getElementById('checkEnt').checked;
 
 	if(estadoEntr == true){
-		actualizarPrecioVenta(idProd,precio_venta,descuento);
+		actualizarPrecioVenta(idProd,precio_venta,descuento,margen);
 	}
 	
 
