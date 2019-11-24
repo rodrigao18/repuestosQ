@@ -102,7 +102,7 @@
 								</div>
 								<div class="form-group col-md-6">
 									<label>Numero factura </label>
-									<input type="number" class="form-control" min=0 value="1" required id="factura">
+									<input type="number" class="form-control" min=0 value="154" required id="factura">
 								</div>
 
 							</div>

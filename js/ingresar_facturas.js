@@ -100,6 +100,7 @@ let tablaProductos = (array) => {
 			'</thead>' +
 			'<tbody id="tablaBody"></tbody>' +
 			'</table>');
+		
 		let	chekeadoTodoEntregado = "";
 		for (var i = 0; i < array.length; i++) {
 			var id_producto = array[i]['id'];
@@ -126,11 +127,11 @@ let tablaProductos = (array) => {
 				'<td>' + codigoProveedor + '</td>' +
 				'<td>' + nombre + '</td>' +
 				'<td>' + stock + '</td>' +
-				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '"  disabled min=0 type="number" value="1"></td>' +
+				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '"    min=0 type="number" value="1"></td>' +
 				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '"  onClick=cantidadCosto(event,'+(i+1)+') onkeyup=cantidadCosto(event,'+(i+1)+')  type="number" value=' + redondeo(costo,0) + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeyup="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
-				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '" disabled type="number" value=' + precio_venta + '></td>' +		
+				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '"  type="number" value=' + precio_venta + '></td>' +		
 				'<td style="display:none;">'+id_producto+'</td>' +
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
@@ -139,29 +140,38 @@ let tablaProductos = (array) => {
 				'data-placement="top" title="Editar" name="id" value='+id_producto+'><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>'+				
 				'</td>' +
 				'</tr>');
+
+				
 		}
 				$('[data-toggle="tooltip"]').tooltip();
 				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
-}
+			
+}	
 
-let cantidadCosto = (e,id) => {
 
-	if(e.keyCode==13){
-		let costo=document.getElementById('cos'+id).value;
-		console.error('costo  '+  costo * parseInt(1.19));
-		let precio_final=document.getElementById('ven'+id).value=redondeo(costo*(1.19),0);
-		console.error('costo con iva' + precio_final);
+
+
+
+
+	let cantidadCosto = (e,id) => {
+
+		if(e.keyCode==13){
+			let costo=document.getElementById('cos'+id).value;
+			console.error('costo  '+  costo * parseInt(1.19));
+			let precio_final=document.getElementById('ven'+id).value=redondeo(costo*(1.19),0);
+			console.error('costo con iva' + precio_final);
+		}
+
+		}
+
+
+	let comprobar_descuento_historico  = (id_btn) => {
+
+		var id_boton = id_btn.id;
+		var id_group_boton=id_boton;
+		document.getElementById(id_group_boton).style.display = "none"; //DESAPARECER EL BOTON
+		document.getElementById("div_descuento" + 1).style.display = "inline-flex";
 	}
-	
-
-}
-let comprobar_descuento_historico  = (id_btn) => {
-
-	var id_boton = id_btn.id;
-	var id_group_boton=id_boton;
-	document.getElementById(id_group_boton).style.display = "none"; //DESAPARECER EL BOTON
-	document.getElementById("div_descuento" + 1).style.display = "inline-flex";
-}
 
 let calcular_margen = (id,id_costo) =>{
 
@@ -265,67 +275,120 @@ let actualizarPrecioVenta = async (idP,precioVent,descuento,margen) => {
 	} catch (error) { console.log('error en la conexion ', error); }
 
 
-}
-//agragar  productos a la tabla factura
-let agregarProductos =  (e,btn) => {
+}	
 
-	comprobarFactura();
+	//agragar  productos a la tabla factura
+	let agregarProductos =  (e,btn) => {
 
-	$("#tablaProductos").show();
-	$("#salidaTabla").hide();
+		comprobarFactura();
 
-	let evento = e.preventDefault();
-	let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
-	
-	
-	var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
-	
-	//borramos el input buscar
-	$('#buscar').val('');
+		$("#tablaProductos").show();
+		$("#salidaTabla").hide();
 
-	let codigo_producto = table.rows[idTabla].cells[0].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
-	let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
-	let nombre = table.rows[idTabla].cells[2].innerHTML;
-	let cantidad = document.getElementById('can' + idTabla).value;
-	let precio_costo = document.getElementById('cos' + idTabla).value; // ID DEL SELECT PRECIO;
-	let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
-	let precioTotal = cantidad * precio_costo;
-	let idProd = table.rows[idTabla].cells[9].innerHTML;
-	let margen = document.getElementById(`mar${idTabla}`).value;
-	let descuento=document.getElementById(`des${idTabla}`).value;
+		let evento = e.preventDefault();
+		let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
+		console.error('idTabla ' + idTabla);
+		
+		var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
+		
+		//borramos el input buscar
+		$('#buscar').val('');
 
-	console.error('margen ' + margen);
-	ITEM++;
+		let codigo_producto = table.rows[idTabla].cells[0].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+		let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+		let nombre = table.rows[idTabla].cells[2].innerHTML;
+		let cantidad = document.getElementById('can' + idTabla).value;
+		let precio_costo = document.getElementById('cos' + idTabla).value; // ID DEL SELECT PRECIO;
+		let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
+		let precioTotal = cantidad * precio_costo;
+		let idProd = table.rows[idTabla].cells[9].innerHTML;
+		let margen = document.getElementById(`mar${idTabla}`).value;
+		let descuento=document.getElementById(`des${idTabla}`).value;
+		let arrCod=[];
+		console.error('margen ' + margen);
+		ITEM++;
 
-	var estadoEntr = "";
-	estadoEntr = document.getElementById('checkEnt').checked;
+		var estadoEntr = "";
+		estadoEntr = document.getElementById('checkEnt').checked;
 
-	if(estadoEntr == true){
-		actualizarPrecioVenta(idProd,precio_venta,descuento,margen);
+		if(estadoEntr == true){
+			actualizarPrecioVenta(idProd,precio_venta,descuento,margen);
+		}
+		let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
+		
+		$("#tablaBodyCotizacion").append('<tr id="cols' + nfilas + '" >' +
+		'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
+		'<td>' + codigo_producto + '</td>' +
+		'<td><input style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
+		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
+		'<td><input class="form-control" id="' + 'vent' + parseFloat(nfilas) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
+		'<td><input name="' + 'preTd' + parseFloat(nfilas) + '" class="form-control" id="' + 'prect' + parseFloat(nfilas) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
+		'<td><button class="btn  btn-danger" id="cols' + nfilas + '"   onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+		'<td style="display:none;">'+idProd+'</td>' +
+		'</tr>');
+
+			$('[data-toggle="tooltip"]').tooltip();
+		//	agregarNumeracionItem();
+			recalcularValores();
+			comprobarRepetidos(arrCod,'cols',nfilas);
 	}
+
+
+		//comprobar repetidos 
+		let comprobarRepetidos = (arrCod,cols,id) => {	
+			
+			
+			let tablaC = document.getElementById("tablaBodyCotizacion"),
+			rIndex;
+			let nFilas = $("#tablaBodyCotizacion > tr").length;		
+			let codigoTemp;
+			for(let i=0; i < nFilas;i++){
 	
+				codigoTemp=tablaC.rows[i].cells[1].innerHTML;
+				arrCod.push(codigoTemp,cols+(i+1));
+			}
+			console.error(arrCod);	 
+			
+			borrarElement(arrCod);
+			
+		}
 
-	$("#tablaBodyCotizacion").append('<tr id="fila' + codigo_producto + '">' +
-	'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
-	'<td>' + codigo_producto + '</td>' +
-	'<td><input style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+')  type="number" min=1 value="'+cantidad+'"></td>' +
-	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
-	'<td><input class="form-control" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
-	'<td><button class="btn  btn-danger" id="' + codigo_producto + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
-	'<td style="display:none;">'+idProd+'</td>' +
-	'</tr>');
 
-		$('[data-toggle="tooltip"]').tooltip();
-	//	agregarNumeracionItem();
- 		recalcularValores();
+		let borrarElement = (arrCod) => {
 
-}
+			var uniqs = arrCod.filter(function(item, index, array) {
+				
+			
+				console.error(array.indexOf(item) === index);
+
+				switch(array.indexOf(item) === index){
+					case  true: 
+					console.error('entro a verdad');
+					break
+					case false:
+					console.error('entro a false');
+					let elimina=array.pop();		
+					let idfila=elimina.slice(4); 
+
+					console.error('idfila ' + idfila);
+					swal('warning','ya ingreso esteproducto','info');
+					removerItem(idfila);
+					break
+				}
+
+				return array.indexOf(item) === index;
+	
+			  })
+			  console.log(uniqs); 
+	
+		}
+
 	//ELIMAR ITEM DE LA TABLA FACTURA
 	let removerItem = (id) => {
-
-		let btn=id.id;
-		$("#fila" + btn).remove();
+		console.error('entro a eliminar' + id);
+		//let btn=id.id;
+		$("#cols" + id).remove();
+		recalcularValores();
 	}
 
 	let cantidadCalculo = (id) =>{
@@ -469,7 +532,7 @@ let agregarProductos =  (e,btn) => {
 			let existe = array[0][0]; 
 
 			if (existe < 1) {
-				guardar(e);
+				const save = await guardar(e);
 				
 				} else {
 					$.notify({
@@ -524,19 +587,22 @@ let agregarProductos =  (e,btn) => {
 		
 		let tablaC = document.getElementById("tablaBodyCotizacion"),
 		rIndex;
+		
 		let nFilas = $("#tablaBodyCotizacion > tr").length;
+
 		for (let i = 0; i < nFilas; i++) {
-		valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
-		console.log("valor total: " + valorTotal);
+
+			let td=tablaC.rows[i].cells[5];
+
+			valorTotal +=parseInt(convertirNumeros(td.getElementsByTagName('input')[0].value));
 	
 		}
 		
 		$("#totalNeto").val(formatearNumeros(valorTotal));
-		//$("#iva").val(formatearNumeros(valorTotal*0.19));
 		let iva = document.getElementById('ivaTotal').value=formatearNumeros(redondeo(valorTotal*0.19,0));
-		console.error('iva ' + iva);
+
 		$("#totalF").val(formatearNumeros(valorTotal*1.19));
 	
-		//if(guardar){actualizarMontos();} //actualizamos para que guarde en la tabla
+		
 
 	}
