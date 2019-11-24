@@ -512,6 +512,8 @@ let recalcularValores = () => {
 	  rIndex;
 	let nFilas = $("#tablaBodyCotizacion > tr").length;	
 
+	
+
 	for (let i = 0; i < nFilas; i++) {
 	  valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
 	  console.log("valor total: " + valorTotal);
