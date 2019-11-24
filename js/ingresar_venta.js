@@ -223,7 +223,7 @@ let tablaProductos = (array) => {
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
 				'<td id="' + 'desOcul' + parseFloat(i + 1) + '" style="display:none;">0</td>' +							
 				'<td>' +
-				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="comprobarRepetidos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
+				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
 				'</td>' +
 				'</tr>');
 				
@@ -234,8 +234,60 @@ let tablaProductos = (array) => {
 				// document.getElementById('chPrecioCon').innerHTML = 'Precio con <input id="chPreCon" ' + chPrecioConDes + ' type="radio"  name="optradio"  onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion con descuento">'
 				$('[data-toggle="tooltip"]').tooltip();
 
+				
 
-}	
+
+}		
+
+
+			//comprobar repetidos 
+		let comprobarRepetidos = (arrCod,cols,id) => {	
+			
+			
+			let tablaC = document.getElementById("tablaBodyCotizacion"),
+			rIndex;
+			let nFilas = $("#tablaBodyCotizacion > tr").length;		
+			let codigoTemp;
+			for(let i=0; i < nFilas;i++){
+	
+				codigoTemp=tablaC.rows[i].cells[1].innerHTML;
+				arrCod.push(codigoTemp,cols+(i+1));
+			}
+			console.error(arrCod);	 
+			
+			borrarElement(arrCod);
+			
+		}
+
+
+		let borrarElement = (arrCod) => {
+
+			var uniqs = arrCod.filter(function(item, index, array) {
+				
+			
+				console.error(array.indexOf(item) === index);
+
+				switch(array.indexOf(item) === index){
+					case  true: 
+					console.error('entro a verdad');
+					break
+					case false:
+					console.error('entro a false');
+					let elimina=array.pop();		
+					let idfila=elimina.slice(4); 
+
+					console.error('idfila ' + idfila);
+					swal('warning','ya ingreso esteproducto','info');
+					removerItem(idfila);
+					break
+				}
+
+				return array.indexOf(item) === index;
+	
+			  })
+			  console.log(uniqs); 
+	
+		}
 
 			let calDescuento = (e,id,indice) => {
 
@@ -253,42 +305,7 @@ let tablaProductos = (array) => {
 					document.getElementById(`total${indice}`).value=total;
 				}
 
-			}
-
-
-			let comprobarRepetidos = (e,btn) =>{
-				var evento =e.preventDefault();
-				let idTabla = btn.id; 
-				var codigo;
-				var codigoTemp ;
-				var tablaC = document.getElementById('tablaBody'),
-				rIndex;
-				//*-codigo de barras de la primera tabla
-				 codigo = document.getElementById(`codiP${idTabla}`).innerHTML;
-				console.error('codigo comprobar + ' + codigo);
-				var tablaTemp=document.getElementById('tablaBodyCotizacion'),
-				rIndex;
-				var nFilas = $("#tablaBodyCotizacion > tr").length;
-				if(nFilas==0){agregarProductos(idTabla);}
-				if(nFilas>0){
-						for (let i = 0; i < nFilas; i++) { 
-						codigoTemp = tablaTemp.rows[i].cells[1].innerText;
-						console.error('codigoTemp ' + codigoTemp);
-						if(codigoTemp==codigo){
-							$("#tablaProductos").show();
-							$("#salidaTabla").hide();
-							return;
-							// swal('Advertencia', 'ya ingreso este producto', 'warning');
-							// return;
-						}else{
-							agregarProductos(idTabla);
-							return;
-						}
-				
-					}
-				}		
-
-			}
+			}		
 
 	//PASAR EL MOUSE POR EL NOMBRE DEL PRODUCTO
 	let obser = (id,nombre) => {
@@ -345,15 +362,15 @@ let tablaProductos = (array) => {
 		}
 		
 	}
-	let agregarProductos =  (idTabla) => {
+	let agregarProductos =  (e,btn) => {
 
 		// comprobarFactura();
 		
 		$("#tablaProductos").show();
 		$("#salidaTabla").hide();
 
-		//let evento = e.preventDefault();
-		//let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
+		let evento = e.preventDefault();
+		let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
 		let precio_venta=0;
 		
 		var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
@@ -390,18 +407,18 @@ let tablaProductos = (array) => {
 			actualizarPrecioVenta(idProd,precio_venta,descuento);
 		}
 			actualizaMargen(idProd,margen);
-		
-
-		$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
+		let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
+		let arrCod=[];
+		$("#tablaBodyCotizacion").append('<tr id="fila' + nfilas + '">' +
 		'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
 		'<td>' + codigo_producto + '</td>' +
-		'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
+		'<td><input class="canti" name="can' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'precuni' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
-		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
-		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'desc' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
-		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +		
-		'<td><button class="btn  btn-danger" id="' + ITEM + '" onclick=removerItem(this)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'precuni' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
+		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
+		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
+		'<td><input name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +		
+		'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
 		'</tr>');
 
@@ -409,19 +426,17 @@ let tablaProductos = (array) => {
 			//`agregarNumeracionItem();
 			recalcularValores();
 			document.getElementById('obsProducto').value="";
+			comprobarRepetidos(arrCod,'cols',nfilas);
 			
 	}
 
 	let removerItem = async(id) => {
-			var idRe = id.id;		
+					
 			
-			$("#fila" + idRe).remove();		
-
-			var tablaC = document.getElementById("tablaBodyCotizacion"),
-			rIndex;
-			var nFilas = $("#tablaBodyCotizacion > tr").length;
+			$("#fila" + id).remove();			
 
 			const recal = await recalcularValores();
+
 		}
 //*-boton volver en la tabla busqueda-*//
 let regresar = (e)=> {
