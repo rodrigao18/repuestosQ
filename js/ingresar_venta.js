@@ -295,11 +295,18 @@ let tablaProductos = (array) => {
 
 					let idTabla=id.id;
 					let cantidad = document.getElementById(`cant${indice}`).value;
+
 					let precioFinal=document.getElementById(idTabla).value;
+
 					let costoConIva = document.getElementById(`cos${indice}`).value*(1.19);
 
+					let preSinDes=document.getElementById(`venSin${indice}`).value;
+
+
 					console.error('costo con iva ' + redondeo(costoConIva,0));
-					let descuento=redondeo(costoConIva,0)-precioFinal;
+
+					let descuento=preSinDes-precioFinal;
+
 					document.getElementById(`desOcul${indice}`).innerHTML=descuento;					
 					let total = cantidad*precioFinal;
 					document.getElementById(`total${indice}`).value=total;
@@ -390,10 +397,10 @@ let tablaProductos = (array) => {
 		// let nombre = table.rows[idTabla].cells[2].innerHTML;
 		let cantidad = document.getElementById('cant' + idTabla).value;
 		let margen = document.getElementById('mar' + idTabla).value;
-		let precio_sin = document.getElementById('total' + idTabla).value; // ID DEL SELECT PRECIO;
+		let precio_sin = document.getElementById('venSin' + idTabla).value; // ID DEL SELECT PRECIO;
 		let precio_Con= document.getElementById('venCon' + idTabla).value;
 		let desOcul=document.getElementById(`desOcul${idTabla}`).innerHTML;
-
+		let total=document.getElementById(`total${idTabla}`).value;
 		console.error(desOcul);
 		let precioTotal = cantidad * precio_sin;
 		// let idProd = table.rows[idTabla].cells[11].innerHTML;
@@ -414,9 +421,9 @@ let tablaProductos = (array) => {
 		'<td>' + codigo_producto + '</td>' +
 		'<td><input class="canti" name="can' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'precuni' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
-		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
-		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
+		'<td><input name="totunitaU' + parseFloat(nfilas) + '" id="' + 'precuni' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
+		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
+		'<td><input name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
 		'<td><input name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +		
 		'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
@@ -863,6 +870,43 @@ let quitarDescuento = (e) => {
 	document.getElementById('totalF').value=formatearNumeros(neto + iva);
 	document.getElementById('descuentoPorcentaje').value=0;
 	document.getElementById('descuentoPesos').value=0;
+
+
+	/*********** */
+	let tablaC = document.getElementById("tablaBodyCotizacion"),
+	rIndex;
+	let nFilas = $("#tablaBodyCotizacion > tr").length;	
+
+	let descuento;
+	let totalUnitario;
+	let cant;
+	let cantotal;
+	let precU;
+	let precUtotal;
+	let valorTotal;
+	let totU;
+	let totalUni;
+
+	for(let i=0; i < nFilas;i++){
+
+		descuento=`input[name=desU${(i+1)}]`;
+		cant=`input[name=can${(i+1)}]`;
+		precU=`input[name=totunitaU${(i+1)}]`;
+		totU=`input[name=totU${(i+1)}]`;
+
+		totalUnitario = `${document.querySelector(descuento).value=0}`;
+		cantotal = `${document.querySelector(cant).value}`;
+		precUtotal = `${document.querySelector(precU).value}`;
+		
+		valorTotal = formatearNumeros(cantotal)*convertirNumeros(precUtotal);
+
+		console.error('valorTotal ' + valorTotal);
+
+		totalUni=`${document.querySelector(totU).value=formatearNumeros(valorTotal)}`;
+		
+		recalcularValores();
+
+	}
 
 
 }
