@@ -537,16 +537,25 @@ let recalcularValores = () => {
 	
 
 	for (let i = 0; i < nFilas; i++) {
-	  valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
-	  console.log("valor total: " + valorTotal);
+
+		let td=tablaC.rows[i].cells[5];
+
+		valorTotal +=parseInt(convertirNumeros(td.getElementsByTagName('input')[0].value));
   
 	}
+
+	let totalapagar=document.getElementById(`totalF`).value=formatearNumeros(valorTotal);
+	let neto = valorTotal/1.19;
+	document.getElementById(`totalNeto`).value=formatearNumeros(redondeo(neto,0));
+	let iva = convertirNumeros(totalapagar)-neto;
+	console.error('iva '+ iva);
+	document.getElementById(`iva`).value=formatearNumeros(redondeo(iva,0)); 
+	document.getElementById(`totalapagar`).value=formatearNumeros(valorTotal);
+	// $("#totalNeto").val(formatearNumeros(valorTotal));
+	// $("#iva").val(formatearNumeros(valorTotal*0.19));
+	// $("#totalF").val(formatearNumeros(valorTotal*1.19));
+	// $("#totalapagar").val(formatearNumeros(valorTotal*1.19));
 	  
-	$("#totalNeto").val(formatearNumeros(valorTotal));
-	$("#iva").val(formatearNumeros(valorTotal*0.19));
-	$("#totalF").val(formatearNumeros(valorTotal*1.19));
-	$("#totalapagar").val(formatearNumeros(valorTotal*1.19));
-	  //if(guardar){actualizarMontos();} //actualizamos para que guarde en la tabla
 
 }
 
@@ -902,11 +911,13 @@ let quitarDescuento = (e) => {
 
 		console.error('valorTotal ' + valorTotal);
 
-		totalUni=`${document.querySelector(totU).value=formatearNumeros(valorTotal)}`;
-		
+		totalUni=`${document.querySelector(totU).value=formatearNumeros(valorTotal)}`;	
+
 		recalcularValores();
 
 	}
+
+	
 
 
 }
