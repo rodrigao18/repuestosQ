@@ -86,5 +86,12 @@
 	font-size: 1.5em;
 	display: grid;
 	grid-template-columns: 70% 30%;
-
+}
+.cabezera-cotizacion{
+	background-color: #478a51;
+	color: white;
+}
+.cabezera-guia{
+	background-color: #bbd42a;
+	color: #000;
 }

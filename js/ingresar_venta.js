@@ -67,7 +67,7 @@ let ultimoVenta = async () => {
 		let ultima_boleta=array[0]['id'];
 		console.error(ultima_boleta);
 
-		document.getElementById('ultima_boleta').value=ultima_boleta;
+		//document.getElementById('ultima_boleta').value=ultima_boleta;
       
         //const provinciass = await provincias(array);
         
@@ -747,9 +747,33 @@ let finalizarVenta = async () => {
 	let nFilas = $("#tablaBodyCotizacion > tr").length;
 	
 	if (nFilas <= 0) {
+
+
 		swal("No hay productos en la tabla, no pude finalizar","","info");
 	}
-		let estadoVenta = document.getElementById('selectDocumento').value;
+		var estadoVenta = document.getElementById('selectDocumento').value;
+
+		if(estadoVenta==4){
+
+			var numeroCotizacion=document.getElementById('id_cotizacion').value;
+			console.error('numeroCotizacion ' + numeroCotizacion);
+
+		}else if(estadoVenta==3){
+
+		var numeroGuia=document.getElementById('id_guia').value;
+
+		}else if(estadoVenta==2){
+
+			var numeroFactura=document.getElementById('id_factura').value;
+		}
+		else if(estadoVenta==5){
+
+			var numeroTajeta=document.getElementById('id_factura').value;
+		}
+
+
+
+
 		let cliente = document.getElementById('selectClientes').value;
 		let neto = $("#totalNeto").val();
 		let netoConvertido = convertirNumeros(neto);
@@ -764,15 +788,16 @@ let finalizarVenta = async () => {
 		let medio_pago=document.getElementById('selectModoPago').value;
 		const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,fecha_nulo,observacion,medio_pago,id_turno)
+	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,
+	fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta)
 	VALUES(${ID_VENDEDOR},NOW(),${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
-	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",${medio_pago},${ID_TURNO})`;
+	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",${medio_pago},${ID_TURNO},"${numeroCotizacion}","${numeroFactura}","${numeroGuia}","${numeroTajeta}")`;
 	
-	
+		
 
 	const sql   = {sql: consulta, tag: `insert_return_id`}		
 
-	
+	console.error(sql);
 				try {
 				//*-llamar ajax al servidor mediate api fetch.
 				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });

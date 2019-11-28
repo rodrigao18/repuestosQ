@@ -91,17 +91,32 @@
 			<div>
 				<h1><i class="fas fa-list"></i> Ingresar venta </h1>
 				<p>Ingresar venta</p>
-				<br>
-				<label>Ultimo número de boleta</label>
-				<h3 class="mt-3"><input type="number" id="ultima_boleta" value=""></h3>
+				<br>				
+				<div class="form-row">
+					<div class="form-group col-md-2">
+					<label>boleta</label>
+						<input type="text" class="form-control" id="id_venta" name="id_venta" value="0">
+					</div>
+					<div class="form-group col-md-2">
+					<label>guia</label>
+						<input type="text" class="form-control" id="id_guia" name="id_guia" value="0">
+					</div>
+					<div class="form-group col-md-2">
+					<label>factura</label>
+						<input type="text" class="form-control" id="id_factura" name="id_factura" value="0">
+					</div>
+					<div class="form-group col-md-2">
+					<label>cotizacion</label>
+						<input type="text" class="form-control" id="id_cotizacion" name="id_cotizacion" value="0">
+					</div>	
+					<div class="form-group col-md-2">
+					<label>tajeta</label>
+						<input type="text" class="form-control" id="id_tarjeta" name="id_tarjeta" value="0">
+					</div>				
+				</div>				
 				
 			</div>
-			<ul class="app-breadcrumb breadcrumb side">
-				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-				<li class="breadcrumb-item">Factura</li>
-				<li class="breadcrumb-item active"><a href="#">Ingresar factura</a></li>
-				
-			</ul>
+		
 			
 		</div>
 
@@ -136,6 +151,7 @@
                                     <option value="2">Factura electrónica</option>
                                     <option value="3">Guía interna</option>
                                     <option value="4">Cotización</option>
+									<option value="4">N° Tarjeta</option>
                                     </select>
 										</div>
 									</div>
