@@ -275,8 +275,7 @@ let tablaProductos = (array) => {
 					console.error('entro a false');
 					let elimina=array.pop();		
 					let idfila=elimina.slice(4); 
-
-					console.error('idfila ' + idfila);
+					
 					swal('warning','ya ingreso esteproducto','info');
 					removerItem(idfila);
 					break
@@ -285,7 +284,7 @@ let tablaProductos = (array) => {
 				return array.indexOf(item) === index;
 	
 			  })
-			  console.log(uniqs); 
+			
 	
 		}
 
@@ -550,12 +549,7 @@ let recalcularValores = () => {
 	let iva = convertirNumeros(totalapagar)-neto;
 	console.error('iva '+ iva);
 	document.getElementById(`iva`).value=formatearNumeros(redondeo(iva,0)); 
-	document.getElementById(`totalapagar`).value=formatearNumeros(valorTotal);
-	// $("#totalNeto").val(formatearNumeros(valorTotal));
-	// $("#iva").val(formatearNumeros(valorTotal*0.19));
-	// $("#totalF").val(formatearNumeros(valorTotal*1.19));
-	// $("#totalapagar").val(formatearNumeros(valorTotal*1.19));
-	  
+	document.getElementById(`totalapagar`).value=formatearNumeros(valorTotal);	  
 
 }
 

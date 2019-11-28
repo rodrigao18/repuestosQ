@@ -277,6 +277,52 @@ let actualizarPrecioVenta = async (idP,precioVent,descuento,margen) => {
 
 }	
 
+	let datosStock = () => {
+
+		let tablaC = document.getElementById("tablaBodyCotizacion"),
+		rIndex;
+
+		let nFilas = $("#tablaBodyCotizacion > tr").length;	
+		let stock;
+		let stockFinal;
+		let idProducto;
+		for(let i=0; i < nFilas; i++ ){
+
+			stock=tablaC.rows[i].cells[2];
+			stockFinal= stock.getElementsByTagName('input')[0].value;
+			idProducto=tablaC.rows[i].cells[7].innerHTML;
+			actualizarStock(stockFinal,idProducto)
+
+			}
+
+			swal("Factura creada", "de los datos fueron guardados", "success");
+			//window.location.href = "ver_proveedores.php";
+			setTimeout('window.location.href = "ver_facturas.php"', 2000);
+
+		}
+
+let actualizarStock = async (stockFinal,idProducto) => {
+
+			const baseUrl = 'php/consultaFetch.php';
+
+			const consulta = `UPDATE productos set stock =stock + (${stockFinal}) WHERE id=${idProducto}`;
+
+			const sql = {sql: consulta, tag: `array_datos`} 
+	
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.
+			console.error('actulizado');
+			
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+
+}
+
+
 	//agragar  productos a la tabla factura
 	let agregarProductos =  (e,btn) => {
 
@@ -319,7 +365,7 @@ let actualizarPrecioVenta = async (idP,precioVent,descuento,margen) => {
 		$("#tablaBodyCotizacion").append('<tr id="cols' + nfilas + '" >' +
 		'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
 		'<td>' + codigo_producto + '</td>' +
-		'<td><input style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
+		'<td><input name="' + 'canTd' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
 		'<td><input class="form-control" id="' + 'vent' + parseFloat(nfilas) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
 		'<td><input name="' + 'preTd' + parseFloat(nfilas) + '" class="form-control" id="' + 'prect' + parseFloat(nfilas) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
@@ -331,7 +377,9 @@ let actualizarPrecioVenta = async (idP,precioVent,descuento,margen) => {
 		//	agregarNumeracionItem();
 			recalcularValores();
 			comprobarRepetidos(arrCod,'cols',nfilas);
+			
 	}
+
 
 
 		//comprobar repetidos 
@@ -494,10 +542,8 @@ let actualizarPrecioVenta = async (idP,precioVent,descuento,margen) => {
 				contador++; exito++;
 				if (data == 1 && contador==nFilas) {
 					porcentaje = (exito / nFilas) * 100;
-							
-						swal("Factura creada", "" + porcentaje + "% de los datos fueron guardados", "success");
-							//window.location.href = "ver_proveedores.php";
-						setTimeout('window.location.href = "ver_facturas.php"', 2000);
+						datosStock();	
+					
 		
 						}	
 				
