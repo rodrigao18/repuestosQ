@@ -96,6 +96,11 @@
 	color: #000;
 }
 .cabezera-boleta{
-	background-color: #6d93e6;
-	color: #000;
+	background-color: #1b5e97;
+	color: #fff;
+}
+.cabezera-detalle-cotizacion{
+	background-color: #478a51 !important;
+	color: white;
+
 }

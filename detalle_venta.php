@@ -23,18 +23,20 @@
 	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 
 	<main class="app-content" id="imprimeme">
+		<div id="cabezera-detalle">
 		<div class="app-title">
 			<div>
 				<h1 id="titulo-detalle">  </h1>
-				<p>Ver detalle de ventas</p>
+				<p>Ver documento</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-				<li class="breadcrumb-item">Ver ventas</li>
+				<li class="breadcrumb-item">Ver documento</li>
 				<li class="breadcrumb-item active"><a href="#">Detalle </a></li>
 			</ul>
 
 
+		</div>
 		</div>
 		<!--Codigo responsivo donde tengo la tabla-->
 
@@ -93,7 +95,7 @@
 				<div class="tile">
 			
 		<table class="table" id="tablaCotizada">
-						<thead class="thead-dark">
+						<thead id="cabezera">
 						<tr id="borrar">
 							<th class="VentaRelacional" scope="col"></th>
 							<th width="10%" scope="col"> Código</th>

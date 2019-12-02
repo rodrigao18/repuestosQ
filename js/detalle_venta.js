@@ -5,13 +5,15 @@ var SQLDESCARTAR = "";
 var DESCUENTO;
 var IDCONTACTO;
 var sql = 0;
-var ESTADOVENTA = 1;
+var ESTADOVENTA = 0;
 //COTIZACIONNUMERO
 
 /*------------------------ Cargar Cliente -------------------------*/
 //*-datos vendedor
-function consultarDatosVendedor(id) {
+function consultarDatosVendedor(id,estado_venta) {
 	IDCLIENTE = id;
+	console.error('estado_venta ' + estado_venta);
+	ESTADOVENTA=estado_venta;
 	//$sql = "SELECT id_cliente, rut_cliente, nombre_cliente, direccion_cliente, telefono_cliente, giro_cliente, nombreContacto1 FROM clientes where id_cliente =" + id;
 	//var sql = "SELECT c.id_cliente, c.rut_cliente, c.nombre_cliente, c.direccion_cliente, c.telefono_cliente, c.giro_cliente, cc.nombre FROM clientes c INNER JOIN contacto_cliente cc ON c.id_cliente = cc.id_cliente where c.id_cliente = " + id;
 	var sql = "SELECT id_vendedor,nombreVendedor, correoVendedor FROM vendedores WHERE id_vendedor=" + IDVENDEDOR;
@@ -33,6 +35,7 @@ function consultarDatosVendedor(id) {
 			var arreglo = JSON.parse(data);	
 			console.log(arreglo);	
 			FormDatosVendedor(arreglo);
+			convertirPaginaDeEstados();
 
 
 		},
@@ -69,11 +72,8 @@ function convertirPaginaDeEstados() {
 
 	//cotizacion
 	if (ESTADOVENTA == 1) {
-		//	$('#tablaCotizada tr > *:nth-child(' + 1 + ')').toggle(); //borramos la columna 7 entera
-		$('#tablaCotizada tr > *:nth-child(' + 8 + ')').toggle(); //borramos la columna 7 entera
-		$('#tablaCotizada tr > *:nth-child(' + 9 + ')').toggle(); //borramos la columna 8 entera
-
-		$("#cargarBtn").append('<button class="btn btn-success  float-right" id="botonPedido" onclick="cambiarEstadoVenta(2);"><i class="fa fa-list-alt"></i> Pasar a nota pedido</button> &nbsp;');
+		document.getElementById('titulo-detalle').innerHTML=`Boleta`;
+		document.getElementById('cabezera').className=`cabezera-boleta`;
 
 	} else if (ESTADOVENTA == 0) {
 		var row = document.getElementById("borrar");
@@ -83,10 +83,12 @@ function convertirPaginaDeEstados() {
 		$("#tablaBodyCotizacion > tr td:nth-last-child(2)").hide();
 
 	} else if (ESTADOVENTA == 3) {
-		$('#tablaCotizada tr > *:nth-child(' + 7 + ')').toggle(); //borramos la columna 6 entera
-		$('#tablaCotizada tr > *:nth-child(' + 8 + ')').toggle(); //borramos la columna 7 entera
-		$('#tablaCotizada tr > *:nth-child(' + 9 + ')').toggle(); //borramos la columna 8 entera
-		$('#buscar').prop('disabled', true);
+		document.getElementById('titulo-detalle').innerHTML=`Guía`;
+		document.getElementById('cabezera').className=`cabezera-guia`;
+	}
+	else if (ESTADOVENTA == 4) {
+		document.getElementById('titulo-detalle').innerHTML=`Cotización`;
+		document.getElementById('cabezera').className=`cabezera-cotizacion`;
 	}
 
 }
@@ -134,7 +136,8 @@ function CargarProductos() {
 	$("#salidaTablaTotal").html("");
 
 	var sql = `SELECT vr.id,vr.codigo_producto,vr.nombre_producto AS nombre,DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta
-	FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta WHERE vr.id_venta=` + NUMEROVENTA;
+	FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta WHERE vr.id_venta=${NUMEROVENTA} AND v.estado_venta=${ESTADOVENTA}`;
+
 	console.log(sql);
 	$.ajax({
 		type: 'POST',
