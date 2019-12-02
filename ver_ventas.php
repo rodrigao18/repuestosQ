@@ -8,6 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- Main CSS-->
 	<link rel="stylesheet" type="text/css" href="css/main.css?vknet28">
+	<link rel="stylesheet" type="text/css" href="css/ventas.css?vknet28">
 	<!-- Font-icon css-->
 	<link rel="stylesheet" type="text/css"href="fontawesome-5.5.0/css/all.min.css">
 
@@ -39,7 +40,7 @@
 	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 
 	<main class="app-content">
-		<div class="app-title">
+		<div class="app-title cabezera-boleta">
 			<div>
 				<h1><i class="fa fa-shopping-cart"></i> Ver ventas </h1>
 				<p>Ver ventas, editar y eliminar</p>
@@ -47,7 +48,7 @@
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
 				<li class="breadcrumb-item">ventas</li>
-				<li class="breadcrumb-item active"><a href="#">Ver ventas</a></li>
+				
 			</ul>
 		</div>
 		<?php $fecha_actual = date("d-m-Y");?>

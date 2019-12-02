@@ -51,7 +51,7 @@
 							<div id="salida">
 								<form method="POST" id="formularioEd">
 									<input type="hidden" class="form-control" id="id_cliente" name="id_cliente">
-									<input type="hidden" class="form-control" id="estadoVenta" name="estadoVenta">
+									<input type="hidden" class="form-control" id="estado_venta" name="estado_venta">
 									<div class="form-row">
 										<div class="form-group col-md-6">
 											<label> Vendedor </label>
