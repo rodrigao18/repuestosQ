@@ -25,13 +25,13 @@
 	<main class="app-content" id="imprimeme">
 		<div class="app-title">
 			<div>
-				<h1><i class="fas fa-list-ul"></i> Detalle ventas </h1>
+				<h1 id="titulo-detalle">  </h1>
 				<p>Ver detalle de ventas</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
 				<li class="breadcrumb-item">Ver ventas</li>
-				<li class="breadcrumb-item active"><a href="#">Detalle ventas</a></li>
+				<li class="breadcrumb-item active"><a href="#">Detalle </a></li>
 			</ul>
 
 
@@ -44,7 +44,7 @@
 					<div class="tile-body">
 						<div class="my-3 p-3 bg-white rounded box-shadow">
 							
-							<h6 class="border-bottom border-gray pb-2 mb-0 " id="NUMEROVENTA">Detalle venta</h6>
+							<h6 class="border-bottom border-gray pb-2 mb-0 " id="NUMEROVENTA">Detalle </h6>
 							<h6 id="fechaVenta"></h6>	
 							<br><br>
 							<!--  datos del cliente -->
@@ -160,15 +160,16 @@
 	<!-- Page specific javascripts-->
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
 	<!--<script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>-->
-	<script type="text/javascript" src="js/notificacion.js"></script>
+	<!-- <script type="text/javascript" src="js/notificacion.js"></script> -->
 	<script type="text/javascript" src="js/funciones.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script type="text/javascript">
 
 		var id = <?php  echo $_POST['id'];?>;
+		var estado_venta = <?php  echo $_POST['estado_venta'];?>;
 		var NUMEROVENTA = <?php echo $_POST['id'];?>;
 		var IDVENDEDOR = <?php echo $idVendedor;?>;
-		window.onload = consultarDatosVendedor(id);
+		window.onload = consultarDatosVendedor(id,estado_venta);
 		//Notifica('Titulo Notificacion', 'Copy texto notificacion');
 
 	</script>
