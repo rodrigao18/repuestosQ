@@ -47,8 +47,8 @@ let cargar_ventas_onchange = async() =>{
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_vendedor,id_cliente,DATE(fecha_venta) as fecha,neto,iva, total 
-					FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59"`;
+    let consulta=`SELECT id,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
+					FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=1`;
 	
 	
 	
@@ -112,7 +112,7 @@ let clientes = async () => {
 let cargarVentas = async () => { 
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_vendedor,id_cliente,DATE(fecha_venta) as fecha,neto,iva, total 
+    let consulta=`SELECT id,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
     FROM ventas`;
 	 
 	
@@ -160,6 +160,7 @@ let tablaVentas = (arreglo) => {
 		   <td>${formatearNumeros(i['iva'])}</td>					
 		   <td>${formatearNumeros(i['total'])}</td>				  
 		   <td><form method="POST" action="detalle_venta.php">
+		   <input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
 			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
 			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
