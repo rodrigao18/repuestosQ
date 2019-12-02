@@ -12,7 +12,10 @@ let cargarDatos = async() => {
 	
 	const client = await clientes();
 	const ulvent = await   ultimoVenta();
-
+	const ulcoti = await ultimoCotizacion();
+	const ulguia = await ultimoGuia();
+	const ulfactura = await ultimoFactura();
+	const ultTarjeta = await ultimoTarjeta();
 } 
 
 
@@ -47,13 +50,13 @@ let cargarDatos = async() => {
 
 	}
 
-
+/*### ULTIMOS ID ###*/
 
 let ultimoVenta = async () => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
-    let consulta=`SELECT (id+1) as id FROM ventas ORDER BY id DESC LIMIT 1 `;
+    let consulta=`SELECT (id_boleta+1) as numeroBoleta FROM ventas where estado_venta=1 ORDER BY id DESC LIMIT 1 `;
 
     const sql = {sql: consulta, tag: `array_datos`}  
 
@@ -64,10 +67,12 @@ let ultimoVenta = async () => {
 		const data = await response.text();
 		
 		let array = JSON.parse(data);
-		let ultima_boleta=array[0]['id'];
+		console.error(array);
+		let ultima_boleta=array[0]['numeroBoleta'];
+
 		console.error(ultima_boleta);
 
-		//document.getElementById('ultima_boleta').value=ultima_boleta;
+		document.getElementById('id_boleta').value=ultima_boleta;
       
         //const provinciass = await provincias(array);
         
@@ -75,6 +80,212 @@ let ultimoVenta = async () => {
     
 
 }
+
+let ultimoCotizacion = async () => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+    let consulta=`SELECT (id_cotizacion+1) as numeroCotizacion FROM ventas where estado_venta=4 ORDER BY id DESC LIMIT 1 `;
+
+    const sql = {sql: consulta, tag: `array_datos`}  
+
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		
+		let array = JSON.parse(data);
+		console.error(array);
+		let ultima_boleta=array[0]['numeroCotizacion'];
+
+		
+
+		document.getElementById('id_cotizacion').value=ultima_boleta;
+      
+        //const provinciass = await provincias(array);
+        
+    } catch (error) { console.log('error en la conexion ', error); }
+    
+
+}
+
+let ultimoGuia = async () => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+    let consulta=`SELECT (id_guia+1) as numeroGuia FROM ventas where estado_venta=3 ORDER BY id DESC LIMIT 1 `;
+
+    const sql = {sql: consulta, tag: `array_datos`}  
+
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		
+		let array = JSON.parse(data);
+		console.error(array);
+		let ultima_boleta=array[0]['numeroGuia'];
+
+		
+
+		document.getElementById('id_guia').value=ultima_boleta;
+      
+        //const provinciass = await provincias(array);
+        
+    } catch (error) { console.log('error en la conexion ', error); }
+    
+
+}
+
+let ultimoFactura = async () => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+    let consulta=`SELECT (id_factura+1) as numeroFactura FROM ventas where estado_venta=2 ORDER BY id DESC LIMIT 1 `;
+
+    const sql = {sql: consulta, tag: `array_datos`}  
+
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		
+		let array = JSON.parse(data);
+		let ultima_boleta;
+		if(array.length == 0){
+
+			ultima_boleta=1;
+		}
+		else{
+			ultima_boleta=array[0]['numeroFactura'];
+		}
+		
+
+		
+
+		document.getElementById('id_factura').value=ultima_boleta;
+      
+        //const provinciass = await provincias(array);
+        
+    } catch (error) { console.log('error en la conexion ', error); }
+}
+
+let ultimoTarjeta = async () => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+    let consulta=`SELECT (id_tarjeta+1) as numeroTarjeta FROM ventas where estado_venta=5 ORDER BY id DESC LIMIT 1 `;
+
+    const sql = {sql: consulta, tag: `array_datos`}  
+
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		
+		let array = JSON.parse(data);
+		let ultima_boleta;
+		if(array.length == 0){
+
+			ultima_boleta=1;
+		}
+		else{
+			ultima_boleta=array[0]['numeroTarjeta'];
+		}
+		
+
+		
+
+		document.getElementById('id_tarjeta').value=ultima_boleta;
+      
+        //const provinciass = await provincias(array);
+        
+    } catch (error) { console.log('error en la conexion ', error); }
+    
+
+}
+
+
+/*### FIN ID ###*/
+/*#VALIDAR IDS DE VENTAS#*/
+
+
+	let validarIds = async () => {
+
+		var estadoVenta = document.getElementById('selectDocumento').value;
+		let campo=``;
+		let idventas;
+
+		if(estadoVenta==4){			
+			campo=`id_cotizacion`;
+			idventas=document.getElementById('id_cotizacion').value;
+
+		}else if(estadoVenta==3){
+
+			campo=`id_guia`;
+			idventas=document.getElementById('id_guia').value;
+
+		}else if(estadoVenta==2){
+
+			campo=`id_factura`;
+			idventas=document.getElementById('id_factura').value;
+		}
+		else if(estadoVenta==5){
+
+			campo=`id_tarjeta`;
+			idventas=document.getElementById('id_tarjeta').value;
+		}
+		else if(estadoVenta==1){
+
+			campo=`id_boleta`;
+			idventas=document.getElementById('id_boleta').value;
+		}
+
+		const baseUrl = 'php/consultaFetch.php';
+		let consulta=`SELECT count(*) as id FROM  ventas where ${campo} = "${idventas}"`;
+	
+		const sql = {sql: consulta, tag: `array_datos`}  
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			let array = JSON.parse(data);
+			
+			let existe = array[0][0];
+			if (existe < 1) {
+			
+			} else {
+				$.notify({
+					title: "Codigo existente : ",
+					message: `El numero de ${campo} ya esta en la BD:`,
+					icon: 'fas fa-exclamation-circle'
+				}, {
+					type: "danger",
+					placement: {
+						from: "top",
+						align: "right"
+					},
+					offset: 70,
+					spacing: 70,
+					z_index: 1031,
+					delay: 1500,
+					timer: 1500
+				});
+			document.getElementById(`${campo}`).focus();					
+			}
+			
+		
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+
+
+	}
 
 let clientes =  async() => {
 
@@ -770,6 +981,10 @@ let finalizarVenta = async () => {
 
 			var numeroTajeta=document.getElementById('id_factura').value;
 		}
+		else if(estadoVenta==1){
+
+			var numeroBoleta=document.getElementById('id_boleta').value;
+		}
 
 
 
@@ -789,9 +1004,10 @@ let finalizarVenta = async () => {
 		const baseUrl = 'php/consultaFetch.php';
 
 	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,
-	fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta)
+	fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta,id_boleta)
 	VALUES(${ID_VENDEDOR},NOW(),${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
-	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",${medio_pago},${ID_TURNO},"${numeroCotizacion}","${numeroFactura}","${numeroGuia}","${numeroTajeta}")`;
+	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",${medio_pago}
+	,${ID_TURNO},"${numeroCotizacion}","${numeroFactura}","${numeroGuia}","${numeroTajeta}","${numeroBoleta}")`;
 	
 		
 

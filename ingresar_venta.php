@@ -95,23 +95,23 @@
 				<div class="form-row">
 					<div class="form-group col-md-2">
 					<label>boleta</label>
-						<input type="text" class="form-control" id="id_venta" name="id_venta" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_boleta" name="id_boleta" value="0">
 					</div>
 					<div class="form-group col-md-2">
 					<label>guia</label>
-						<input type="text" class="form-control" id="id_guia" name="id_guia" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_guia" name="id_guia" value="0">
 					</div>
 					<div class="form-group col-md-2">
 					<label>factura</label>
-						<input type="text" class="form-control" id="id_factura" name="id_factura" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_factura" name="id_factura" value="0">
 					</div>
 					<div class="form-group col-md-2">
 					<label>cotizacion</label>
-						<input type="text" class="form-control" id="id_cotizacion" name="id_cotizacion" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_cotizacion" name="id_cotizacion" value="0">
 					</div>	
 					<div class="form-group col-md-2">
 					<label>tajeta</label>
-						<input type="text" class="form-control" id="id_tarjeta" name="id_tarjeta" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_tarjeta" name="id_tarjeta" value="0">
 					</div>				
 				</div>				
 				
@@ -151,7 +151,7 @@
                                     <option value="2">Factura electrónica</option>
                                     <option value="3">Guía interna</option>
                                     <option value="4">Cotización</option>
-									<option value="4">N° Tarjeta</option>
+									<option value="5">N° Tarjeta</option>
                                     </select>
 										</div>
 									</div>
