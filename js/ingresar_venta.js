@@ -16,8 +16,39 @@ let cargarDatos = async() => {
 	const ulguia = await ultimoGuia();
 	const ulfactura = await ultimoFactura();
 	const ultTarjeta = await ultimoTarjeta();
+
+	console.error(PRODUCTOS);
+
+	importarProductos();
 } 
 
+	let importarProductos = () =>  {
+
+		let nfilas=PRODUCTOS.length + parseFloat(1);
+
+		for (var i = 0; i < PRODUCTOS.length; i++) {
+			ITEM++;
+		$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
+		'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">"sin proveedor"</span> </td>' +
+		'<td>' + PRODUCTOS[i]['codigo_producto'] + '</td>' +
+		'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+PRODUCTOS[i]['cantidad']+'"></td>' +
+		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + PRODUCTOS[i]['nombre'] + '</span> </td>' +
+		'<td><input name="totunitaU' + parseFloat(ITEM) + '" id="' + 'precuni' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(PRODUCTOS[i]['precio_unitario'])+'"></td>' +
+		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(PRODUCTOS[i]['total_unitario'])+'"></td>' +
+		'<td><input name="desU' + parseFloat(ITEM) + '" id="' + 'desc' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(0)+'"></td>' +
+		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(0)+'"></td>' +		
+		'<td><button class="btn  btn-danger" id="cols' + ITEM + '" onclick=removerItem(' + parseFloat(ITEM) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+		'<td style="display:none;">'+PRODUCTOS[i]['id']+'</td>' +
+		'</tr>');
+
+		}
+
+		$('[data-toggle="tooltip"]').tooltip();
+			//`agregarNumeracionItem();
+			recalcularValores();
+			document.getElementById('obsProducto').value="";
+			
+	}
 
 
 	let marcas = async() => {
@@ -404,12 +435,7 @@ let tablaProductos = (array) => {
 			var ubicacion = array[i]['ubicacion'];
 			var marca = array[i]['marca'];
 			var descripcion=array[i]['descripcion'];
-			// var descuento_html = '<div style="display:none;right: .9em; " id="' + 'div_descuento' + parseFloat(i + 1) + '"class="col input-group">' +
-			// '<input class="form-control" id="' + 'des' + parseFloat(i + 1) + '"  type="number"' +
-			// 'onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="'+descuento+'">' +
-			// '</div>';
-
-			// var btn_descuento_html = '<button class="btn btn-danger btn-mini float-left" id="' + 'btn_des' + parseFloat(i + 1) + '" onclick="comprobar_descuento_historico (this)">  <i class="fas fa-sort-amount-down"></i>  Descuento </button>';
+		
 
 			//BODY DE LA TABLA AGREGAR PRODUCTOS;
 			$("#tablaBody").append('<tr>' +
@@ -1064,8 +1090,15 @@ for (var i = 0; i < nFilas; i++) {
 				//*-request de los datos en formato texto(viene todo el request)
 				const data = await response.text();
 				//*-se parsea solo la respuesta del Json enviada por el servidor.
+			
 				swal("Venta creada", "los datos fueron guardados exitosamente", "success");
 				setTimeout('location.reload()', 3000);
+
+				// let limpiarPost=`<form method="POST" name="envia" action="imgresar_venta.php">
+				// <input type="hidden" class="form-control" id="datosProductos" name="datosProductos">
+				// </form>
+				// `;
+				// document.envia.submit()
 				
 				} catch (error) { console.log('error en la conexion ', error); }
 

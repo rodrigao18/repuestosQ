@@ -122,6 +122,22 @@
 							</tr>						
 						</tbody>
 					</table>
+					<form method="POST" id="formularioProveedor" action="ingresar_venta.php">
+                        <input type="hidden" id="id" name="id">
+                        <input type="hidden" id="datosProductos" name="datosProductos">
+
+												<?php
+												if($nivel==0){ echo '<div class="form-row">
+													<div class="form-group col-md-12">
+															<div class="input-group">																
+																	<div class="input-group-append">
+																			<button type="submit" name="enviar" class="btn btn-primary" id="btnImportar" data-toggle="tooltip" title="Importar productos" type="button"><i class="fas fa-file"></i> <i class="fas fa-arrow-right"></i>Traspasar a ventas </button>
+																	</div>
+															</div>
+													</div>
+												</div>';}
+												?>
+					</form>	
 					<div class="btn-group inline float-left" id="volverBtn">						
 					
 					</div>

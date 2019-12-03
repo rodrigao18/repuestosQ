@@ -159,6 +159,7 @@ function CargarProductos() {
 			} else {
 		
 				calcularValores();
+				document.getElementById('datosProductos').value = data;
 			}
 
 

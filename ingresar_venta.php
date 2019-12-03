@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -315,8 +318,10 @@
         var ID_VENDEDOR =<?php echo $idVendedor;?>;
 		var NIVEL = <?php echo $nivel; ?>; // obtenemos el tipo de usuario 
 		var ID_TURNO = <?php echo $idTurno;?>;
-		var TIPO_TURNO = <?php echo $idTipoTurno;?>;     
+		var TIPO_TURNO = <?php echo $idTipoTurno;?>; 
+		var PRODUCTOS = <?php if( isset($_POST['datosProductos'])){echo $_POST['datosProductos'];} ?>    
 		window.onload = cargarDatos();
+		
 
 	</script>
 
