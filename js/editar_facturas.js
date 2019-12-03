@@ -208,9 +208,9 @@ let Productos =  (array) => {
 	'<td>' + codigo_producto + '</td>' +
 	'<td><input style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+')  type="number" min=1 value="'+cantidad+'"></td>' +
 	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
+	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
 	'<td></td>' +
-	'<td><input class="form-control" id="' + 'prect' + parseFloat(ITEM) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>'+
+	'<td><input class="form-control" id="' + 'prect' + parseFloat(ITEM) + '" onkeypress=precioModificar(event);  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>'+
 	'</tr>');
 
 		// $('[data-toggle="tooltip"]').tooltip();
@@ -230,6 +230,14 @@ let cantidadCalculo = (id) =>{
 	recalcularValores();
 
 } 
+
+let precioModificar = (e) => {
+
+	if(e.keyCode==13){
+		recalcularValores();
+	}
+	
+}
 
 
 

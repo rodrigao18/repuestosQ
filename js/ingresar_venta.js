@@ -398,7 +398,7 @@ let tablaProductos = (array) => {
 			'	<th  class="row-2 ">Cód.Pro.</th>' +
 			'	<th  class="row-3 ">Nombre</th>' +	
 			'	<th  class="row-4 ">Stock</th>' +
-			'	<th  class="row-5 ">Ubicaion</th>' +
+			'	<th  class="row-5 ">Ubicación</th>' +
 			'	<th  class="row-6 ">Marca</th>' +	
 			'	<th  class="row-7 ">Cantidad</th>' +
 			'	<th  class="row-8 ">Costo</th>' +

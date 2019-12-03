@@ -98,23 +98,23 @@
 				<div class="form-row">
 					<div class="form-group col-md-2">
 					<label>boleta</label>
-						<input type="text" onblur="validarIds()" class="form-control" id="id_boleta" name="id_boleta" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_boleta" name="id_boleta" value="1">
 					</div>
 					<div class="form-group col-md-2">
 					<label>guia</label>
-						<input type="text" onblur="validarIds()" class="form-control" id="id_guia" name="id_guia" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_guia" name="id_guia" value="1">
 					</div>
 					<div class="form-group col-md-2">
 					<label>factura</label>
-						<input type="text" onblur="validarIds()" class="form-control" id="id_factura" name="id_factura" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_factura" name="id_factura" value="1">
 					</div>
 					<div class="form-group col-md-2">
 					<label>cotizacion</label>
-						<input type="text" onblur="validarIds()" class="form-control" id="id_cotizacion" name="id_cotizacion" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_cotizacion" name="id_cotizacion" value="1">
 					</div>	
 					<div class="form-group col-md-2">
 					<label>tajeta</label>
-						<input type="text" onblur="validarIds()" class="form-control" id="id_tarjeta" name="id_tarjeta" value="0">
+						<input type="text" onblur="validarIds()" class="form-control" id="id_tarjeta" name="id_tarjeta" value="1">
 					</div>				
 				</div>				
 				

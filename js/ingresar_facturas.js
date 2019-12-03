@@ -294,12 +294,37 @@ let actualizarPrecioVenta = async (idP,precioVent,descuento,margen) => {
 			actualizarStock(stockFinal,idProducto)
 
 			}
-
-			swal("Factura creada", "de los datos fueron guardados", "success");
-			//window.location.href = "ver_proveedores.php";
-			setTimeout('window.location.href = "ver_facturas.php"', 2000);
+			datosPrecioCosto();
+			// swal("Factura creada", "de los datos fueron guardados", "success");
+			// window.location.href = "ver_proveedores.php";
+			// setTimeout('window.location.href = "ver_facturas.php"', 2000);
 
 		}
+
+
+		let datosPrecioCosto = () => {
+
+			let tablaC = document.getElementById("tablaBodyCotizacion"),
+			rIndex;
+	
+			let nFilas = $("#tablaBodyCotizacion > tr").length;	
+			let costo;
+			let upPrecioCosto;
+			let idProducto;
+			for(let i=0; i < nFilas; i++ ){
+	
+				//costo=tablaC.rows[i].cells[4];
+				costo= document.getElementById(`vent${i+1}`).value;
+				idProducto=tablaC.rows[i].cells[7].innerHTML;
+				actualizarPrecioCosto(costo,idProducto)
+				console.error('upPrecioCosto ' + convertirNumeros(costo));
+				}
+				// console.error('upPrecioCosto ' + upPrecioCosto);
+				swal("Factura creada", "de los datos fueron guardados", "success");
+				//window.location.href = "ver_proveedores.php";
+				setTimeout('window.location.href = "ver_facturas.php"', 2000);
+	
+			}
 
 let actualizarStock = async (stockFinal,idProducto) => {
 
@@ -319,6 +344,28 @@ let actualizarStock = async (stockFinal,idProducto) => {
 			
 			
 		} catch (error) { console.log('error en la conexion ', error); }
+
+}
+
+let actualizarPrecioCosto = async (costo,idProducto) => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	const consulta = `UPDATE productos set costo =${convertirNumeros(costo)} WHERE id=${idProducto}`;
+
+	const sql = {sql: consulta, tag: `array_datos`} 
+
+	console.error(sql);
+try {
+	//*-llamar ajax al servidor mediate api fetch.
+	const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+	//*-request de los datos en formato texto(viene todo el request)
+	const data = await response.text();
+	//*-se parsea solo la respuesta del Json enviada por el servidor.
+	console.error('actulizado');
+	
+	
+} catch (error) { console.log('error en la conexion ', error); }
 
 }
 
@@ -367,19 +414,26 @@ let actualizarStock = async (stockFinal,idProducto) => {
 		'<td>' + codigo_producto + '</td>' +
 		'<td><input name="' + 'canTd' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-		'<td><input class="form-control" id="' + 'vent' + parseFloat(nfilas) + '" disabled type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
-		'<td><input name="' + 'preTd' + parseFloat(nfilas) + '" class="form-control" id="' + 'prect' + parseFloat(nfilas) + '" disabled  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
+		'<td><input class="form-control" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
+		'<td><input name="' + 'preTd' + parseFloat(nfilas) + '" class="form-control" id="' + 'prect' + parseFloat(nfilas) + '"  onkeypress=precioModificar(event)  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
 		'<td><button class="btn  btn-danger" id="cols' + nfilas + '"   onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
 		'</tr>');
 
 			$('[data-toggle="tooltip"]').tooltip();
 		//	agregarNumeracionItem();
-			recalcularValores();
+			recalcularValores();			
 			comprobarRepetidos(arrCod,'cols',nfilas);
 			
 	}
 
+	let precioModificar = (e) => {
+
+		if(e.keyCode==13){
+			recalcularValores();
+		}
+		
+	}
 
 
 		//comprobar repetidos 
@@ -630,24 +684,28 @@ let actualizarStock = async (stockFinal,idProducto) => {
 		let columnaValorTotal = 5;
 		let valorTotal=0;
 		let netoTotal;
-		
-		let tablaC = document.getElementById("tablaBodyCotizacion"),
-		rIndex;
-		
-		let nFilas = $("#tablaBodyCotizacion > tr").length;
-
-		for (let i = 0; i < nFilas; i++) {
-
-			let td=tablaC.rows[i].cells[5];
-
-			valorTotal +=parseInt(convertirNumeros(td.getElementsByTagName('input')[0].value));
 	
-		}
+		let tablaC = document.getElementById("tablaBodyCotizacion"),
+		  rIndex;
+		let nFilas = $("#tablaBodyCotizacion > tr").length;	
+	
 		
-		$("#totalNeto").val(formatearNumeros(valorTotal));
-		let iva = document.getElementById('ivaTotal').value=formatearNumeros(redondeo(valorTotal*0.19,0));
-
-		$("#totalF").val(formatearNumeros(valorTotal*1.19));
+	
+		for (let i = 0; i < nFilas; i++) {
+	
+			let td=tablaC.rows[i].cells[5];
+	
+			valorTotal +=parseInt(convertirNumeros(td.getElementsByTagName('input')[0].value));
+	  
+		}
+	
+		let totalapagar=document.getElementById(`totalF`).value=formatearNumeros(valorTotal);
+		let neto = valorTotal/1.19;
+		document.getElementById(`totalNeto`).value=formatearNumeros(redondeo(neto,0));
+		let iva = convertirNumeros(totalapagar)-neto;
+		console.error('iva '+ iva);
+		document.getElementById(`ivaTotal`).value=formatearNumeros(redondeo(iva,0)); 
+		//document.getElementById(`totalapagar`).value=formatearNumeros(valorTotal);	  
 	
 		
 

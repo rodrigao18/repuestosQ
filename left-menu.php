@@ -113,6 +113,7 @@
 					<li><a class="treeview-item" href="ver_productos.php"><i class="icon fas fa-angle-right"></i> Ver productos </a></li>
 					<li><a class="treeview-item" href="ingresar_productos_nuevos.php"><i class="icon fas fa-angle-right"></i> Ingresar productos </a></li>
 					<li><a class="treeview-item" href="ver_categorias_productos.php"><i class="icon fas fa-angle-right"></i> Ver categorias productos </a></li>
+					<li><a class="treeview-item" href="ver_marcas.php"><i class="icon fas fa-angle-right"></i> Ver marcas </a></li>
 
 				</ul>
 			</li>';
