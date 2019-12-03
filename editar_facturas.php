@@ -55,7 +55,7 @@
 						<form method="POST" id="formularioEd">
 							<input type="hidden" class="form-control" id="id_cliente" name="id_cliente">
 							<input type="hidden" class="form-control" id="estadoVenta" name="estadoVenta">
-
+							<input type="hidden" class="form-control" id="id_factura" name="id_factura">
 
 							<div class="form-row">
 								<div class="form-group col-md-6">
@@ -182,7 +182,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<button id="btn-finalizar" class="btn btn-success float-right" onclick="comprobarFactura(event)"><i class="fas fa-edit"></i> editar factura</button>
+					<button id="btn-finalizar" class="btn btn-success float-right" onclick="editar(event)"><i class="fas fa-edit"></i> editar factura</button>
 					<br><br>
 				</div>
 			</div>

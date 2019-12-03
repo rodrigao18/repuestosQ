@@ -4,7 +4,7 @@ cargarDatos = async (id) => {
     
     ID=id;	
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT f.id,id_proveedor,DATE(fecha_emision) as fechae,DATE(fecha_vencimiento) as fechav,neto,iva,total,numero_factura,     
+    let consulta=`SELECT f.id,fr.id as idfr,id_proveedor,DATE(fecha_emision) as fechae,DATE(fecha_vencimiento) as fechav,neto,iva,total,numero_factura,     
     codigoProveedor,codigoProducto,nombreProducto,cantidad,totalUnitario,precioUnitario FROM facturas f inner join facturas_relacional fr on fr.idfactura=f.id where f.id=${id}`;	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
@@ -22,6 +22,7 @@ cargarDatos = async (id) => {
 		document.getElementById('fecha_emision').value=array[0]['fechae'];	
         document.getElementById('fecha_vencimiento').value=array[0]['fechav'];	
 		document.getElementById('factura').value=array[0]['numero_factura'];
+		document.getElementById('id_factura').value=array[0]['id'];
 		const Productoss = await Productos(array);			
 		// document.getElementById('contacto').value=array[0]['contacto'];
 		// document.getElementById('direccion').value=array[0]['direccion'];		
@@ -211,6 +212,7 @@ let Productos =  (array) => {
 	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
 	'<td></td>' +
 	'<td><input class="form-control" id="' + 'prect' + parseFloat(ITEM) + '" onkeypress=precioModificar(event);  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>'+
+	'<td style="display:none;">'+array[i]['idfr']+'</td>' +
 	'</tr>');
 
 		// $('[data-toggle="tooltip"]').tooltip();
@@ -219,6 +221,96 @@ let Productos =  (array) => {
 
 	}
 }
+
+	let editar = async(e) => {
+
+		const evento = e.preventDefault();
+		
+		let id=document.getElementById('id_factura').value;
+		let fecha_emision=document.getElementById('fecha_emision').value;
+		let fecha_vencimiento=document.getElementById('fecha_vencimiento').value;
+		let factura = document.getElementById('factura').value;
+		let neto = document.getElementById('totalNeto').value;
+		let iva = document.getElementById('iva').value;
+		let total = document.getElementById('totalF').value;
+		const baseUrl = 'php/consultaFetch.php';
+
+		let consulta=`UPDATE facturas set fecha_emision="${fecha_emision}",fecha_vencimiento="${fecha_vencimiento}",neto=${convertirNumeros(neto)},iva=${convertirNumeros(iva)}
+					  ,total=${convertirNumeros(total)} WHERE numero_factura=${factura}`;
+					
+
+		const sql   = {sql: consulta, tag: `crud`}	
+
+		console.error(consulta);		  
+
+		try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.
+		
+		const upFacturaa = await updateFacturaRelacional(id);			
+		
+		} catch (error) { console.log('error en la conexion ', error); }
+		
+	} 
+
+	let updateFacturaRelacional = async (id) =>{
+
+		let tablaC = document.getElementById("tablaBodyCotizacion"),
+		rIndex;
+		let nFilas = $("#tablaBodyCotizacion > tr").length;
+		let contador=0;
+		let porcentaje=0, exito=0;
+
+
+		for (var i = 0; i < nFilas; i++) {
+
+			let codigoProveedor = tablaC.rows[i].cells[0].textContent;
+			let codigoInterno = tablaC.rows[i].cells[1].innerHTML;
+			let cantidad =document.getElementById('cant'+(i+1)).value;
+			let nombre = tablaC.rows[i].cells[3].innerText;
+			let idfr = tablaC.rows[i].cells[7].innerHTML;
+			let precioUnitario = convertirNumeros(document.getElementById('vent'+(i+1)).value);		
+			let totalUnitario = convertirNumeros(document.getElementById('prect'+(i+1)).value);
+		
+
+			const baseUrl = 'php/consultaFetch.php';
+			
+
+			let consulta=`UPDATE facturas_relacional set codigoProveedor="${codigoProveedor.trim()}",codigoProducto="${codigoInterno}",precioUnitario=${precioUnitario},cantidad=${cantidad}
+						,totalUnitario=${totalUnitario},nombreProducto="${nombre}" WHERE id=${idfr}`;
+			
+				
+
+			const sql   = {sql: consulta, tag: `crud`}		
+
+			console.error(sql);		
+			
+			try {
+				//*-llamar ajax al servidor mediate api fetch.
+				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+				//*-request de los datos en formato texto(viene todo el request)
+				const data = await response.text();
+				//*-se parsea solo la respuesta del Json enviada por el servidor.
+				contador++; exito++;
+				if (data == 1 && contador==nFilas) {
+					porcentaje = (exito / nFilas) * 100;
+
+					swal("Factura editada", "de los datos fueron editados", "success");					
+					setTimeout('window.location.href = "ver_facturas.php"', 2000);
+					
+		
+						}	
+				
+				} catch (error) { console.log('error en la conexion ', error); }
+
+		
+		}
+
+
+	}
 
 let cantidadCalculo = (id) =>{
 	
