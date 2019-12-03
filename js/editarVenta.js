@@ -72,7 +72,7 @@ function pulsar(e, nodo,editaNombre) {
 			});
 
 		
-			editarNonmbre(idProducto,nombreEditable);
+			//editarNonmbre(idProducto,nombreEditable);
 
 			var nuevoCodigoHtmlNombre = '<td> <span onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombreEditable + '</span> </td>';
         
