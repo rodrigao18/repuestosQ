@@ -8,7 +8,7 @@ cargarDatos = async (id) => {
     codigoProveedor,codigoProducto,nombreProducto,cantidad,totalUnitario,precioUnitario FROM facturas f inner join facturas_relacional fr on fr.idfactura=f.id where f.id=${id}`;	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
-	console.error(sql);
+	
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -17,7 +17,7 @@ cargarDatos = async (id) => {
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
         let array = JSON.parse(data);
         let proveedor=array[0]['id_proveedor'];
-        console.error(array);
+       
         const proveedors=await cargarProveedor(proveedor);
 		document.getElementById('fecha_emision').value=array[0]['fechae'];	
         document.getElementById('fecha_vencimiento').value=array[0]['fechav'];	
@@ -173,6 +173,64 @@ let tablaProductos = (array) => {
 				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
 }
 
+
+let datosStock = () => {
+
+	let tablaC = document.getElementById("tablaBodyCotizacion"),
+	rIndex;
+
+	let nFilas = $("#tablaBodyCotizacion > tr").length;	
+	let stock;
+	let stockFinal;
+	let idProducto;
+	let nombre;
+	let codigo;
+	for(let i=0; i < nFilas; i++ ){
+
+		stock=tablaC.rows[i].cells[2];
+		stockFinal= stock.getElementsByTagName('input')[0].value;
+		idProducto=tablaC.rows[i].cells[1].innerHTML;
+		nombre=tablaC.rows[i].cells[3].innerText;
+		actualizarDatosFactura(stockFinal,idProducto,nombre)
+		console.error('nombre  ' + nombre);
+		console.error('stockFinal  ' + stockFinal);
+		console.error('idProducto  ' + idProducto);
+
+		}
+		
+		// swal("Factura creada", "de los datos fueron guardados", "success");
+		// window.location.href = "ver_proveedores.php";
+		// setTimeout('window.location.href = "ver_facturas.php"', 2000);
+
+	}
+
+
+	
+let actualizarDatosFactura = async (stockFinal,idProducto,nombre) => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	const consulta = `UPDATE productos set stock =stock + (${stockFinal}) , nombre="${nombre}" WHERE codigo="${idProducto}"`;
+
+	const sql = {sql: consulta, tag: `array_datos`} 
+
+	console.error(consulta);
+
+try {
+	//*-llamar ajax al servidor mediate api fetch.
+	const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+	//*-request de los datos en formato texto(viene todo el request)
+	const data = await response.text();
+	//*-se parsea solo la respuesta del Json enviada por el servidor.
+		swal("Factura editada", "de los datos fueron guardados", "success");
+		// window.location.href = "ver_proveedores.php";
+		setTimeout('location.reload()', 1500);
+	
+	
+} catch (error) { console.log('error en la conexion ', error); }
+
+}
+
 //agragar  productos a la tabla factura
 let Productos =  (array) => {	
 
@@ -217,7 +275,9 @@ let Productos =  (array) => {
 
 		// $('[data-toggle="tooltip"]').tooltip();
 	//	agregarNumeracionItem();
- 		recalcularValores();
+		 recalcularValores();
+		 
+		
 
 	}
 }
@@ -241,7 +301,7 @@ let Productos =  (array) => {
 
 		const sql   = {sql: consulta, tag: `crud`}	
 
-		console.error(consulta);		  
+		
 
 		try {
 		//*-llamar ajax al servidor mediate api fetch.
@@ -286,7 +346,7 @@ let Productos =  (array) => {
 
 			const sql   = {sql: consulta, tag: `crud`}		
 
-			console.error(sql);		
+			
 			
 			try {
 				//*-llamar ajax al servidor mediate api fetch.
@@ -298,8 +358,7 @@ let Productos =  (array) => {
 				if (data == 1 && contador==nFilas) {
 					porcentaje = (exito / nFilas) * 100;
 
-					swal("Factura editada", "de los datos fueron editados", "success");					
-					setTimeout('window.location.href = "ver_facturas.php"', 2000);
+					datosStock();
 					
 		
 						}	
@@ -318,7 +377,7 @@ let cantidadCalculo = (id) =>{
 	let precioVen=convertirNumeros(document.getElementById('vent'+id).value);
 	let precioT=cantidad*precioVen;
 	document.getElementById('prect'+id).value=formatearNumeros(precioT);
-	console.error('precioT' + precioT);
+	
 	recalcularValores();
 
 } 
@@ -344,7 +403,7 @@ let recalcularValores = () => {
 	let nFilas = $("#tablaBodyCotizacion > tr").length;
 	for (let i = 0; i < nFilas; i++) {
 	  valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
-	  console.log("valor total: " + valorTotal);
+	 
   
 	}
 	  
