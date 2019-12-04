@@ -390,12 +390,12 @@ let  bucarProductos = async () => {
 
 let tablaProductos = (array) => {
 
-	$("#salidaTabla").append('<div class="scroll"><button class="btn btn-sm btn-primary float-right" onclick = regresar(event)  data-toggle="tooltip" data-placement="top" title="" data-original-title="Regresar a resumen" ><i class="fas fa-chevron-left"></i>  </button>' +		
+	$("#salidaTabla").append('<div id="container"><div class="table-responsive" data-pattern="priority-columns"><div class="scroll"><button class="btn btn-sm btn-primary float-right" onclick = regresar(event)  data-toggle="tooltip" data-placement="top" title="" data-original-title="Regresar a resumen" ><i class="fas fa-chevron-left"></i>  </button>' +		
 			'<table  class="users table-striped" id="tablaBuscar" >' +
 			'<thead class="cabezera">' +
 			'<tr class="table-success">' +
-			'	<th  class="row-1 ">Cód.Interno</th>' +
-			'	<th  class="row-2 ">Cód.Pro.</th>' +
+			'	<th  class="row-1 ">Int</th>' +
+			'	<th  class="row-2 ">Prop</th>' +
 			'	<th  class="row-3 ">Nombre</th>' +	
 			'	<th  class="row-4 ">Stock</th>' +
 			'	<th  class="row-5 ">Ubicación</th>' +
@@ -403,16 +403,16 @@ let tablaProductos = (array) => {
 			'	<th  class="row-7 ">Cantidad</th>' +
 			'	<th  class="row-8 ">Costo</th>' +
 			'	<th  class="row-9 " id="checkMargen" width="10%">Margen</th>' +
-			'	<th  class="row-10"> Desc. %</th>' +
-			'	<th  class="row-11">Prec.Ven.Final</th>' +
+			'	<th  class="row-10"> Desc. %</th>' +		
 			'	<th  class="row-12" id="chPrecioSin" width="10%">Prec+iva</th>' +		
-			'	<th  class="row-13" id="chPrecioCon" width="10%">Prec+iva-25%</th>' +
+			'	<th  class="row-13" id="chPrecioCon" width="10%">Prec-25%</th>' +
 			'	<th  class="row-14" id="total" width="10%">Total</th>' +
 			'	<th  class="row-15"> </th>' +
+			'	<th  class="row-16"> </th>' +
 			'</tr>' +
 			'</thead>' +
 			'<tbody id="tablaBody"></tbody>' +
-			'</table></div>');
+			'</table></div></div></div>');
 		let	chekeadoTodoEntregado = "";
 		let	chPrecioSinDes = "";
 		let	chPrecioConDes = "";
@@ -439,8 +439,8 @@ let tablaProductos = (array) => {
 
 			//BODY DE LA TABLA AGREGAR PRODUCTOS;
 			$("#tablaBody").append('<tr>' +
-				'<td id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
-				'<td id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
+				'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
+				'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
 				`<td id="nomPro${parseFloat(i + 1)}" style="cursor:pointer;"><span id="${id_producto}" onmouseover=obser(this,'${descripcion.split(" ")}')>${nombre}</span></td>`+
 				'<td>' + stock + '</td>' +
 				'<td>' + ubicacion + '</td>' +
@@ -450,17 +450,19 @@ let tablaProductos = (array) => {
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" '+
 				'min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'des' + parseFloat(i + 1) + '" '+
-				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="25" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +						
-				'<td><input style="width:100px;background: #478a00;color:#fff" class="form-control" id="' + 'desPes' + parseFloat(i + 1) + '" onkeypress=calDescuento(event,this,'+(i+1)+') '+
-				'type="number" min="0"  value=' + precioVenta + '> </td>' +						
-				'<td><input style="background: #478a51;color:#fff" class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
-				'<td><input style="background: #4db000;color:#fff" class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(precioFinal,0) + '></td>' +
-				'<td><input style="width:100px; background: #4dbd5f;color:#fff" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +							
+				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="25" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +													
+				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
+				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '" onkeypress=calDescuento(event,this,'+(i+1)+')   type="number" value=' + redondeo(precioFinal,0) + '></td>' +
+				'<td><input style="width:100px; background: #d8d800;color:#111" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +							
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
-				'<td id="' + 'desOcul' + parseFloat(i + 1) + '" style="display:none;">0</td>' +							
+				'<td id="' + 'desOcul' + parseFloat(i + 1) + '" style="display:none;">0</td>' +	
+				'<td><input type="hidden"  id="' + 'preConOcul' + parseFloat(i + 1) + '" value=' + redondeo(precioFinal,0) + '></td>' +						
 				'<td>' +
-				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
+				'<button id="' + parseFloat(i + 1) + '" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fas fa-check" aria-hidden="true"></i></button>' +
+				'</td>' +
+				'<td>' +
+				'<button id="' + parseFloat(i + 1) + '" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="consultar" onclick="consultarProductos(event,this)"> <i class="fas fa-database" aria-hidden="true"></i></button>' +
 				'</td>' +
 				'</tr>');
 				
@@ -530,6 +532,8 @@ let tablaProductos = (array) => {
 				if(e.keyCode==13){
 
 					let idTabla=id.id;
+
+					console.error('idTabla ' + idTabla);
 					let cantidad = document.getElementById(`cant${indice}`).value;
 
 					let precioFinal=document.getElementById(idTabla).value;
@@ -542,7 +546,7 @@ let tablaProductos = (array) => {
 					console.error('costo con iva ' + redondeo(costoConIva,0));
 
 					let descuento=preSinDes-precioFinal;
-
+					console.error('descuento '  + descuento);
 					document.getElementById(`desOcul${indice}`).innerHTML=descuento;					
 					let total = cantidad*precioFinal;
 					document.getElementById(`total${indice}`).value=total;
@@ -605,6 +609,18 @@ let tablaProductos = (array) => {
 		}
 		
 	}
+
+	let totalFcalcular = (e) =>{
+
+		if(e.keyCode==13) {
+
+			recalcularValores();
+
+		}
+	
+
+	}
+
 	let agregarProductos =  (e,btn) => {
 
 		// comprobarFactura();
@@ -635,8 +651,9 @@ let tablaProductos = (array) => {
 		let margen = document.getElementById('mar' + idTabla).value;
 		let precio_sin = document.getElementById('venSin' + idTabla).value; // ID DEL SELECT PRECIO;
 		let precio_Con= document.getElementById('venCon' + idTabla).value;
+		let precioConOcul=document.getElementById(`preConOcul${idTabla}`).value;
 		let desOcul=document.getElementById(`desOcul${idTabla}`).innerHTML;
-		let total=document.getElementById(`total${idTabla}`).value;
+		let total=document.getElementById(`venCon${idTabla}`).value;
 		console.error(desOcul);
 		let precioTotal = cantidad * precio_sin;
 		// let idProd = table.rows[idTabla].cells[11].innerHTML;
@@ -660,9 +677,10 @@ let tablaProductos = (array) => {
 		'<td><input name="totunitaU' + parseFloat(nfilas) + '" id="' + 'precuni' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
 		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 		'<td><input name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
-		'<td><input name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +		
+		'<td><input name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +					
 		'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
+		'<td style="display:none;"><input name="venDesU' + parseFloat(nfilas) + '" id="' + 'venDescu' + parseFloat(nfilas) + '" value="'+(precioConOcul)+'"></td>' +	
 		'</tr>');
 
 			$('[data-toggle="tooltip"]').tooltip();
@@ -774,7 +792,7 @@ let recalcularValores = () => {
 
 	for (let i = 0; i < nFilas; i++) {
 
-		let td=tablaC.rows[i].cells[5];
+		let td=tablaC.rows[i].cells[7];
 
 		valorTotal +=parseInt(convertirNumeros(td.getElementsByTagName('input')[0].value));
   
@@ -820,7 +838,7 @@ let cantidadCalculo = (id,indice) =>{
 		let precioVen=convertirNumeros(document.getElementById('prect'+id).value);
 		let precioT=cantidad*precioVen;
 		console.error('precioT ' + precioT);
-		document.getElementById('prect'+id).value=formatearNumeros(precioT);
+		document.getElementById('vent'+id).value=formatearNumeros(precioT);
 	}
 	
 	recalcularValores();
@@ -1162,14 +1180,17 @@ let quitarDescuento = (e) => {
 	let precUtotal;
 	let valorTotal;
 	let totU;
+	let nuevoU;
 	let totalUni;
+	let nuevoTota;
 
 	for(let i=0; i < nFilas;i++){
 
 		descuento=`input[name=desU${(i+1)}]`;
 		cant=`input[name=can${(i+1)}]`;
-		precU=`input[name=totunitaU${(i+1)}]`;
+		precU=`input[name=venDesU${(i+1)}]`;
 		totU=`input[name=totU${(i+1)}]`;
+		nuevoTota=`input[name=preU${(i+1)}]`;
 
 		totalUnitario = `${document.querySelector(descuento).value=0}`;
 		cantotal = `${document.querySelector(cant).value}`;
@@ -1179,8 +1200,8 @@ let quitarDescuento = (e) => {
 
 		console.error('valorTotal ' + valorTotal);
 
-		totalUni=`${document.querySelector(totU).value=formatearNumeros(valorTotal)}`;	
-
+		totalUni=`${document.querySelector(nuevoTota).value=formatearNumeros(valorTotal)}`;	
+		document.querySelector(totU).value=precUtotal;
 		recalcularValores();
 
 	}

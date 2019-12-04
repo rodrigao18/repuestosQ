@@ -33,7 +33,7 @@
 
 /* Column widths are based on these cells */
 .row-1 {
-  width: 7.6%;
+  width: 6.25%;
 }
 .row-2 {
   width: 7.6%;
@@ -76,6 +76,9 @@
   width: 7.6%;
 }
 .row-15 {
+  width: 7.6%;
+}
+.row-16 {
   width: 7.6%;
 }
 	</style>
@@ -209,9 +212,9 @@
 								<th width="5%"><i class="fas fa-edit"></i> Cant.</th>
 								<th width="30%"><i class="fas fa-edit"></i> Nombre</th>
 								<th width="10%"><i class="fas fa-edit"></i> Precio unitario</th>
-								<th width="10%">Precio Sin Descuento.</th>
+								<th width="10%">Precio Descuento.</th>
 								<th width="10%">Descuento</th>
-								<th width="10%">Precio Con Descuento.</th>
+								<th width="10%">Total</th>
 								<th width="5%"></th>
 							</tr>
 
@@ -242,7 +245,7 @@
 								<td></td>
 								<td></td>
 								<td width="10%">Total a pagar</td>
-								<td width="20%"><input type="text" class="form-control" id="totalF" ></td>
+								<td width="20%"><input type="text"  class="form-control" id="totalF" ></td>
 							</tr>
 							<tr>
 								<td></td>
