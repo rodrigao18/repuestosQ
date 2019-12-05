@@ -195,9 +195,8 @@
 					<div id="salidaTabla"></div>
 					<br>
 					<div class="tile">
-					<div>
-					<input type="hidden" id="idprodescripcion">
-					<textarea class="form-control" rows="1" id="obsProducto" onkeypress="editarDescripcion(event)"></textarea></div>
+					<div>				
+				</div>
 					</div>
 				</div>
 			</div>
@@ -300,7 +299,33 @@
 
 		</div>
 		<!-- fin row -->
-
+ <!--MODAL-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Datos productos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <input type="hidden" id="idprodescripcion">
+	  <div id="precio_ultima_venta"></div>
+	  	<div id="fecha_ultima_venta"></div>
+		  <div id="fecha_ultima_compra"></div>
+		  <div id="cantidad_ultima_compra"></div>
+		  <div id="costo_ultima_compra"></div>
+		  <br>
+		<textarea class="form-control" rows="1" id="obsProducto" onkeypress="editarDescripcion(event)"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="limpiarCampos(event)" data-dismiss="modal">Cerrar</button>
+       
+      </div>
+    </div>
+  </div>
+</div>		
 	</main>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/popper.min.js"></script>

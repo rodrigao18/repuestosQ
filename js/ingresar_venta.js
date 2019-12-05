@@ -441,7 +441,7 @@ let tablaProductos = (array) => {
 			$("#tablaBody").append('<tr>' +
 				'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
 				'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
-				`<td id="nomPro${parseFloat(i + 1)}" style="cursor:pointer;"><span id="${id_producto}" onmouseover=obser(this,'${descripcion.split(" ")}')>${nombre}</span></td>`+
+				`<td id="nomPro${parseFloat(i + 1)}" style="cursor:pointer;"><span id="${id_producto}" onclick=obser(this,'${descripcion.split(" ")}',${codigo})>${nombre}</span></td>`+
 				'<td>' + stock + '</td>' +
 				'<td>' + ubicacion + '</td>' +
 				'<td>' + MARCAS[marca] + '</td>' +
@@ -555,15 +555,95 @@ let tablaProductos = (array) => {
 			}		
 
 	//PASAR EL MOUSE POR EL NOMBRE DEL PRODUCTO
-	let obser = (id,nombre) => {
+	let obser = async (id,nombre,codigo) => {
 
 		let idpro=id.id;
 		
-		let nombreOri=nombre;
-		
+		let nombreOri=nombre;	
+
 		document.getElementById('obsProducto').value=nombreOri.replace(/,/g," ");
-		document
-		.getElementById('idprodescripcion').value=idpro;
+		document.getElementById('idprodescripcion').value=idpro;	
+		let ultimaVentaPro =await buscarUltimaVenta(codigo);		  
+		let modal=await mostrarModal();	
+
+	}
+	/*BUSCAR LA ULTIMA VENTA DEL PRODUCTO*/ 
+	let buscarUltimaVenta =async (codigo) => {
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		const consulta=`SELECT (fecha_venta) as fecha ,precio_unitario FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id WHERE vr.codigo_producto=${codigo} ORDER BY v.id DESC LIMIT 1`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+		console.error(consulta);
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.	
+			let array = JSON.parse(data);
+			
+		
+			document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : ${array[0]['fecha']}</li></ul>`;
+			document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;
+			let ultimaCompra = await buscarUltimaCompra(codigo);
+		
+			
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+		
+
+	}
+
+
+	let buscarUltimaCompra =async (codigo) => {
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		const consulta=`SELECT (fecha_ingreso) as fechaEmi , cantidad , precioUnitario  FROM facturas v INNER JOIN facturas_relacional vr ON vr.idfactura=v.id WHERE vr.codigoProducto=${codigo} ORDER BY v.id DESC LIMIT 1`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.	
+			let array = JSON.parse(data);		
+			document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha y hora ultima <strong>compra</strong> del producto : ${array[0]['fechaEmi']}</li></ul>`;
+			document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad y hora ultima <strong>compra</strong> del producto : ${array[0]['cantidad']}</li></ul>`;
+			document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo ultima <strong>compra</strong> del producto : ${formatearNumeros(array[0]['precioUnitario'])}</li></ul>`;
+			
+			let precioIva=array[0]['precioUnitario']*0.25;
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+		
+
+	}
+
+	let limpiarCampos=(e) => {
+
+		const evento = e.preventDefault();
+		$("#myModal").modal('hide');
+		// document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha y hora ultima <strong>compra</strong> del producto : `;
+		// document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad y hora ultima <strong>compra</strong> del producto : `;
+		// document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo y hora ultima <strong>compra</strong> del producto : `;
+		// document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : `;
+		// document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : `;
+
+	}
+
+	let mostrarModal = () =>{
+
+
+
+		$("#myModal").modal();
+		$('body').on('shown.bs.modal', '#myModal', function () {
+		$('input:visible:enabled:first', this).focus();
+
+	})
 	}
 
 	//EDITAR LA DESCRIPCION EN LA VENTA
