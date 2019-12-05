@@ -345,7 +345,7 @@ let borrVentaRe = async (idP) => {
 				timer: 3000
 			});	
 
-			
+			setTimeout('location.reload()', 1000);
 		
 		
 	} catch (error) { console.log('error en la conexion ', error); }
