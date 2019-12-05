@@ -453,7 +453,7 @@ let tablaProductos = (array) => {
 				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="25" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +													
 				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
 				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '" onkeypress=calDescuento(event,this,'+(i+1)+')   type="number" value=' + redondeo(precioFinal,0) + '></td>' +
-				'<td><input style="width:100px; background: #d8d800;color:#111" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +							
+				'<td><input style="width:100px; background: #d8d800;color:#111" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(precioFinal,0) + '></td>' +							
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
 				'<td id="' + 'desOcul' + parseFloat(i + 1) + '" style="display:none;">0</td>' +	
@@ -664,7 +664,7 @@ let tablaProductos = (array) => {
 		estadoEntr = document.getElementById('checkEnt').checked;
 
 		if(estadoEntr == true){
-			actualizarPrecioVenta(idProd,precio_venta,descuento);
+			actualizarPrecioVenta(idProd,precio_sin,descuento);
 		}
 			actualizaMargen(idProd,margen);
 		let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
@@ -749,9 +749,10 @@ function calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_
 let calcular_margen = (id,id_costo) =>{
 
 	let id_margen= id.id;
+	let precio;
 
 	let precio_costo=document.getElementById('cos'+id_costo).value;
-
+	let preciodescuento;
 	let precio_final;	
 	let margen = document.getElementById(id_margen).value;
 	let ultimoNum=(margen % 100)%10;
@@ -768,12 +769,19 @@ let calcular_margen = (id,id_costo) =>{
 		precio_final=precio_costo*2;
 		let precio1=precio_final+porcosto;
 		let preMarIva=precio1*1.19;
-		document.getElementById('venSin'+id_costo).value=redondeo(preMarIva,0);
+		precio = document.getElementById('venSin'+id_costo).value=redondeo(preMarIva,0);
+		 preciodescuento=redondeo(precio * 0.25,0);
+		document.getElementById(`venCon${id_costo}`).value=precio-preciodescuento;
+		document.getElementById(`total${id_costo}`).value=precio-preciodescuento;
+		// document.getElementById(`venCon${id_margen}`).value=precio-preciodescuento;
 	}
 	if(primerNum==2){
 		let porcosto=redondeo(porcentaje*precio_costo,0);
 		precio_final=precio_costo*3;
-		document.getElementById('venSin'+id_costo).value=redondeo(precio_final+porcosto,0);
+		precio = document.getElementById('venSin'+id_costo).value=redondeo(precio_final+porcosto,0);
+		 preciodescuento=redondeo(precio * 0.25,0);
+		document.getElementById(`venCon${id_costo}`).value=precio-preciodescuento;
+		document.getElementById(`total${id_costo}`).value=precio-preciodescuento;
 	} 
 
 }
