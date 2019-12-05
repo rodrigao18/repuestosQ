@@ -586,7 +586,7 @@ let tablaProductos = (array) => {
 			
 		
 			document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : ${array[0]['fecha']}</li></ul>`;
-			document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;
+			document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong> del producto : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;
 			let ultimaCompra = await buscarUltimaCompra(codigo);
 		
 			

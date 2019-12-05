@@ -317,7 +317,7 @@
 		  <div id="cantidad_ultima_compra"></div>
 		  <div id="costo_ultima_compra"></div>
 		  <br>
-		<textarea class="form-control" rows="1" id="obsProducto" onkeypress="editarDescripcion(event)"></textarea>
+		<textarea class="form-control" rows="2" id="obsProducto" onkeypress="editarDescripcion(event)"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="limpiarCampos(event)" data-dismiss="modal">Cerrar</button>
