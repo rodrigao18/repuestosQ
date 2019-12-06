@@ -572,7 +572,8 @@ let tablaProductos = (array) => {
 
 		const baseUrl = 'php/consultaFetch.php';
 
-		const consulta=`SELECT (fecha_venta) as fecha ,precio_unitario FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id WHERE vr.codigo_producto=${codigo} ORDER BY v.id DESC LIMIT 1`;
+		const consulta=`SELECT (fecha_venta) as fecha ,precio_unitario,p.precio_venta FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN productos p ON vr.codigo_producto=p.codigo
+		 WHERE vr.codigo_producto=${codigo} ORDER BY v.id DESC LIMIT 1`;
 
 		const sql = {sql: consulta, tag: `array_datos`} 
 		console.error(consulta);
@@ -587,6 +588,7 @@ let tablaProductos = (array) => {
 		
 			document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : ${array[0]['fecha']}</li></ul>`;
 			document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong> del producto : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;
+			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta+(iva) ultima <strong>Compra</strong> del producto : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;
 			let ultimaCompra = await buscarUltimaCompra(codigo);
 		
 			
@@ -627,11 +629,12 @@ let tablaProductos = (array) => {
 
 		const evento = e.preventDefault();
 		$("#myModal").modal('hide');
-		// document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha y hora ultima <strong>compra</strong> del producto : `;
-		// document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad y hora ultima <strong>compra</strong> del producto : `;
-		// document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo y hora ultima <strong>compra</strong> del producto : `;
-		// document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : `;
-		// document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : `;
+		document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha y hora ultima <strong>compra</strong> del producto : `;
+		document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad y hora ultima <strong>compra</strong> del producto : `;
+		document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo y hora ultima <strong>compra</strong> del producto : `;
+		document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : `;
+		document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : `;
+		document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Fecha y hora ultima <strong>Compra</strong> del producto : `;
 
 	}
 

@@ -316,6 +316,7 @@
 		  <div id="fecha_ultima_compra"></div>
 		  <div id="cantidad_ultima_compra"></div>
 		  <div id="costo_ultima_compra"></div>
+		  <div id="precioVenta_ultima_compra"></div>
 		  <br>
 		<textarea class="form-control" rows="2" id="obsProducto" onkeypress="editarDescripcion(event)"></textarea>
       </div>
