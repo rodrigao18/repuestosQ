@@ -19,27 +19,32 @@ let cargarDatos = async() => {
 
 	console.error(PRODUCTOS);
 
+	if(PRODUCTOS.length > 0){
 	importarProductos();
+	}
+
+	
 } 
 
 	let importarProductos = () =>  {
 
 		let nfilas=PRODUCTOS.length + parseFloat(1);
-
+		
 		for (var i = 0; i < PRODUCTOS.length; i++) {
 			ITEM++;
 		$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
-		'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">"sin proveedor"</span> </td>' +
+		'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">' + PRODUCTOS[i]['codigo_proveedor'] + '</span> </td>' +
 		'<td>' + PRODUCTOS[i]['codigo_producto'] + '</td>' +
 		'<td><input class="canti" name="can' + parseFloat(ITEM) + '" style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+',2)  type="number" min=1 value="'+PRODUCTOS[i]['cantidad']+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + PRODUCTOS[i]['nombre'] + '</span> </td>' +
-		'<td><input name="totunitaU' + parseFloat(ITEM) + '" id="' + 'precuni' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(PRODUCTOS[i]['precio_unitario'])+'"></td>' +
-		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(PRODUCTOS[i]['total_unitario'])+'"></td>' +
+		'<td><input name="totunitaU' + parseFloat(ITEM) + '" id="' + 'precuni' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(PRODUCTOS[i]['precio_venta'])+'"></td>' +
+		'<td><input name="totU' + parseFloat(ITEM) + '" id="' + 'prect' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(PRODUCTOS[i]['precio_unitario'])+'"></td>' +
 		'<td><input name="desU' + parseFloat(ITEM) + '" id="' + 'desc' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(0)+'"></td>' +
-		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(0)+'"></td>' +		
+		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(PRODUCTOS[i]['total_unitario'])+'"></td>' +		
 		'<td><button class="btn  btn-danger" id="cols' + ITEM + '" onclick=removerItem(' + parseFloat(ITEM) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+PRODUCTOS[i]['id']+'</td>' +
 		'</tr>');
+		$('#selectClientes option[value="' + PRODUCTOS[i]['id_cliente'] + '"]').attr("selected", true);
 
 		}
 
@@ -47,6 +52,8 @@ let cargarDatos = async() => {
 			//`agregarNumeracionItem();
 			recalcularValores();
 			document.getElementById('obsProducto').value="";
+			PRODUCTOS=[];
+			
 			
 	}
 
@@ -156,8 +163,12 @@ let ultimoGuia = async () => {
 		const data = await response.text();
 		
 		let array = JSON.parse(data);
+		let ultima_boleta;
 		console.error(array);
-		let ultima_boleta=array[0]['numeroGuia'];
+		
+		 ultima_boleta=array[0]['numeroGuia'];
+	
+		
 
 		
 
@@ -1201,7 +1212,7 @@ for (var i = 0; i < nFilas; i++) {
 				//*-se parsea solo la respuesta del Json enviada por el servidor.
 			
 				swal("Venta creada", "los datos fueron guardados exitosamente", "success");
-				setTimeout('location.reload()', 3000);
+				setTimeout('window.location.href = "ingresar_venta.php";', 3000);
 
 				// let limpiarPost=`<form method="POST" name="envia" action="imgresar_venta.php">
 				// <input type="hidden" class="form-control" id="datosProductos" name="datosProductos">
