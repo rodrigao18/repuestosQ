@@ -12,6 +12,7 @@
 				$('#select_categoria').html(data).fadeIn();
 			//	$('#select_categoria option[value="1"]').attr("selected", true);  
 				cargar_bodega();
+				ultimoCodigoProducto();
 				marca();
 	},
 	error: function (request, status, error)
@@ -40,7 +41,34 @@ function marca(){
 	}
 	})
 }
+let ultimoCodigoProducto = async () => {
 
+	const baseUrl = 'php/consultaFetch.php';
+
+    let consulta=`SELECT (codigo+1) as codigoProducto FROM productos  ORDER BY id DESC LIMIT 1 `;
+
+    const sql = {sql: consulta, tag: `array_datos`}  
+
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		
+		let array = JSON.parse(data);
+		console.error(array);
+		let codigo=array[0]['codigoProducto'];
+
+		console.error(codigo);
+
+		document.getElementById('codigoProducto').value=codigo;
+      
+        //const provinciass = await provincias(array);
+        
+    } catch (error) { console.log('error en la conexion ', error); }
+    
+
+}
 //cargar proveedores
 function proveedores(){
 	var sql = 'SELECT id,nombre FROM proveedores';
