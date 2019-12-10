@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- Main CSS-->
-	<link rel="stylesheet" type="text/css" href="css/main.css?vknet26">
+	<link rel="stylesheet" type="text/css" href="css/main.css?vknet26">	
 	<!--<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">--> 
 	<!-- Font-icon css-->
 	<link rel="stylesheet" type="text/css"href="fontawesome-5.5.0/css/all.min.css">

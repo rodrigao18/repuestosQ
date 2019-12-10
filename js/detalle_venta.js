@@ -74,6 +74,7 @@ function convertirPaginaDeEstados() {
 	if (ESTADOVENTA == 1) {
 		document.getElementById('titulo-detalle').innerHTML=`Boleta`;
 		document.getElementById('cabezera').className=`cabezera-boleta`;
+		
 
 	} else if (ESTADOVENTA == 0) {
 		var row = document.getElementById("borrar");
@@ -89,6 +90,11 @@ function convertirPaginaDeEstados() {
 	else if (ESTADOVENTA == 4) {
 		document.getElementById('titulo-detalle').innerHTML=`Cotización`;
 		document.getElementById('cabezera').className=`cabezera-cotizacion`;
+		document.getElementById('btn-ocultar').style.display=`block`;
+	}else if (ESTADOVENTA == 2) {
+		document.getElementById('titulo-detalle').innerHTML=`Factura`;
+		document.getElementById('cabezera').className=`cabezera-factura`;
+		// document.getElementById('btn-ocultar').style.display=`block`;
 	}
 
 }
@@ -228,15 +234,6 @@ function accionBotonEntregado(idVentaRelacional, id1, cantidad) {
 	return accion;
 }
 
-
-
-
-
-
-
-
-
-
 //FUNCION PARA BORRAR UN ITEM  LO HACE DE FORMA INMEDIATA AL A BASE
 function borrarItemBD(sql) {
 	
@@ -306,13 +303,6 @@ function removerItem(id, idtabla, e, mostrar) {
 	}
 
 }
-
-
-
-
-
-
-
 /*------------------------------------------------------------------*/
 
 //*-calcular valores-------------------------------------------------

@@ -122,6 +122,7 @@
 							</tr>						
 						</tbody>
 					</table>
+					<div id="btn-ocultar" style="display:none;">
 					<form method="POST" id="formularioProveedor" action="ingresar_venta.php">
                         <input type="hidden" id="id" name="id">
                         <input type="hidden" id="datosProductos" name="datosProductos">
@@ -131,13 +132,14 @@
 													<div class="form-group col-md-12">
 															<div class="input-group">																
 																	<div class="input-group-append">
-																			<button type="submit" name="enviar" class="btn btn-primary" id="btnImportar" data-toggle="tooltip" title="Importar productos" type="button"><i class="fas fa-file"></i> <i class="fas fa-arrow-right"></i>Traspasar a ventas </button>
+																			<button type="submit"  name="enviar" class="btn btn-primary" id="btnImportar" data-toggle="tooltip" title="Importar productos" type="button"><i class="fas fa-file"></i> <i class="fas fa-arrow-right"></i>Traspasar a ventas </button>
 																	</div>
 															</div>
 													</div>
 												</div>';}
 												?>
 					</form>	
+					</div>
 					<div class="btn-group inline float-left" id="volverBtn">						
 					
 					</div>

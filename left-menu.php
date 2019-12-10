@@ -81,10 +81,11 @@
 <!-- Ventas -->
 			<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-store"></i><span class="app-menu__label">Ventas</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="ver_ventas.php"><i class="icon fas fa-angle-right"></i> Ventas</a></li>
-					<li><a class="treeview-item" href="ingresar_venta.php"><i class="icon fas fa-angle-right"></i> Ingresar ventas </a></li>
+				<li><a class="treeview-item" href="ingresar_venta.php"><i class="icon fas fa-angle-right"></i> Ingresar ventas </a></li>
+					<li><a class="treeview-item" href="ver_ventas.php"><i class="icon fas fa-angle-right"></i> Ventas</a></li>					
 					<li><a class="treeview-item" href="ver_cotizaciones.php"><i class="icon fas fa-angle-right"></i> Cotizaciones</a></li>
 					<li><a class="treeview-item" href="ver_guias.php"><i class="icon fas fa-angle-right"></i> Guías</a></li>
+					<li><a class="treeview-item" href="ver_facturas_ventas.php"><i class="icon fas fa-angle-right"></i> Facturas ventas</a></li>
 
 				</ul>
 

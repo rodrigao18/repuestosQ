@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Cotizaciones</title>
+	<title>Facturas ventas</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,14 +40,14 @@
 	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 
 	<main class="app-content">
-		<div class="app-title cabezera-cotizacion">
+		<div class="app-title cabezera-factura">
 			<div>
-				<h1><i class="fas fa-list-alt"></i> Cotizaciones </h1>
-				<p>Ver Cotizaciones, editar y eliminar</p>
+				<h1><i class="fas fa-list-alt"></i> Facturas ventas </h1>
+				<p>Ver Facturas ventas, editar y eliminar</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-				<li class="breadcrumb-item">Cotizaciones</li>
+				<li class="breadcrumb-item">Facturas ventas</li>
 				<li class="breadcrumb-item active"><a href="#"></a></li>
 			</ul>
 		</div>
@@ -73,22 +73,21 @@
 						
 						<div class="bg-white rounded box-shadow">
 
-							<h6 class="border-bottom border-gray pb-2 mb-0 ">Cotizaciones</h6>
+							<h6 class="border-bottom border-gray pb-2 mb-0 ">Facturas ventas</h6>
 							<br><br>
 
 								<div id="salida">
 								<div class="my-3 p-3 bg-white rounded box-shadow">
 								
 								<table class="table table-striped " id="tablaProductos">
-								<thead class="cabezera-cotizacion">
+								<thead class="cabezera-factura">
 								<tr>
-                                <th width="10%">Cotizacion</th>
+                                <th width="10%">Factura</th>
 								<th width="15%">Vendedor</th>
 								<th width="10%">Cliente</th>	
 								<th width="10%">Neto</th>
 								<th width="10%">Iva</th>										
                                 <th width="5%">Total</th>							
-								<th width="5%"> </th>
 								<th width="5%"> </th>
 								<th width="5%"> </th>							
 								</tr>
@@ -125,7 +124,7 @@
 	<!-- The javascript plugin to display page loading on top-->
 	<script src="js/plugins/pace.min.js"></script>
     <script type="text/javascript" src="js/funciones.js?vknet29"></script>
-	<script type="text/javascript" src="js/ver_cotizaciones.js?vknet29"></script>
+	<script type="text/javascript" src="js/ver_facturas_ventas.js?vknet29"></script>
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<?php include "./js/table.php"; ?>

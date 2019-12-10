@@ -116,7 +116,7 @@
 						<input type="text" onblur="validarIds()" class="form-control" id="id_cotizacion" name="id_cotizacion" value="1">
 					</div>	
 					<div class="form-group col-md-2">
-					<label>tajeta</label>
+					<label>tarjeta</label>
 						<input type="text" onblur="validarIds()" class="form-control" id="id_tarjeta" name="id_tarjeta" value="1">
 					</div>				
 				</div>				
