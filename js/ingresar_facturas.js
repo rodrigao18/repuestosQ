@@ -698,13 +698,19 @@ try {
 			valorTotal +=parseInt(convertirNumeros(td.getElementsByTagName('input')[0].value));
 	  
 		}
-	
-		let totalapagar=document.getElementById(`totalF`).value=formatearNumeros(valorTotal);
-		let neto = valorTotal/1.19;
-		document.getElementById(`totalNeto`).value=formatearNumeros(redondeo(neto,0));
-		let iva = convertirNumeros(totalapagar)-neto;
-		console.error('iva '+ iva);
+
+		let valorNeto= document.getElementById(`totalNeto`).value=formatearNumeros(valorTotal);
+		let iva = convertirNumeros(valorNeto)*0.19;	
 		document.getElementById(`ivaTotal`).value=formatearNumeros(redondeo(iva,0)); 
+		let total=parseInt(iva)+parseInt(convertirNumeros(valorNeto));
+		document.getElementById(`totalF`).value=formatearNumeros(total);
+		
+		// let totalapagar=document.getElementById(`totalF`).value=formatearNumeros(valorTotal);
+		// let neto = valorTotal/1.19;
+		// document.getElementById(`totalNeto`).value=formatearNumeros(redondeo(neto,0));
+		// let iva = convertirNumeros(totalapagar)-neto;
+		// console.error('iva '+ iva);
+		// document.getElementById(`ivaTotal`).value=formatearNumeros(redondeo(iva,0)); 
 		//document.getElementById(`totalapagar`).value=formatearNumeros(valorTotal);	  
 	
 		
