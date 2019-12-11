@@ -338,22 +338,24 @@ let borrVentaRe = async (idP) => {
 		//*-se parsea solo la respuesta del Json enviada por el servidor.	
 
 			
-			$.notify({
-				title: "Borrado: ",
-				message: "Se Borro la venta:",
-				icon: 'fas fa-check'
-			}, {
-				type: "success",
-				placement: {
-					from: "top",
-					align: "right"
-				},
-				offset: 70,
-				spacing: 70,
-				z_index: 1031,
-				delay: 2000,
-				timer: 3000
-			});	
+		$.notify({
+			title: "Borrado: ",
+			message: "Se Borro la cotizacion:",
+			icon: 'fas fa-check'
+		}, {
+			type: "success",
+			placement: {
+				from: "top",
+				align: "right"
+			},
+			offset: 70,
+			spacing: 70,
+			z_index: 1031,
+			delay: 2000,
+			timer: 3000
+		});	
+
+		setTimeout('location.reload()', 1000);
 
 			
 		
