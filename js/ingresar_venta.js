@@ -406,7 +406,7 @@ let tablaProductos = (array) => {
 			'<thead class="cabezera">' +
 			'<tr class="table-success">' +
 			'	<th  class="row-1 ">Int</th>' +
-			'	<th  class="row-2 ">Prop</th>' +
+			'	<th  class="row-2 ">Prov.</th>' +
 			'	<th  class="row-3 ">Nombre</th>' +	
 			'	<th  class="row-4 ">Stock</th>' +
 			'	<th  class="row-5 ">Ubicación</th>' +
@@ -415,8 +415,8 @@ let tablaProductos = (array) => {
 			'	<th  class="row-8 ">Costo</th>' +
 			'	<th  class="row-9 " id="checkMargen" width="10%">Margen</th>' +
 			'	<th  class="row-10"> Desc. %</th>' +		
-			'	<th  class="row-12" id="chPrecioSin" width="10%">Prec+iva</th>' +		
-			'	<th  class="row-13" id="chPrecioCon" width="10%">Prec-25%</th>' +
+			'	<th  class="row-12" id="chPrecioSin" width="10%">Precio venta</th>' +		
+			'	<th  class="row-13" id="chPrecioCon" width="10%">25%</th>' +
 			'	<th  class="row-14" id="total" width="10%">Total</th>' +
 			'	<th  class="row-15"> </th>' +
 			'	<th  class="row-16"> </th>' +
@@ -447,8 +447,9 @@ let tablaProductos = (array) => {
 			var marca = array[i]['marca'];
 			var descripcion=array[i]['descripcion'];
 		
-
+			//CALCULO PASAR A BAJO//	
 			//BODY DE LA TABLA AGREGAR PRODUCTOS;
+			//cargar 105 por defecto
 			$("#tablaBody").append('<tr>' +
 				'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
 				'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +

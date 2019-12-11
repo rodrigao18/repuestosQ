@@ -115,7 +115,7 @@
 								</div>	
 								<div class="form-group col-md-3">
 									<label>Margen contado</label>
-									<input type="number" class="form-control" id="margen_contado" name="margen_contado" min="0" placeholder="Ingrese margen contado" value="0">
+									<input type="number" class="form-control" id="margen_contado" name="margen_contado" min="0" placeholder="Ingrese margen contado" value="105">
 								</div>
 								<div class="form-group col-md-3">
 									<label>Margen oferta</label>
