@@ -450,6 +450,7 @@ let tablaProductos = (array) => {
 			//CALCULO PASAR A BAJO//	
 			//BODY DE LA TABLA AGREGAR PRODUCTOS;
 			//cargar 105 por defecto
+			//total alreves en cotizacion a venta y a que aparezca el descuento
 			$("#tablaBody").append('<tr>' +
 				'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
 				'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
