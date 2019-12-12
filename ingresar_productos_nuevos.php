@@ -70,7 +70,7 @@
 										</div>
 										<div class="form-group col-md-4">
 											<label>Nombre producto</label>
-											<input type="text" class="form-control" id="nombreProducto" name="nombreProducto" onkeyup="this.value=mayusculas(this.value)" placeholder="Ingrese Nombre del producto">
+											<input type="text" class="form-control" id="nombreProducto" onclick='habilitarbtn()' name="nombreProducto" onkeyup="this.value=mayusculas(this.value)" placeholder="Ingrese Nombre del producto">
 										</div>
 							</div>					
 							<div class="form-row">
@@ -134,7 +134,7 @@
                          </div> 						
 							<!--Parte de Clientes Dinamicos-->						
 							<br>
-							<button class="btn btn-primary float-right"  onclick="GuardarProducto(event)"><i class="fa fa-save"></i> Guardar Producto</button>
+							<button id="btn-guardar" class="btn btn-primary float-right" disabled onclick="GuardarProducto(event)"><i class="fa fa-save"></i> Guardar Producto</button>
 							<br><br>
 						</form>
 					</div>

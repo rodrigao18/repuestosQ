@@ -236,7 +236,13 @@ function comprobarProducto(){
 	return;
 }
 
+	let habilitarbtn = () => {
 
+		document.getElementById('btn-guardar').disabled=false;
+
+	}
+	
+	
 function comprobarCodigoPro(){
 	if($("#codigoProveedor").val() != ""	){
 		var codigo_producto = $("#codigoProveedor").val();
@@ -290,6 +296,9 @@ function comprobarCodigoPro(){
 
 //*-guardar productos;	
 function GuardarProducto(e) {
+	if(comprobarProducto()){
+		return
+	}
 	e.preventDefault();
 		var nombre = $("#nombreProducto").val();
 		var codigoProducto = $("#codigoProducto").val();
@@ -339,6 +348,7 @@ function GuardarProducto(e) {
 						document.getElementById('codigoProducto').focus();	
 						document.getElementById('codigoProducto').value='';	
 						swal("Insert!", "El producto fue ingresado correctamente!", "success");	
+						document.getElementById('btn-guardar').disabled=true;
 						ultimoCodigoProducto(); 
 					
 				},
