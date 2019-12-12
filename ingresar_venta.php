@@ -78,9 +78,7 @@
 .row-15 {
   width: 7.6%;
 }
-.row-16 {
-  width: 7.6%;
-}
+
 	</style>
 </head>
 

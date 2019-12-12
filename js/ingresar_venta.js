@@ -418,8 +418,7 @@ let tablaProductos = (array) => {
 			'	<th  class="row-12" id="chPrecioSin" width="10%">Precio venta</th>' +		
 			'	<th  class="row-13" id="chPrecioCon" width="10%">25%</th>' +
 			'	<th  class="row-14" id="total" width="10%">Total</th>' +
-			'	<th  class="row-15"> </th>' +
-			'	<th  class="row-16"> </th>' +
+			'	<th  class="row-15"> </th>' +			
 			'</tr>' +
 			'</thead>' +
 			'<tbody id="tablaBody"></tbody>' +
@@ -476,8 +475,7 @@ let tablaProductos = (array) => {
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fas fa-check" aria-hidden="true"></i></button>' +
 				'</td>' +
-				'<td>' +
-				'<button id="' + parseFloat(i + 1) + '" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="consultar" onclick="consultarProductos(event,this)"> <i class="fas fa-database" aria-hidden="true"></i></button>' +
+				'<td>' +				
 				'</td>' +
 				'</tr>');
 				

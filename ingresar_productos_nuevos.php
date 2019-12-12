@@ -134,7 +134,7 @@
                          </div> 						
 							<!--Parte de Clientes Dinamicos-->						
 							<br>
-							<button class="btn btn-primary float-right" onclick="GuardarProducto(event)"><i class="fa fa-save"></i> Guardar Producto</button>
+							<button class="btn btn-primary float-right"  onclick="GuardarProducto(event)"><i class="fa fa-save"></i> Guardar Producto</button>
 							<br><br>
 						</form>
 					</div>

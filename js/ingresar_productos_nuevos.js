@@ -11,8 +11,7 @@
 	success:function (data){
 				$('#select_categoria').html(data).fadeIn();
 			//	$('#select_categoria option[value="1"]').attr("selected", true);  
-				cargar_bodega();
-				ultimoCodigoProducto();
+				cargar_bodega();			
 				marca();
 	},
 	error: function (request, status, error)
@@ -45,9 +44,10 @@ let ultimoCodigoProducto = async () => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
-    let consulta=`SELECT (codigo+1) as codigoProducto FROM productos  ORDER BY id DESC LIMIT 1 `;
+    let consulta=`SELECT (codigo+1) as codigo FROM productos  ORDER BY id DESC LIMIT 1`;
 
-    const sql = {sql: consulta, tag: `array_datos`}  
+	const sql = {sql: consulta, tag: `array_datos`}  
+	console.error(consulta);
 
     try {
 		//*-llamar ajax al servidor mediate api fetch.
@@ -57,13 +57,13 @@ let ultimoCodigoProducto = async () => {
 		
 		let array = JSON.parse(data);
 		console.error(array);
-		let codigo=array[0]['codigoProducto'];
+		let codigo=array[0]['codigo'];
 
 		console.error(codigo);
 
 		document.getElementById('codigoProducto').value=codigo;
       
-        //const provinciass = await provincias(array);
+        const provinciass = await provincias(array);
         
     } catch (error) { console.log('error en la conexion ', error); }
     
@@ -81,7 +81,7 @@ function proveedores(){
 	success:function (data){
 				$('#select_proveedor').html(data).fadeIn();
 				$('#select_proveedor option[value="0"]').attr("selected", true);  
-				//modelo();
+				ultimoCodigoProducto();
 	},
 	error: function (request, status, error)
 				{alert('Error: Could not categoria');
