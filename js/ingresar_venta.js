@@ -412,7 +412,7 @@ let tablaProductos = (array) => {
 			'	<th  class="row-5 ">Ubicación</th>' +
 			'	<th  class="row-6 ">Marca</th>' +	
 			'	<th  class="row-7 ">Cantidad</th>' +
-			'	<th  class="row-8 ">Costo</th>' +
+			'	<th  class="row-8 "></th>' +
 			'	<th  class="row-9 " id="checkMargen" width="10%">Margen</th>' +
 			'	<th  class="row-10"> Desc. %</th>' +		
 			'	<th  class="row-12" id="chPrecioSin" width="10%">Precio venta</th>' +		
@@ -451,6 +451,8 @@ let tablaProductos = (array) => {
 			//BODY DE LA TABLA AGREGAR PRODUCTOS;
 			//cargar 105 por defecto
 			//total alreves en cotizacion a venta y a que aparezca el descuento
+			//generar excel al eliminar venta
+			//sacar costo y descuento
 			$("#tablaBody").append('<tr>' +
 				'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
 				'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
@@ -459,11 +461,11 @@ let tablaProductos = (array) => {
 				'<td>' + ubicacion + '</td>' +
 				'<td>' + MARCAS[marca] + '</td>' +
 				'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=cantidadCalculo('+(i+1)+',1)  min=1 type="number" value="1"></td>' +
-				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="number" value=' + costo + '></td>' +
+				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="hidden" value=' + costo + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" '+
 				'min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'des' + parseFloat(i + 1) + '" '+
-				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="25" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +													
+				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="99" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +													
 				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
 				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '" onkeypress=calDescuento(event,this,'+(i+1)+')   type="number" value=' + redondeo(precioFinal,0) + '></td>' +
 				'<td><input style="width:100px; background: #d8d800;color:#111" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(precioFinal,0) + '></td>' +							
@@ -806,7 +808,7 @@ function validar_descuento(e,id, descuento_max, id_precio_venta, id_precio_final
 
 	if (e.keyCode === 13 && !e.shiftKey) {
 		e.preventDefault();
-		var precio_venta = document.getElementById('venSin'+id_precio_venta).value;//document.getElementById("pres" + id_precio_venta).value //PRECIO VENTA
+		var precio_venta = document.getElementById('venCon'+id_precio_venta).value;//document.getElementById("pres" + id_precio_venta).value //PRECIO VENTA
 
 		id_descuento = id.id; // SE OBTIENE EL ID DESDE EL INPUT DESCUENTO  CON  LA PROPIEDAD THIS
 		var valor_descuento = document.getElementById(id_descuento).value //SACO EL VALOR DEL INPUT GRACIAS AL ID ENVIADO DESDE LA FUNCION;
@@ -815,7 +817,7 @@ function validar_descuento(e,id, descuento_max, id_precio_venta, id_precio_final
 		if (valor_descuento > descuento_max) { //VALIDO QUE EL VALOR DEL DESCUENTO SEA MENOR AL VALOR REAL DEL DESCUENTO Y QUE SEA MAYOR A CERO;
 			swal("No puede aplicar un descuento superior al predeterminado","","info");
 			$('#' + id_descuento).val(0); //VUELVO EL VALOR DEL INPUT DESCUENTO A 0;
-			$('#venSin' + id_precio_final).val(precio_venta);
+			$('#venCon' + id_precio_final).val(precio_venta);
 			return;
 		} else {
 			calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_final);
@@ -838,8 +840,8 @@ function calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_
 	var precio_final1 = parseFloat(valor_descuento / 100) * parseInt(precio_venta);
 	var precio_final=parseInt(precio_venta)-parseInt(precio_final1);
 	
-	$('#venSin' + id_precio_f).val(precio_final);
-
+	$('#venCon' + id_precio_f).val(precio_final);
+	$('#total' + id_precio_f).val(precio_final);
 }
 
 let calcular_margen = (id,id_costo) =>{
@@ -930,7 +932,7 @@ let cantidadCalculo = (id,indice) =>{
 	
 	if(indice==1){
 		
-		let precioVen=convertirNumeros(document.getElementById('venSin'+id).value);
+		let precioVen=convertirNumeros(document.getElementById('venCon'+id).value);
 		let precioT=cantidad*precioVen;
 
 		console.error('precioT ' +  precioT);

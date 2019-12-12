@@ -55,7 +55,7 @@
   width: 7.6%;
 }
 .row-8 {
-  width: 7.6%;
+  width: 1.6%;
 }
 .row-9 {
   width: 7.6%;
