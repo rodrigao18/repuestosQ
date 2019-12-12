@@ -10,10 +10,11 @@
 			
 	success:function (data){
 				$('#select_categoria').html(data).fadeIn();
-			//	$('#select_categoria option[value="1"]').attr("selected", true);  
+			//	$('#select_categoria option[value="1"]').attr("selected", true); 
+			ultimoCodigoProducto(); 
 				cargar_bodega();			
 				marca();
-	},
+	},	
 	error: function (request, status, error)
 				{alert('Error: Could not categoria');
 	}
@@ -63,7 +64,7 @@ let ultimoCodigoProducto = async () => {
 
 		document.getElementById('codigoProducto').value=codigo;
       
-        const provinciass = await provincias(array);
+        
         
     } catch (error) { console.log('error en la conexion ', error); }
     
@@ -81,7 +82,7 @@ function proveedores(){
 	success:function (data){
 				$('#select_proveedor').html(data).fadeIn();
 				$('#select_proveedor option[value="0"]').attr("selected", true);  
-				ultimoCodigoProducto();
+			
 	},
 	error: function (request, status, error)
 				{alert('Error: Could not categoria');
@@ -183,7 +184,9 @@ function cargar_bodega() {
 /*----------------------------Agregar productos------------------------*/
 
 function comprobarProducto(){
+
 	if($("#codigoProducto").val() != ""	){
+
 		var codigo_producto = $("#codigoProducto").val();
 		console.error(codigo_producto);
 
@@ -288,61 +291,64 @@ function comprobarCodigoPro(){
 //*-guardar productos;	
 function GuardarProducto(e) {
 	e.preventDefault();
-	var nombre = $("#nombreProducto").val();
-	var codigoProducto = $("#codigoProducto").val();
-	var codigoProveedor = $("#codigoProveedor").val();		
-	var idCategoria = document.getElementById("select_categoria").value;
-	var idProveedor = document.getElementById("select_proveedor").value;
-	var descripcion = $("#descripcion").val();
-	var idMarca = document.getElementById("select_marca").value;
-	var costo = $("#costo").val();
-	var ubicacion = $("#ubicacion").val();
-	var stockMinimo = document.getElementById('stock_minimo').value;
-	var stockMaximo = document.getElementById('stock_maximo').value;
-	var margenContado = document.getElementById('margen_contado').value;
-	var margenOferta = document.getElementById('margen_oferta').value;
-	var margenCredito = document.getElementById('margen_credito').value;
-
-
-	 if(idCategoria==0){
-		swal("Faltan datos", "Seleccione una bodega o categoria", "info");
-		return;	 
-	 }
-
-	var sql = 'insert into productos (codigo,proveedor,codigo_proveedor,nombre, descripcion, ubicacion,categoria,marca,costo,stock_m,stock,margen_contado,margen_oferta,margen_credito,precio_venta)' +
-		'VALUES("' + codigoProducto + '",' + idProveedor + ',"' + codigoProveedor + '","' + nombre + '","' + descripcion + '","' + ubicacion + '",' + idCategoria + ',' + idMarca + ',' + costo + ', '+
-		''  + stockMinimo + ','+stockMaximo+',' + margenContado + ',' + margenOferta + ',' + margenCredito + ',0)';
-
-	 console.error(sql);
+		var nombre = $("#nombreProducto").val();
+		var codigoProducto = $("#codigoProducto").val();
+		var codigoProveedor = $("#codigoProveedor").val();		
+		var idCategoria = document.getElementById("select_categoria").value;
+		var idProveedor = document.getElementById("select_proveedor").value;
+		var descripcion = $("#descripcion").val();
+		var idMarca = document.getElementById("select_marca").value;
+		var costo = $("#costo").val();
+		var ubicacion = $("#ubicacion").val();
+		var stockMinimo = document.getElementById('stock_minimo').value;
+		var stockMaximo = document.getElementById('stock_maximo').value;
+		var margenContado = document.getElementById('margen_contado').value;
+		var margenOferta = document.getElementById('margen_oferta').value;
+		var margenCredito = document.getElementById('margen_credito').value;
 	
-	if ($("#nombreProducto").val() == "" || $("#stock_minimo").val() == "" ||
-		$("#costo").val() == 0 || $("#costo").val() == "" 	) {
-		swal("Debe Llenar los Campos!", "", "info");
 	
-
-	} else{
+		 if(idCategoria==0){
+			swal("Faltan datos", "Seleccione una bodega o categoria", "info");
+			return;	 
+		 }
 	
-
-		$.ajax({
-			type: 'POST',
-			url: 'php/consulta.php',
-			async: true,
-			data: {
-				tag: 'crud_productos',
-				sql: sql
-			},
-			success: function (data) {				
-			
-					document.getElementById('codigoProducto').focus();	
-					document.getElementById('codigoProducto').value='';	
-					swal("Insert!", "El producto fue ingresado correctamente!", "success");	
+		var sql = 'insert into productos (codigo,proveedor,codigo_proveedor,nombre, descripcion, ubicacion,categoria,marca,costo,stock_m,stock,margen_contado,margen_oferta,margen_credito,precio_venta)' +
+			'VALUES("' + codigoProducto + '",' + idProveedor + ',"' + codigoProveedor + '","' + nombre + '","' + descripcion + '","' + ubicacion + '",' + idCategoria + ',' + idMarca + ',' + costo + ', '+
+			''  + stockMinimo + ','+stockMaximo+',' + margenContado + ',' + margenOferta + ',' + margenCredito + ',0)';
+	
+		 console.error(sql);
+		
+		if ($("#nombreProducto").val() == "" || $("#codigoProducto").val() == "" ||
+			$("#costo").val() == 0 || $("#costo").val() == "" 	) {
+			swal("Debe Llenar los Campos!", "", "info");
+		
+	
+		} else{
+		
+	
+			$.ajax({
+				type: 'POST',
+				url: 'php/consulta.php',
+				async: true,
+				data: {
+					tag: 'crud_productos',
+					sql: sql
+				},
+				success: function (data) {				
 				
-			},
-			error: function (request, status, error) {
-				console.error("Error: Could not  guardarProducto");
-			}
-		});
-	}	
+						document.getElementById('codigoProducto').focus();	
+						document.getElementById('codigoProducto').value='';	
+						swal("Insert!", "El producto fue ingresado correctamente!", "success");	
+						ultimoCodigoProducto(); 
+					
+				},
+				error: function (request, status, error) {
+					console.error("Error: Could not  guardarProducto");
+				}
+			});
+		}	
+	
+	
 }
 
 
