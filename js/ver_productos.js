@@ -139,26 +139,65 @@ let tablaProductos = (arreglo) => {
 
 function eliminarProducto(e, id) {
 	e.preventDefault();
-	var sql = 'DELETE from productos where id =' + id;
-	$.ajax({
-		type: 'POST',
-		url: 'php/consulta.php',
-		data: {
-			sql: sql, tag: 'crud_datos' },
-		success: function (data) {
-			// console.log(data);
-			if (data == 1) {
-				alert('Borrado exitoso');
-				cargar_productos(e);
-			} else {
-				alert('No Borrado');
-			}
-		},
-		error: function (request, status, error) {
-			alert("Error: Could not eliminarProducto");
+	swal({
+		title: "Eliminar producto",
+		text: "¿esta seguro de eliminar el producto ?",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	})
+	.then((willDelete) => {
+		if (willDelete) {
+			borrar(id);
+		} else {
+			return;
 		}
-	});
+
+	});	
 
 }
+
+let borrar =async (idP) =>{
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`DELETE FROM PRODUCTOS  WHERE id=${idP}`;
+
+	const sql   = {sql: consulta, tag: `crud`}	
+
+	console.error(consulta);
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.	
+
+			
+			// $.notify({
+			// 	title: "Update: ",
+			// 	message: "Se actualizo el precio de venta:",
+			// 	icon: 'fas fa-check'
+			// }, {
+			// 	type: "success",
+			// 	placement: {
+			// 		from: "top",
+			// 		align: "right"
+			// 	},
+			// 	offset: 70,
+			// 	spacing: 70,
+			// 	z_index: 1031,
+			// 	delay: 2000,
+			// 	timer: 3000
+			// });	
+
+			setTimeout('location.reload()', 1000);
+		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+}
+
 
 window.onload = cargarCategoria

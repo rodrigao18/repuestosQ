@@ -434,8 +434,10 @@ let tablaProductos = (array) => {
 			var codigoProveedor = array[i]['codigo_proveedor'];
 			var costo = array[i]['costo'];			
 			var descuento =array[i]['descuento'];
+			let toFinal=costo*2.05*1.19;
+			let caldes=(toFinal * 0.25);
+			let desFinal=parseInt(toFinal)-parseInt(caldes);
 			
-		
 			var precioVenta=array[i]['precio_venta'];
 			let precioIva=precioVenta*(0.25);
 			let precioFinal=precioVenta-precioIva;
@@ -465,9 +467,9 @@ let tablaProductos = (array) => {
 				'min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'des' + parseFloat(i + 1) + '" '+
 				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="99" data-toggle="tooltip" data-placement="top" title="max 25" value="'+descuento+'"> </td>' +													
-				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + precioVenta + '></td>' +
-				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '" onkeypress=calDescuento(event,this,'+(i+1)+')   type="number" value=' + redondeo(precioFinal,0) + '></td>' +
-				'<td><input style="width:100px; background: #d8d800;color:#111" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(precioFinal,0) + '></td>' +							
+				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(toFinal,0) + '></td>' +
+				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '" onkeypress=calDescuento(event,this,'+(i+1)+')   type="number" value=' + redondeo(desFinal,0) + '></td>' +
+				'<td><input style="width:100px; background: #d8d800;color:#111" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(desFinal,0) + '></td>' +							
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
 				'<td id="' + 'desOcul' + parseFloat(i + 1) + '" style="display:none;">0</td>' +	

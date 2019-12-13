@@ -102,6 +102,7 @@
 	<script src="js/plugins/pace.min.js"></script>
 	<script type="text/javascript" src="js/ver_productos.js?vknet28"></script>
 	<?php include "./js/table.php"; ?>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 
