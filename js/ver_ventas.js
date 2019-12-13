@@ -75,6 +75,8 @@ let cargar_ventas_onchange = async() =>{
 	
 }
 
+
+
 let clientes = async () => {
 
 	const baseUrl = 'php/consultaFetch.php';
@@ -259,7 +261,8 @@ function eliminarProducto(e, id) {
 	})
 	.then((willDelete) => {
 		if (willDelete) {
-			borrarVenta(id);
+			//borrarVenta(id);
+			obtenerStock(id);
 		} else {
 			return;
 		}
@@ -268,13 +271,14 @@ function eliminarProducto(e, id) {
 
 }
 
-let borrarVenta =async (idP) =>{
+let obtenerStock = async(idP) => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`DELETE FROM VENTAS  WHERE id=${idP}`;
+	let consulta=`SELECT vr.id,vr.codigo_producto,p.id as idProducto,p.codigo_proveedor,id_cliente,p.precio_venta,vr.nombre_producto AS nombre,DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta
+	FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta JOIN productos p ON p.codigo=vr.codigo_producto WHERE vr.id_venta=${idP} AND v.estado_venta=1`;
 
-	const sql   = {sql: consulta, tag: `crud`}	
+	const sql   = {sql: consulta, tag: `array_datos`}	
 
 	console.error(consulta);
 	
@@ -285,31 +289,69 @@ let borrarVenta =async (idP) =>{
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.	
 
-			
-			// $.notify({
-			// 	title: "Update: ",
-			// 	message: "Se actualizo el precio de venta:",
-			// 	icon: 'fas fa-check'
-			// }, {
-			// 	type: "success",
-			// 	placement: {
-			// 		from: "top",
-			// 		align: "right"
-			// 	},
-			// 	offset: 70,
-			// 	spacing: 70,
-			// 	z_index: 1031,
-			// 	delay: 2000,
-			// 	timer: 3000
-			// });	
+		let array = JSON.parse(data);		
+		
 
-			const borraVrelacional = borrVentaRe (idP);
+		for(let i=0; i < array.length; i++){			
+			
+			const devol = await devolverStock(array[i]['cantidad'],array[i]['idProducto']);
+		
+			}
+
+			const borrar = await borrarVenta(idP);			
 		
 		
 	} catch (error) { console.log('error en la conexion ', error); }
 
-}
+	}
+		
 
+		let devolverStock = async(cantidad,idProducto) =>{
+
+			const baseUrl = 'php/consultaFetch.php';
+
+			const consulta = `UPDATE productos set stock =stock + (${cantidad}) WHERE id=${idProducto}`;
+
+			const sql = {sql: consulta, tag: `array_datos`} 
+
+			console.error(consulta);
+	
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.
+			console.error('actulizado');
+			
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+
+
+		}
+
+let borrarVenta =async (idP) =>{
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`DELETE FROM VENTAS  WHERE id=${idP}`;
+
+	const sql   = {sql: consulta, tag: `crud`}
+
+	
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		
+
+			const borraVrelacional = borrVentaRe (idP);		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+}
 
 let borrVentaRe = async (idP) => {
 
