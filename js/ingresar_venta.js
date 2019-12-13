@@ -893,8 +893,7 @@ let recalcularValores = () => {
 	let tablaC = document.getElementById("tablaBodyCotizacion"),
 	  rIndex;
 	let nFilas = $("#tablaBodyCotizacion > tr").length;	
-
-	
+			
 
 	for (let i = 0; i < nFilas; i++) {
 
@@ -1209,49 +1208,83 @@ for (var i = 0; i < nFilas; i++) {
 				console.error(sql);
 	
 				try {
-				//*-llamar ajax al servidor mediate api fetch.
-				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-				//*-request de los datos en formato texto(viene todo el request)
-				const data = await response.text();
-				//*-se parsea solo la respuesta del Json enviada por el servidor.
-			
-				swal("Venta creada", "los datos fueron guardados exitosamente", "success");
-				setTimeout('window.location.href = "ingresar_venta.php";', 3000);
-
-				// let limpiarPost=`<form method="POST" name="envia" action="imgresar_venta.php">
-				// <input type="hidden" class="form-control" id="datosProductos" name="datosProductos">
-				// </form>
-				// `;
-				// document.envia.submit()
 				
-				} catch (error) { console.log('error en la conexion ', error); }
+				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+				
+				const data = await response.text();					
 
-		
+				} catch (error) { console.log('error en la conexion ', error); }		
 			}
+			desContarStock();
 
 
 }
+	let desContarStock = () => {
 
-let editarNonmbre = async(idProducto,nombreEditable) => {
+		let tablaC = document.getElementById("tablaBodyCotizacion"),
+		rIndex;
 
-				const baseUrl = 'php/consultaFetch.php';
+		let nFilas = $("#tablaBodyCotizacion > tr").length;	
+		let stock;
+		let stockFinal;
+		let idProducto;
+			stock=tablaC.rows[0].cells[2];
+			stockFinal= stock.getElementsByTagName('input')[0].value;
+			console.error(stock);
+		for(let i=0; i < nFilas; i++ ){
 
-				let consulta=`UPDATE PRODUCTOS set nombre="${nombreEditable}" WHERE id=${idProducto}`;
+			stock=tablaC.rows[i].cells[2];
+			stockFinal= stock.getElementsByTagName('input')[0].value;
+			idProducto=tablaC.rows[i].cells[9].innerHTML;
+			actualizarStock(stockFinal,idProducto)
 
-				const sql   = {sql: consulta, tag: `crud`}		
-				console.error(sql);
-	
-				try {
-				//*-llamar ajax al servidor mediate api fetch.
-				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-				//*-request de los datos en formato texto(viene todo el request)
-				const data = await response.text();
-				//*-se parsea solo la respuesta del Json enviada por el servidor.				
-				
-				} catch (error) { console.log('error en la conexion ', error); }
-
-		
+			}		
+			
+			swal("Venta creada", "los datos fueron guardados exitosamente", "success");
+			setTimeout('window.location.href = "ingresar_venta.php";', 1500);
 	}
+
+	let actualizarStock = async (stockFinal,idProducto) => {
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		const consulta = `UPDATE productos set stock =stock - (${stockFinal}) WHERE id=${idProducto}`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+		console.error(consulta);
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.
+		console.error('actulizado');
+		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+}
+
+	let editarNonmbre = async(idProducto,nombreEditable) => {
+
+					const baseUrl = 'php/consultaFetch.php';
+
+					let consulta=`UPDATE PRODUCTOS set nombre="${nombreEditable}" WHERE id=${idProducto}`;
+
+					const sql   = {sql: consulta, tag: `crud`}		
+					console.error(sql);
+		
+					try {
+					//*-llamar ajax al servidor mediate api fetch.
+					const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+					//*-request de los datos en formato texto(viene todo el request)
+					const data = await response.text();
+					//*-se parsea solo la respuesta del Json enviada por el servidor.				
+					
+					} catch (error) { console.log('error en la conexion ', error); }
+
+			
+		}
 
 
 
