@@ -12,6 +12,57 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 	<!-- Font-icon css-->
 	<link rel="stylesheet" href="css/ventas.css?vknet28">
+
+<style>
+.row-1 {
+  width: 6.25%;
+}
+.row-2 {
+  width: 7.6%;
+}
+.row-3{
+  width: 7.6%;
+  text-align:center;
+}
+.row-4 {
+  width: 7.6%;
+}
+.row-5 {
+  width: 7.6%;
+}
+.row-6 {
+  width: 7.6%;
+}
+.row-7 {
+  width: 7.6%;
+}
+.row-8 {
+  width: 1.6%;
+}
+.row-9 {
+  width: 7.6%;
+}
+.row-10 {
+  width: 7.6%;
+}
+.row-11 {
+  width: 7.6%;
+}
+.row-12 {
+  width: 7.6%;
+}
+.row-13 {
+  width: 7.6%;
+}
+.row-14 {
+  width: 7.6%;
+}
+.row-15 {
+  width: 7.6%;
+}
+
+	</style>
+
 </head>
 
 <body class="app sidebar-mini rtl">
@@ -76,7 +127,18 @@
 										</div>
 									</div>
 								</form>										
-
+								<div class="form-row">
+						<div class="form-group col-md-12">				
+						<div class="input-group">
+							<div class="input-group-prepend">
+							<div class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></div>
+							</div>
+							<input class="form-control form-control-sm " id="buscar" name="buscar" onkeyup="prebusqueda('detalle');" type="text" placeholder="Buscar" aria-label="Search">
+						</div>
+					
+					</div>
+					</div>
+					</div>
 							</div>
 						</div>
 					</div>
@@ -102,7 +164,9 @@
 							<th id="TituloNombre" width="30%" scope="col">Nombre</th>
 							<th width="10%" scope="col"> Cantidad</th>
 							<th width="20%" scope="col"> Precio Unitario</th>
-							<th width="20%" scope="col"> Total Unitario</th>									
+							<th width="20%" scope="col"> Descuento</th>
+							<th width="20%" scope="col"> Total Unitario</th>
+							<th width="5%"><th/>									
 						</tr>
 						</thead>
 						<tbody id="tablaBodyCotizacion">
@@ -112,14 +176,27 @@
 					<!-- TABLA TOTALNETO-->
 					<table class="table table-striped" id="tablaTotal">
 						<tbody id="valorTotal">
-							
 							<tr>
 								<td></td>
 								<td></td>
 								<td></td>
-								<td width="10%">Total venta</td>
-								<td width="20%"><input type="text" class="form-control" id="totalNeto" disabled></td>
-							</tr>						
+								<td width="10%">Neto</td>
+								<td width="20%"><input type="text" class="form-control" id="Neto" disabled></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td width="10%">iva</td>
+								<td width="20%"><input type="text" class="form-control" id="ivaTotal" disabled></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td width="10%">Total</td>
+								<td width="20%"><input type="text" class="form-control" id="totalF" disabled></td>
+							</tr>
 						</tbody>
 					</table>
 					<div id="btn-ocultar" style="display:none;">

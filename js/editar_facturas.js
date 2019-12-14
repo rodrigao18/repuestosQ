@@ -31,7 +31,7 @@ cargarDatos = async (id) => {
         // const Marcaa = await Marca(id_mar);
         // const Productoss = await Productos(array);		
 		
-	} catch (error) { console.log('error en la conexion ', error); }
+	} catch (error) {  }
 
 }
 
@@ -60,7 +60,7 @@ let cargarProveedor = async (proveedor) => {
         // const Marcaa = await Marca(id_mar);
         // const Productoss = await Productos(array);		
 		
-	} catch (error) { console.log('error en la conexion ', error); }
+	} catch (error) {  }
 
 
 
@@ -86,7 +86,7 @@ let  bucarProductos = async () => {
 
 	if(buscar=="" || buscar == " "){return;}
 
-	if( buscar.indexOf(" ") !== -1){console.error('aca');}	
+	if( buscar.indexOf(" ") !== -1){}	
 
 		const baseUrl = 'php/consultaFetch.php';
 
@@ -112,7 +112,7 @@ let  bucarProductos = async () => {
 			const tablaproductoss = await tablaProductos(array);
 			
 			
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 	
 }
 
@@ -182,7 +182,7 @@ let agregarProductos =  (e,btn) => {
 
 	let evento = e.preventDefault();
 	let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
-	console.error('idTabla ' + idTabla);
+	
 	
 	var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
 	
@@ -200,7 +200,7 @@ let agregarProductos =  (e,btn) => {
 	let margen = document.getElementById(`mar${idTabla}`).value;
 	let descuento=document.getElementById(`des${idTabla}`).value;
 	let arrCod=[];
-	console.error('margen ' + margen);
+	
 	ITEM++;
 	insertarNuevoProducto(codigo_proveedor,codigo_producto,precio_costo,cantidad,nombre,precioTotal);
 	var estadoEntr = "";
@@ -235,9 +235,8 @@ let agregarProductos =  (e,btn) => {
 		const consulta = `INSERT INTO facturas_relacional (codigoProveedor,codigoProducto,precioUnitario,cantidad,totalUnitario,idfactura,nombreProducto)
 		VALUES("${codigo_proveedor.trim()}","${codigo_producto}",${precio_costo},${cantidad},${precioTotal},${ID},"${nombre}")`;
 	
-		const sql = {sql: consulta, tag: `crud`} 
-	
-		console.error(consulta);
+		const sql = {sql: consulta, tag: `crud`} 	
+		
 	
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
@@ -262,7 +261,7 @@ let agregarProductos =  (e,btn) => {
 		});
 		
 		
-	} catch (error) { console.log('error en la conexion ', error); }
+	} catch (error) {  }
 
 
 	}
@@ -286,9 +285,9 @@ let datosStock = (index) => {
 		idProducto=tablaC.rows[i].cells[1].innerHTML;
 		nombre=tablaC.rows[i].cells[3].innerText;
 		//actualizarDatosFactura(stockFinal,idProducto,nombre,index)
-		console.error('nombre  ' + nombre);
-		console.error('stockFinal  ' + stockFinal);
-		console.error('idProducto  ' + idProducto);
+		
+		
+		
 
 		}
 		
@@ -308,7 +307,7 @@ let actualizarDatosFactura = async (stockFinal,idProducto,nombre,index) => {
 
 	const sql = {sql: consulta, tag: `array_datos`} 
 
-	console.error(consulta);
+	
 
 try {
 	//*-llamar ajax al servidor mediate api fetch.
@@ -324,7 +323,7 @@ try {
 		
 	
 	
-} catch (error) { console.log('error en la conexion ', error); }
+} catch (error) {  }
 
 }
 
@@ -376,7 +375,7 @@ let Productos =  (array) => {
 	//comprobar repetidos 
 	let comprobarRepetidos = (arrCod,cols,idProd) => {	
 			
-		 console.error('idProd ' + idProd);			
+		 			
 		let tablaC = document.getElementById("tablaBodyCotizacion"),
 		rIndex;
 		let nFilas = $("#tablaBodyCotizacion > tr").length;		
@@ -421,7 +420,7 @@ let Productos =  (array) => {
 
 	let removerItem = async(id,idFr) => {
 					
-		console.error('id ' + id);	
+			
 		$("#fila" + id).remove();
 		borrarItemBd(idFr);
 		const recal = await recalcularValores();
@@ -434,7 +433,7 @@ let Productos =  (array) => {
 		const consulta=`DELETE FROM FACTURAS_RELACIONAL WHERE id=${idFr}`;
 		const sql   = {sql: consulta, tag: `crud`}	
 		
-		console.error(consulta);
+		
 		try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -444,7 +443,7 @@ let Productos =  (array) => {
 		
 		const upFacturaa = await editar(1);			
 		
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 	}
 
 	let editar = async(e,index) => {
@@ -477,7 +476,7 @@ let Productos =  (array) => {
 		
 		const upFacturaa = await updateFacturaRelacional(id,index);			
 		
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 		
 	} 
 
@@ -528,7 +527,7 @@ let Productos =  (array) => {
 		
 						}	
 				
-				} catch (error) { console.log('error en la conexion ', error); }
+				} catch (error) {  }
 
 		
 		}

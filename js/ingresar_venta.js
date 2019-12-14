@@ -2,7 +2,7 @@ var ITEM = 0;
 var MARCAS;
 let cargarDatos = async() => {
 
-	console.error('TIPO_TURNO ' + TIPO_TURNO );
+	
 	if (TIPO_TURNO == 0) {
 		swal('Precaución', 'Debe iniciar turno para ingresar una venta', 'info');
 		setTimeout(function () {
@@ -17,7 +17,7 @@ let cargarDatos = async() => {
 	const ulfactura = await ultimoFactura();
 	const ultTarjeta = await ultimoTarjeta();
 
-	console.error(PRODUCTOS);
+	
 
 	if(PRODUCTOS.length > 0){
 	importarProductos();
@@ -80,11 +80,11 @@ let cargarDatos = async() => {
 			}
 			MARCAS = arr;
 
-			console.error(MARCAS[1]);
+			
 			
 			//const provinciass = await provincias(array);
 			
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 
 	}
 
@@ -105,16 +105,16 @@ let ultimoVenta = async () => {
 		const data = await response.text();
 		
 		let array = JSON.parse(data);
-		console.error(array);
+		
 		let ultima_boleta=array[0]['numeroBoleta'];
 
-		console.error(ultima_boleta);
+		
 
 		document.getElementById('id_boleta').value=ultima_boleta;
       
         //const provinciass = await provincias(array);
         
-    } catch (error) { console.log('error en la conexion ', error); }
+    } catch (error) {  }
     
 
 }
@@ -134,7 +134,7 @@ let ultimoCotizacion = async () => {
 		const data = await response.text();
 		
 		let array = JSON.parse(data);
-		console.error(array);
+		
 		let ultima_boleta=array[0]['numeroCotizacion'];
 
 		
@@ -143,7 +143,7 @@ let ultimoCotizacion = async () => {
       
         //const provinciass = await provincias(array);
         
-    } catch (error) { console.log('error en la conexion ', error); }
+    } catch (error) {  }
     
 
 }
@@ -164,7 +164,7 @@ let ultimoGuia = async () => {
 		
 		let array = JSON.parse(data);
 		let ultima_boleta;
-		console.error(array);
+		
 		
 		 ultima_boleta=array[0]['numeroGuia'];
 	
@@ -176,7 +176,7 @@ let ultimoGuia = async () => {
       
         //const provinciass = await provincias(array);
         
-    } catch (error) { console.log('error en la conexion ', error); }
+    } catch (error) {  }
     
 
 }
@@ -212,7 +212,7 @@ let ultimoFactura = async () => {
       
         //const provinciass = await provincias(array);
         
-    } catch (error) { console.log('error en la conexion ', error); }
+    } catch (error) {  }
 }
 
 let ultimoTarjeta = async () => {
@@ -246,7 +246,7 @@ let ultimoTarjeta = async () => {
       
         //const provinciass = await provincias(array);
         
-    } catch (error) { console.log('error en la conexion ', error); }
+    } catch (error) {  }
     
 
 }
@@ -324,7 +324,7 @@ let ultimoTarjeta = async () => {
 			
 		
 			
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 
 
 	}
@@ -346,7 +346,7 @@ let clientes =  async() => {
 		const marc = await marcas();
         //const provinciass = await provincias(array);
         
-    } catch (error) { console.log('error en la conexion ', error); }
+    } catch (error) {  }
     
 }
 
@@ -369,7 +369,7 @@ let  bucarProductos = async () => {
 
 	if(buscar=="" || buscar == " "){return;}
 
-	if( buscar.indexOf(" ") !== -1){console.error('aca');}	
+	if( buscar.indexOf(" ") !== -1){}	
 
 		const baseUrl = 'php/consultaFetch.php';
 
@@ -395,7 +395,7 @@ let  bucarProductos = async () => {
 			const tablaproductoss = await tablaProductos(array);
 			
 			
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 	
 }
 
@@ -467,7 +467,7 @@ let tablaProductos = (array) => {
 				'min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'des' + parseFloat(i + 1) + '" '+
 				' onkeypress="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"  type="number" min="0" max="99" data-toggle="tooltip" data-placement="top" title="descuento max 99" value="'+descuento+'"> </td>' +													
-				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(toFinal,0) + '></td>' +
+				'<td><input style="background: #d8d800;color:#111" disabled class="form-control" id="' + 'venSin' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(toFinal,0) + '></td>' +
 				'<td><input style="background: #d8d800;color:#111" class="form-control" id="' + 'venCon' + parseFloat(i + 1) + '" onkeypress=calDescuento(event,this,'+(i+1)+')   type="number" value=' + redondeo(desFinal,0) + '></td>' +
 				'<td><input style="width:100px; background: #d8d800;color:#111" class="form-control" id="' + 'total' + parseFloat(i + 1) + '"   type="number" value=' + redondeo(desFinal,0) + '></td>' +							
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
@@ -485,11 +485,8 @@ let tablaProductos = (array) => {
 				// document.getElementById('chPrecioSin').innerHTML = 'Precio sin <input id="chPreSin" ' + chPrecioSinDes + ' type="radio"  name="optradio" onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion sin descuento">'
 				// document.getElementById('chPrecioCon').innerHTML = 'Precio con <input id="chPreCon" ' + chPrecioConDes + ' type="radio"  name="optradio"  onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion con descuento">'
 				$('[data-toggle="tooltip"]').tooltip();
-
-				
-
-
 }		
+
 
 
 			//comprobar repetidos 
@@ -505,7 +502,7 @@ let tablaProductos = (array) => {
 				codigoTemp=tablaC.rows[i].cells[1].innerHTML;
 				arrCod.push(codigoTemp,cols+(i+1));
 			}
-			console.error(arrCod);	 
+				 
 			
 			borrarElement(arrCod);
 			
@@ -517,14 +514,14 @@ let tablaProductos = (array) => {
 			var uniqs = arrCod.filter(function(item, index, array) {
 				
 			
-				console.error(array.indexOf(item) === index);
+				
 
 				switch(array.indexOf(item) === index){
 					case  true: 
-					console.error('entro a verdad');
+					
 					break
 					case false:
-					console.error('entro a false');
+					
 					let elimina=array.pop();		
 					let idfila=elimina.slice(4); 
 					
@@ -546,7 +543,7 @@ let tablaProductos = (array) => {
 
 					let idTabla=id.id;
 
-					console.error('idTabla ' + idTabla);
+					
 					let cantidad = document.getElementById(`cant${indice}`).value;
 
 					let precioFinal=document.getElementById(idTabla).value;
@@ -556,10 +553,10 @@ let tablaProductos = (array) => {
 					let preSinDes=document.getElementById(`venSin${indice}`).value;
 
 
-					console.error('costo con iva ' + redondeo(costoConIva,0));
+					
 
 					let descuento=preSinDes-precioFinal;
-					console.error('descuento '  + descuento);
+					
 					document.getElementById(`desOcul${indice}`).innerHTML=descuento;					
 					let total = cantidad*precioFinal;
 					document.getElementById(`total${indice}`).value=total;
@@ -590,7 +587,7 @@ let tablaProductos = (array) => {
 		 WHERE vr.codigo_producto=${codigo} AND estado=1 ORDER BY v.id DESC LIMIT 1`;
 
 		const sql = {sql: consulta, tag: `array_datos`} 
-		console.error(consulta);
+		
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
 			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -611,7 +608,7 @@ let tablaProductos = (array) => {
 		
 			
 			
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 		
 
 	}
@@ -642,7 +639,7 @@ let tablaProductos = (array) => {
 			
 			let precioIva=array[0]['precioUnitario']*0.25;
 			
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 		
 
 	}
@@ -684,7 +681,7 @@ let tablaProductos = (array) => {
 
 		const sql   = {sql: consulta, tag: `crud`}	
 
-		console.error(consulta);
+		
 		
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
@@ -708,7 +705,7 @@ let tablaProductos = (array) => {
 					timer: 3000
 				});				
 			
-		} catch (error) { console.log('error en la conexion ', error); }
+		} catch (error) {  }
 
 			
 		}
@@ -759,7 +756,7 @@ let tablaProductos = (array) => {
 		let precioConOcul=document.getElementById(`preConOcul${idTabla}`).value;
 		let desOcul=document.getElementById(`desOcul${idTabla}`).innerHTML;
 		let total=document.getElementById(`venCon${idTabla}`).value;
-		console.error(desOcul);
+		
 		let precioTotal = cantidad * precio_sin;
 		// let idProd = table.rows[idTabla].cells[11].innerHTML;
 		let descuento = document.getElementById(`des${idTabla}`).value;
@@ -914,21 +911,21 @@ let recalcularValores = () => {
 	let neto = valorTotal/1.19;
 	document.getElementById(`totalNeto`).value=formatearNumeros(redondeo(neto,0));
 	let iva = convertirNumeros(totalapagar)-neto;
-	console.error('iva '+ iva);
+	
 	document.getElementById(`iva`).value=formatearNumeros(redondeo(iva,0)); 
 	document.getElementById(`totalapagar`).value=formatearNumeros(valorTotal);	  
 
 }
 
 let cantidadCalculo = (id,indice) =>{
-	console.error('id ' + id);
-	console.error('indice ' + indice);
+	
+	
 	let input=`input[name=can${(id)}]`;
 	var cantidad=0;
 	if(indice==1){
 
 		 cantidad = document.getElementById(`cant${id}`).value;
-		 console.error('cantidad ' +  cantidad);
+		 
 
 	}else{
 		
@@ -941,15 +938,15 @@ let cantidadCalculo = (id,indice) =>{
 		let precioVen=convertirNumeros(document.getElementById('venCon'+id).value);
 		let precioT=cantidad*precioVen;
 
-		console.error('precioT ' +  precioT);
+		
 		document.getElementById('total'+id).value=(precioT);
 
 	}else{
 	
-		console.error(cantidad);
+		
 		let precioVen=convertirNumeros(document.getElementById('prect'+id).value);
 		let precioT=cantidad*precioVen;
-		console.error('precioT ' + precioT);
+		
 		document.getElementById('vent'+id).value=formatearNumeros(precioT);
 	}
 	
@@ -969,7 +966,7 @@ let actualizarPrecioVenta = async (idP,precioVent,descuento) => {
 
 	const sql   = {sql: consulta, tag: `crud`}	
 
-	console.error(consulta);
+	
 	
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
@@ -997,7 +994,7 @@ let actualizarPrecioVenta = async (idP,precioVent,descuento) => {
 			});	
 		
 		
-	} catch (error) { console.log('error en la conexion ', error); }
+	} catch (error) {  }
 
 
 }
@@ -1009,7 +1006,7 @@ let actualizaMargen = async (idP,margen) => {
 
 	const sql   = {sql: consulta, tag: `crud`}	
 
-	console.error(consulta);
+	
 	
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
@@ -1037,7 +1034,7 @@ let actualizaMargen = async (idP,margen) => {
 			// });	
 		
 		
-	} catch (error) { console.log('error en la conexion ', error); }
+	} catch (error) {  }
 
 
 }
@@ -1070,8 +1067,8 @@ let recalcularIva = () => {
 	let desIva=document.getElementById('totalF').value;
 	let neto = (convertirNumeros(desIva) / (1.19));
 	let iva = convertirNumeros(desIva)-neto;
-	console.error(iva);
-	//console.error(redondeo(neto,0));
+	
+	//
 	document.getElementById('iva').value=formatearNumeros(redondeo(iva,0));
 	document.getElementById('totalNeto').value=formatearNumeros(redondeo(neto,0));
 
@@ -1123,7 +1120,7 @@ let finalizarVenta = async () => {
 		if(estadoVenta==4){
 
 			var numeroCotizacion=document.getElementById('id_cotizacion').value;
-			console.error('numeroCotizacion ' + numeroCotizacion);
+			
 
 		}else if(estadoVenta==3){
 
@@ -1169,18 +1166,18 @@ let finalizarVenta = async () => {
 
 	const sql   = {sql: consulta, tag: `insert_return_id`}		
 
-	console.error(sql);
+	
 				try {
 				//*-llamar ajax al servidor mediate api fetch.
 				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
 				//*-request de los datos en formato texto(viene todo el request)
 				const data = await response.text();
 				//*-se parsea solo la respuesta del Json enviada por el servidor.
-				console.error(data);	
+					
 				if (!isNaN(data)) {	 	insertProductos(data);	}
 				
 				
-				} catch (error) { console.log('error en la conexion ', error); }
+				} catch (error) {  }
 
 		}
 
@@ -1212,7 +1209,7 @@ for (var i = 0; i < nFilas; i++) {
 	VALUES("${codigo}",${precioUnitarioConvertido},${cantidad},${totalUnitarioConvertido},${id},"${nombre}")`;	
 
 				const sql   = {sql: consulta, tag: `crud`}		
-				console.error(sql);
+				
 	
 				try {
 				
@@ -1220,7 +1217,7 @@ for (var i = 0; i < nFilas; i++) {
 				
 				const data = await response.text();					
 
-				} catch (error) { console.log('error en la conexion ', error); }		
+				} catch (error) {  }		
 			}
 			desContarStock();
 
@@ -1237,7 +1234,7 @@ for (var i = 0; i < nFilas; i++) {
 		let idProducto;
 			stock=tablaC.rows[0].cells[2];
 			stockFinal= stock.getElementsByTagName('input')[0].value;
-			console.error(stock);
+			
 		for(let i=0; i < nFilas; i++ ){
 
 			stock=tablaC.rows[i].cells[2];
@@ -1258,17 +1255,17 @@ for (var i = 0; i < nFilas; i++) {
 		const consulta = `UPDATE productos set stock =stock - (${stockFinal}) WHERE id=${idProducto}`;
 
 		const sql = {sql: consulta, tag: `array_datos`} 
-		console.error(consulta);
+		
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
 		//*-request de los datos en formato texto(viene todo el request)
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
-		console.error('actulizado');
 		
 		
-	} catch (error) { console.log('error en la conexion ', error); }
+		
+	} catch (error) {  }
 
 }
 
@@ -1279,7 +1276,7 @@ for (var i = 0; i < nFilas; i++) {
 					let consulta=`UPDATE PRODUCTOS set nombre="${nombreEditable}" WHERE id=${idProducto}`;
 
 					const sql   = {sql: consulta, tag: `crud`}		
-					console.error(sql);
+					
 		
 					try {
 					//*-llamar ajax al servidor mediate api fetch.
@@ -1288,7 +1285,7 @@ for (var i = 0; i < nFilas; i++) {
 					const data = await response.text();
 					//*-se parsea solo la respuesta del Json enviada por el servidor.				
 					
-					} catch (error) { console.log('error en la conexion ', error); }
+					} catch (error) {  }
 
 			
 		}
@@ -1303,8 +1300,8 @@ let quitarDescuento = (e) => {
 	let desIva=document.getElementById('totalapagar').value;
 	let neto = (convertirNumeros(desIva) / (1.19));
 	let iva = convertirNumeros(desIva)-neto;
-	console.error(iva);
-	//console.error(redondeo(neto,0));
+	
+	//
 	document.getElementById('iva').value=formatearNumeros(redondeo(iva,0));
 	document.getElementById('totalNeto').value=formatearNumeros(redondeo(neto,0));
 	//document.getElementById('totalF').value=formatearNumeros(redondeo(totalFijo,0));
@@ -1344,7 +1341,7 @@ let quitarDescuento = (e) => {
 		
 		valorTotal = formatearNumeros(cantotal)*convertirNumeros(precUtotal);
 
-		console.error('valorTotal ' + valorTotal);
+		
 
 		totalUni=`${document.querySelector(nuevoTota).value=formatearNumeros(valorTotal)}`;	
 		document.querySelector(totU).value=precUtotal;
