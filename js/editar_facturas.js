@@ -285,7 +285,7 @@ let datosStock = (index) => {
 		stockFinal= stock.getElementsByTagName('input')[0].value;
 		idProducto=tablaC.rows[i].cells[1].innerHTML;
 		nombre=tablaC.rows[i].cells[3].innerText;
-		actualizarDatosFactura(stockFinal,idProducto,nombre,index)
+		//actualizarDatosFactura(stockFinal,idProducto,nombre,index)
 		console.error('nombre  ' + nombre);
 		console.error('stockFinal  ' + stockFinal);
 		console.error('idProducto  ' + idProducto);
