@@ -117,7 +117,7 @@
 							<div class="input-group-prepend">
 							<div class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></div>
 							</div>
-							<input class="form-control form-control-sm " disabled id="buscar" name="buscar" onkeyup="prebusqueda('detalle');" type="text" placeholder="Buscar" aria-label="Search">
+							<input class="form-control form-control-sm "  id="buscar" name="buscar" onkeyup="prebusqueda('detalle');" type="text" placeholder="Buscar" aria-label="Search">
 						</div>
 					
 					</div>
@@ -149,6 +149,7 @@
 								<th width="10%">Precio Unitario</th>
 								<th width="10%"></th>
 								<th width="10%">Precio Total</th>
+								<th width="10%"></th>
 							</tr>
 
 						</thead>

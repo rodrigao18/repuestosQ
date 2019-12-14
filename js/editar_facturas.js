@@ -174,7 +174,101 @@ let tablaProductos = (array) => {
 }
 
 
-let datosStock = () => {
+//agragar  productos a la tabla factura
+let agregarProductos =  (e,btn) => {
+
+	$("#tablaProductos").show();
+	$("#salidaTabla").hide();
+
+	let evento = e.preventDefault();
+	let idTabla = btn.id; // SE OBTIENE EL ID DESDE EL BOTON DEL FORMULARIO CON EL LA PROPIEDAD THIS
+	console.error('idTabla ' + idTabla);
+	
+	var table = document.getElementById("tabla"); //ID DE LA TABLA PARA OBTENER LOS VALORES DE LAS FILAS	
+	
+	//borramos el input buscar
+	$('#buscar').val('');
+
+	let codigo_producto = table.rows[idTabla].cells[0].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+	let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
+	let nombre = table.rows[idTabla].cells[2].innerHTML;
+	let cantidad = document.getElementById('can' + idTabla).value;
+	let precio_costo = document.getElementById('cos' + idTabla).value; // ID DEL SELECT PRECIO;
+	let precio_venta = document.getElementById('ven' + idTabla).value; // ID DEL SELECT PRECIO;
+	let precioTotal = cantidad * precio_costo;
+	let idProd = table.rows[idTabla].cells[9].innerHTML;
+	let margen = document.getElementById(`mar${idTabla}`).value;
+	let descuento=document.getElementById(`des${idTabla}`).value;
+	let arrCod=[];
+	console.error('margen ' + margen);
+	ITEM++;
+	insertarNuevoProducto(codigo_proveedor,codigo_producto,precio_costo,cantidad,nombre,precioTotal);
+	var estadoEntr = "";
+	estadoEntr = document.getElementById('checkEnt').checked;
+
+	if(estadoEntr == true){
+		actualizarPrecioVenta(idProd,precio_venta,descuento,margen);
+	}
+	let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
+	
+	$("#tablaBodyCotizacion").append('<tr id="fila' + nfilas + '" >' +
+	'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
+	'<td>' + codigo_producto + '</td>' +
+	'<td><input name="' + 'canTd' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
+	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
+	'<td><input class="form-control" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio_costo)+'"></td>' +
+	'<td></td>'+
+	'<td><input name="' + 'preTd' + parseFloat(nfilas) + '" class="form-control" id="' + 'prect' + parseFloat(nfilas) + '"  onkeypress=precioModificar(event)  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +
+	'<td style="display:none;">'+idProd+'</td>' +
+	'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+codigo_producto+')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+	'</tr>');
+
+		$('[data-toggle="tooltip"]').tooltip();
+		recalcularValores();
+		comprobarRepetidos(arrCod,'cols',codigo_producto);		
+}
+
+	let insertarNuevoProducto =async (codigo_proveedor,codigo_producto,precio_costo,cantidad,nombre,precioTotal) => {
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		const consulta = `INSERT INTO facturas_relacional (codigoProveedor,codigoProducto,precioUnitario,cantidad,totalUnitario,idfactura,nombreProducto)
+		VALUES("${codigo_proveedor.trim()}","${codigo_producto}",${precio_costo},${cantidad},${precioTotal},${ID},"${nombre}")`;
+	
+		const sql = {sql: consulta, tag: `crud`} 
+	
+		console.error(consulta);
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		$.notify({
+			title: "Producto agregadp : ",
+			message: `Producto agregado en la BD:`,
+			icon: 'fas fa-exclamation-circle'
+		}, {
+			type: "success",
+			placement: {
+				from: "top",
+				align: "right"
+			},
+			offset: 70,
+			spacing: 70,
+			z_index: 1031,
+			delay: 1500,
+			timer: 1500
+		});
+		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+
+	}
+
+
+let datosStock = (index) => {
 
 	let tablaC = document.getElementById("tablaBodyCotizacion"),
 	rIndex;
@@ -191,7 +285,7 @@ let datosStock = () => {
 		stockFinal= stock.getElementsByTagName('input')[0].value;
 		idProducto=tablaC.rows[i].cells[1].innerHTML;
 		nombre=tablaC.rows[i].cells[3].innerText;
-		actualizarDatosFactura(stockFinal,idProducto,nombre)
+		actualizarDatosFactura(stockFinal,idProducto,nombre,index)
 		console.error('nombre  ' + nombre);
 		console.error('stockFinal  ' + stockFinal);
 		console.error('idProducto  ' + idProducto);
@@ -206,7 +300,7 @@ let datosStock = () => {
 
 
 	
-let actualizarDatosFactura = async (stockFinal,idProducto,nombre) => {
+let actualizarDatosFactura = async (stockFinal,idProducto,nombre,index) => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
@@ -222,9 +316,12 @@ try {
 	//*-request de los datos en formato texto(viene todo el request)
 	const data = await response.text();
 	//*-se parsea solo la respuesta del Json enviada por el servidor.
+	if(index!=1){
 		swal("Factura editada", "de los datos fueron guardados", "success");
 		// window.location.href = "ver_proveedores.php";
 		setTimeout('location.reload()', 1500);
+	}
+		
 	
 	
 } catch (error) { console.log('error en la conexion ', error); }
@@ -252,37 +349,105 @@ let Productos =  (array) => {
 	let precio_venta = array[i]['precioUnitario']; 
 	let precioTotal =array[i]['totalUnitario']; 
 	
-	ITEM++;
+	let arrCod=[];
 
-	// var estadoEntr = "";
-	// estadoEntr = document.getElementById('checkEnt').checked;
-
-	// if(estadoEntr == true){
-	// 	actualizarPrecioVenta(idProd,precio_venta);
-	// }
+	let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
 	
 
-	$("#tablaBodyCotizacion").append('<tr id="fila' + ITEM + '">' +
+	$("#tablaBodyCotizacion").append('<tr id="fila' + nfilas + '">' +
 	'<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
 	'<td>' + codigo_producto + '</td>' +
-	'<td><input style="width:50px" id="' + 'cant' + parseFloat(ITEM) + '" size="2" onClick=cantidadCalculo('+ITEM+')  type="number" min=1 value="'+cantidad+'"></td>' +
+	'<td><input style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
 	'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-	'<td><input class="form-control" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
+	'<td><input class="form-control" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio_venta)+'"></td>' +
 	'<td></td>' +
-	'<td><input class="form-control" id="' + 'prect' + parseFloat(ITEM) + '" onkeypress=precioModificar(event);  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>'+
+	'<td><input class="form-control" id="' + 'prect' + parseFloat(nfilas) + '" onkeypress=precioModificar(event);  type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>'+
 	'<td style="display:none;">'+array[i]['idfr']+'</td>' +
+	'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+array[i]['idfr']+')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 	'</tr>');
 
 		// $('[data-toggle="tooltip"]').tooltip();
 	//	agregarNumeracionItem();
-		 recalcularValores();
-		 
-		
+		recalcularValores();
 
 	}
 }
 
-	let editar = async(e) => {
+	//comprobar repetidos 
+	let comprobarRepetidos = (arrCod,cols,idProd) => {	
+			
+		 console.error('idProd ' + idProd);			
+		let tablaC = document.getElementById("tablaBodyCotizacion"),
+		rIndex;
+		let nFilas = $("#tablaBodyCotizacion > tr").length;		
+		let codigoTemp;
+		for(let i=0; i < nFilas;i++){
+
+			codigoTemp=tablaC.rows[i].cells[1].innerHTML;
+			arrCod.push(codigoTemp,cols+(i+1));
+		}
+		
+		
+		borrarElement(arrCod,idProd);
+		
+	}
+
+
+	let borrarElement = (arrCod,idProd) => {
+
+		var uniqs = arrCod.filter(function(item, index, array) {	
+
+			switch(array.indexOf(item) === index){
+				case  true: 
+				
+				break
+				case false:
+				
+				let elimina=array.pop();		
+				let idfila=elimina.slice(4); 
+
+			
+				swal('warning','ya ingreso esteproducto','info');
+				removerItem(idfila,idProd);
+				break
+			}
+
+			return array.indexOf(item) === index;
+
+		  })
+	
+
+	}
+
+	let removerItem = async(id,idFr) => {
+					
+		console.error('id ' + id);	
+		$("#fila" + id).remove();
+		borrarItemBd(idFr);
+		const recal = await recalcularValores();
+	}
+
+	let borrarItemBd = async(idFr) =>{
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		const consulta=`DELETE FROM FACTURAS_RELACIONAL WHERE id=${idFr}`;
+		const sql   = {sql: consulta, tag: `crud`}	
+		
+		console.error(consulta);
+		try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.
+		
+		const upFacturaa = await editar(1);			
+		
+		} catch (error) { console.log('error en la conexion ', error); }
+	}
+
+	let editar = async(e,index) => {
 
 		const evento = e.preventDefault();
 		
@@ -310,13 +475,13 @@ let Productos =  (array) => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		
-		const upFacturaa = await updateFacturaRelacional(id);			
+		const upFacturaa = await updateFacturaRelacional(id,index);			
 		
 		} catch (error) { console.log('error en la conexion ', error); }
 		
 	} 
 
-	let updateFacturaRelacional = async (id) =>{
+	let updateFacturaRelacional = async (id,index) =>{
 
 		let tablaC = document.getElementById("tablaBodyCotizacion"),
 		rIndex;
@@ -358,7 +523,7 @@ let Productos =  (array) => {
 				if (data == 1 && contador==nFilas) {
 					porcentaje = (exito / nFilas) * 100;
 
-					datosStock();
+					datosStock(index);
 					
 		
 						}	
@@ -400,15 +565,24 @@ let recalcularValores = () => {
 
 	let tablaC = document.getElementById("tablaBodyCotizacion"),
 	  rIndex;
-	let nFilas = $("#tablaBodyCotizacion > tr").length;
+	let nFilas = $("#tablaBodyCotizacion > tr").length;	
+
+	
+
 	for (let i = 0; i < nFilas; i++) {
-	  valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
-	 
+
+		let td=tablaC.rows[i].cells[6];
+
+		valorTotal +=parseInt(convertirNumeros(td.getElementsByTagName('input')[0].value));
   
 	}
-	  
-	$("#totalNeto").val(formatearNumeros(valorTotal));
-	$("#iva").val(formatearNumeros(valorTotal*0.19));
-	$("#totalF").val(formatearNumeros(valorTotal*1.19));
+
+	let valorNeto= document.getElementById(`totalNeto`).value=formatearNumeros(valorTotal);
+	let iva = convertirNumeros(valorNeto)*0.19;	
+	document.getElementById(`iva`).value=formatearNumeros(redondeo(iva,0)); 
+	let total=parseInt(iva)+parseInt(convertirNumeros(valorNeto));
+	document.getElementById(`totalF`).value=formatearNumeros(total); 
+
+	
 
 }
