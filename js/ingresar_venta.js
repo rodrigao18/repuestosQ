@@ -473,12 +473,10 @@ let tablaProductos = (array) => {
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
 				'<td id="' + 'desOcul' + parseFloat(i + 1) + '" style="display:none;">0</td>' +	
-				'<td><input type="hidden"  id="' + 'preConOcul' + parseFloat(i + 1) + '" value=' + redondeo(precioFinal,0) + '></td>' +						
+				'<td style="display:none;"><input type="hidden"  id="' + 'preConOcul' + parseFloat(i + 1) + '" value=' + redondeo(precioFinal,0) + '></td>' +						
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fas fa-check" aria-hidden="true"></i></button>' +
-				'</td>' +
-				'<td>' +				
-				'</td>' +
+				'</td>' +			
 				'</tr>');
 				
 		}
@@ -578,7 +576,8 @@ let tablaProductos = (array) => {
 
 		document.getElementById('obsProducto').value=nombreOri.replace(/,/g," ");
 		document.getElementById('idprodescripcion').value=idpro;	
-		let ultimaVentaPro =await buscarUltimaVenta(codigo);		  
+		let ultimaVentaPro =await buscarUltimaVenta(codigo);	
+		let ultimaCompra = await buscarUltimaCompra(codigo);	  
 		let modal=await mostrarModal();	
 
 	}
@@ -601,10 +600,10 @@ let tablaProductos = (array) => {
 			let array = JSON.parse(data);
 			
 		
-			document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : ${array[0]['fecha']}</li></ul>`;
-			document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong> del producto : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;
-			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta+(iva) ultima <strong>Compra</strong> del producto : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;
-			let ultimaCompra = await buscarUltimaCompra(codigo);
+			document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha ultima <strong>venta</strong> : ${array[0]['fecha']}</li></ul>`;
+			document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong>  : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;
+			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta <strong></strong> : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;
+			
 		
 			
 			
@@ -629,9 +628,9 @@ let tablaProductos = (array) => {
 			const data = await response.text();
 			//*-se parsea solo la respuesta del Json enviada por el servidor.	
 			let array = JSON.parse(data);		
-			document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha y hora ultima <strong>compra</strong> del producto : ${array[0]['fechaEmi']}</li></ul>`;
-			document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad y hora ultima <strong>compra</strong> del producto : ${array[0]['cantidad']}</li></ul>`;
-			document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo ultima <strong>compra</strong> del producto : ${formatearNumeros(array[0]['precioUnitario'])}</li></ul>`;
+			document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha <strong>compra</strong> : ${array[0]['fechaEmi']}</li></ul>`;
+			document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad <strong>compra</strong> : ${array[0]['cantidad']}</li></ul>`;
+			document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo  <strong>compra</strong>  : ${formatearNumeros(array[0]['precioUnitario'])}</li></ul>`;
 			
 			let precioIva=array[0]['precioUnitario']*0.25;
 			
