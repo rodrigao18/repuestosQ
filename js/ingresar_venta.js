@@ -573,7 +573,7 @@ let tablaProductos = (array) => {
 		let idpro=id.id;
 		
 		let nombreOri=nombre;	
-
+		limpiarCampos();
 		document.getElementById('obsProducto').value=nombreOri.replace(/,/g," ");
 		document.getElementById('idprodescripcion').value=idpro;	
 		let ultimaVentaPro =await buscarUltimaVenta(codigo);	
@@ -598,11 +598,15 @@ let tablaProductos = (array) => {
 			const data = await response.text();
 			//*-se parsea solo la respuesta del Json enviada por el servidor.	
 			let array = JSON.parse(data);
+
+			if(array.length > 0){
+				document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha ultima <strong>venta</strong> : ${array[0]['fecha']}</li></ul>`;
+				document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong>  : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;				
+			}
+			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta <strong></strong> : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;
 			
 		
-			document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha ultima <strong>venta</strong> : ${array[0]['fecha']}</li></ul>`;
-			document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong>  : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;
-			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta <strong></strong> : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;
+			
 			
 		
 			
@@ -627,10 +631,14 @@ let tablaProductos = (array) => {
 			//*-request de los datos en formato texto(viene todo el request)
 			const data = await response.text();
 			//*-se parsea solo la respuesta del Json enviada por el servidor.	
-			let array = JSON.parse(data);		
-			document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha <strong>compra</strong> : ${array[0]['fechaEmi']}</li></ul>`;
-			document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad <strong>compra</strong> : ${array[0]['cantidad']}</li></ul>`;
-			document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo  <strong>compra</strong>  : ${formatearNumeros(array[0]['precioUnitario'])}</li></ul>`;
+			let array = JSON.parse(data);	
+			
+			if(array.length > 0){
+				document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha <strong>compra</strong> : ${array[0]['fechaEmi']}</li></ul>`;
+				document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad <strong>compra</strong> : ${array[0]['cantidad']}</li></ul>`;
+				document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo  <strong>compra</strong>  : ${formatearNumeros(array[0]['precioUnitario'])}</li></ul>`;
+			}
+			
 			
 			let precioIva=array[0]['precioUnitario']*0.25;
 			
@@ -639,16 +647,16 @@ let tablaProductos = (array) => {
 
 	}
 
-	let limpiarCampos=(e) => {
+	let limpiarCampos=() => {
 
-		const evento = e.preventDefault();
+		
 		$("#myModal").modal('hide');
-		document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha y hora ultima <strong>compra</strong> del producto : `;
-		document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad y hora ultima <strong>compra</strong> del producto : `;
-		document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo y hora ultima <strong>compra</strong> del producto : `;
-		document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : `;
-		document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha y hora ultima <strong>venta</strong> del producto : `;
-		document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Fecha y hora ultima <strong>Compra</strong> del producto : `;
+		document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha  <strong>compra</strong>  : `;
+		document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad  <strong>compra</strong>  : `;
+		document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo  <strong>compra</strong> o : `;
+		document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha  <strong>venta</strong>  : `;
+		document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha  <strong>venta</strong>  : `;
+		document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Fecha  <strong>Compra</strong>  : `;
 
 	}
 
