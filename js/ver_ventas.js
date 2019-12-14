@@ -165,7 +165,7 @@ let tablaVentas = (arreglo) => {
 		   <input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
 			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
-			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
+			<td ><button class="btn  btn-dark" data-toggle="tooltip" data-placement="top" title="Anular" onclick=eliminarProducto(event,${i['id']})><i class="fas fa-times-circle"></i></button></td>			
 		 </tr>`
 	 	
 	}
