@@ -554,7 +554,12 @@ let precioModificar = (e) => {
 	}
 	
 }
-
+	//*-boton volver en la tabla busqueda-*//
+	let regresar = (e)=> {
+		const evento = e.preventDefault();
+		$("#volverBtn").show(); // mostramos nuevamente  los botones
+		$("#tablaProductos").hide(); //tabla donde se buscan los productos
+	}
 
 
 let recalcularValores = () => {
