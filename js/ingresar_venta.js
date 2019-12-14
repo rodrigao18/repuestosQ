@@ -587,7 +587,7 @@ let tablaProductos = (array) => {
 		const baseUrl = 'php/consultaFetch.php';
 
 		const consulta=`SELECT (fecha_venta) as fecha ,precio_unitario,p.precio_venta FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN productos p ON vr.codigo_producto=p.codigo
-		 WHERE vr.codigo_producto=${codigo} ORDER BY v.id DESC LIMIT 1`;
+		 WHERE vr.codigo_producto=${codigo} AND estado=1 ORDER BY v.id DESC LIMIT 1`;
 
 		const sql = {sql: consulta, tag: `array_datos`} 
 		console.error(consulta);
