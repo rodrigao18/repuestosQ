@@ -65,7 +65,7 @@
 
 </head>
 
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl sidenav-toggled">
 	<!-- Navbar-->
 	<?php include "header.php"; ?>
 	<?php include "left-menu.php"; ?>
@@ -216,7 +216,15 @@
 												</div>';}
 												?>
 					</form>	
+
 					</div>
+
+					<div id="btn_ventas" style="display:none;">
+
+					<button type="submit"   name="enviar" class="btn btn-success" id="btnVenta"  type="button"><i class="fas fa-check"></i> Realizar ventas </button>
+
+					</div>
+
 					<div class="btn-group inline float-left" id="volverBtn">						
 					
 					</div>

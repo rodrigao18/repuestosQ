@@ -776,10 +776,10 @@ let tablaProductos = (array) => {
 		'<td>' + codigo_producto + '</td>' +
 		'<td><input class="canti" name="can' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-		'<td><input name="totunitaU' + parseFloat(nfilas) + '" id="' + 'precuni' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
-		'<td><input name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
-		'<td><input name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
-		'<td><input name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +					
+		'<td><input style="text-align:center;" name="totunitaU' + parseFloat(nfilas) + '" id="' + 'precuni' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
+		'<td><input style="text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
+		'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
+		'<td><input style="text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +					
 		'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
 		'<td style="display:none;"><input name="venDesU' + parseFloat(nfilas) + '" id="' + 'venDescu' + parseFloat(nfilas) + '" value="'+(precioConOcul)+'"></td>' +	

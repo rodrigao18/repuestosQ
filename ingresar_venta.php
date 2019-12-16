@@ -82,7 +82,7 @@
 	</style>
 </head>
 
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl sidenav-toggled">
 	<!-- Navbar-->
 	<?php include "header.php"; ?>
 	<?php include "left-menu.php"; ?>

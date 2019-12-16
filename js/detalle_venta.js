@@ -7,6 +7,7 @@
 	var sql = 0;
 	var ESTADOVENTA = 0;
 	var MARCAS;
+	var IDVENTARELACIONAL;
 	//COTIZACIONNUMERO
 
 	/*------------------------ Cargar Cliente -------------------------*/
@@ -72,9 +73,9 @@
 
 		//cotizacion
 		if (ESTADOVENTA == 1) {
-			document.getElementById('titulo-detalle').innerHTML=`Boleta`;
+			document.getElementById('titulo-detalle').innerHTML=`Boleta - ${NUMEROVENTA}`;
 			document.getElementById('cabezera').className=`cabezera-boleta`;
-			
+			document.getElementById('btn_ventas').style.display=`block`;
 
 		} else if (ESTADOVENTA == 0) {
 			var row = document.getElementById("borrar");
@@ -88,9 +89,10 @@
 			document.getElementById('cabezera').className=`cabezera-guia`;
 		}
 		else if (ESTADOVENTA == 4) {
-			document.getElementById('titulo-detalle').innerHTML=`Cotización`;
+			document.getElementById('titulo-detalle').innerHTML=`Cotización - ${NUMEROVENTA}`;
 			document.getElementById('cabezera').className=`cabezera-cotizacion`;
 			document.getElementById('btn-ocultar').style.display=`block`;
+
 		}else if (ESTADOVENTA == 2) {
 			document.getElementById('titulo-detalle').innerHTML=`Factura`;
 			document.getElementById('cabezera').className=`cabezera-factura`;
@@ -264,8 +266,9 @@
 					// document.getElementById('chPrecioSin').innerHTML = 'Precio sin <input id="chPreSin" ' + chPrecioSinDes + ' type="radio"  name="optradio" onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion sin descuento">'
 					// document.getElementById('chPrecioCon').innerHTML = 'Precio con <input id="chPreCon" ' + chPrecioConDes + ' type="radio"  name="optradio"  onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion con descuento">'
 					$('[data-toggle="tooltip"]').tooltip();
+					comprobarRepetidos(arrCod,'cols',IDVENTARELACIONAL);
 		}		
-		let agregarProductos =  (e,btn) => {
+		let agregarProductos =  async(e,btn) => {
 
 			// comprobarFactura();
 			
@@ -302,15 +305,16 @@
 			let precioTotal = cantidad * precio_sin;
 			// let idProd = table.rows[idTabla].cells[11].innerHTML;
 			let descuento = document.getElementById(`des${idTabla}`).value;
-		
+			
+			const insert = await insertarNuevoProducto(codigo_producto,total,cantidad,nombre,precioTotal,desOcul);
 
-			var estadoEntr = "";
-			estadoEntr = document.getElementById('checkEnt').checked;
+			// var estadoEntr = "";
+			// estadoEntr = document.getElementById('checkEnt').checked;
 
-			if(estadoEntr == true){
-				actualizarPrecioVenta(idProd,precio_sin,descuento);
-			}
-				actualizaMargen(idProd,margen);
+			// if(estadoEntr == true){
+			// 	actualizarPrecioVenta(idProd,precio_sin,descuento);
+			// }
+			// 	actualizaMargen(idProd,margen);
 			let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
 			let arrCod=[];
 			$("#tablaBodyCotizacion").append('<tr id="fila' + nfilas + '">' +
@@ -321,7 +325,7 @@
 			'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 			'<td><input style="text-align:center;"  name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
 			'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +					
-			'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+			'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 			'<td style="display:none;">'+idProd+'</td>' +
 			'<td style="display:none;"><input name="venDesU' + parseFloat(nfilas) + '" id="' + 'venDescu' + parseFloat(nfilas) + '" value="'+(precioConOcul)+'"></td>' +	
 			'</tr>');
@@ -330,8 +334,98 @@
 				//`agregarNumeracionItem();
 				recalcularValores();
 				//document.getElementById('obsProducto').value="";
-				// comprobarRepetidos(arrCod,'cols',nfilas);
+				 comprobarRepetidos(arrCod,'cols',IDVENTARELACIONAL);
 				
+		}
+
+			//comprobar repetidos 
+	let comprobarRepetidos = (arrCod,cols,idVR) => {	
+			
+		 			
+		let tablaC = document.getElementById("tablaBodyCotizacion"),
+		rIndex;
+		let nFilas = $("#tablaBodyCotizacion > tr").length;		
+		let codigoTemp;
+		for(let i=0; i < nFilas;i++){
+
+			codigoTemp=tablaC.rows[i].cells[0].innerHTML;
+			arrCod.push(codigoTemp,cols+(i+1));
+		}		
+	
+		borrarElement(arrCod,idVR);
+		
+	}
+
+
+	let borrarElement = (arrCod,idVR) => {
+
+		var uniqs = arrCod.filter(function(item, index, array) {	
+
+			switch(array.indexOf(item) === index){
+				case  true: 
+				
+				break
+				case false:
+				
+				let elimina=array.pop();		
+				let idfila=elimina.slice(4); 
+
+			
+				swal('warning','ya ingreso esteproducto','info');
+				removerItem(idfila,idVR);
+				break
+			}
+
+			return array.indexOf(item) === index;
+
+		  })
+	
+
+	}
+
+		let insertarNuevoProducto =async (codigo_producto,precio_costo,cantidad,nombre,precioTotal,desOcul) => {
+
+			const baseUrl = 'php/consultaFetch.php';
+	
+			const consulta = `INSERT INTO ventas_relacional (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto,descuento_producto)
+			VALUES("${codigo_producto}",${precio_costo},${cantidad},${precioTotal},${NUMEROVENTA},"${nombre.trim()}",${desOcul})`;
+		
+			const sql = {sql: consulta, tag: `insert_return_id`} 	
+			
+			console.error(consulta);
+
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			IDVENTARELACIONAL=data;
+
+		
+
+			console.error('IDVENTARELACIONAL ' + IDVENTARELACIONAL);
+
+			$.notify({
+				title: "Producto: ",
+				message: `Producto agregado en la BD:`,
+				icon: 'fas fa-exclamation-circle'
+			}, {
+				type: "success",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 1500,
+				timer: 1500
+			});
+			
+			
+		} catch (error) {  }
+	
+	
 		}
 
 		let actualizarPrecioVenta = async (idP,precioVent,descuento) => {
@@ -479,7 +573,7 @@
 		for (var i = 0; i < arreglo.length; i++) {
 			let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
 		
-			var idVentaRelacional = arreglo[i][0];
+			var IDVENTARELACIONAL = arreglo[i][0];
 			var id = arreglo[i][1];
 			var nombre = arreglo[i]["nombre"];
 			//var nombreInput = '<input type="text" class="form-control" rows="5" value="' + nombre + '" "">';
@@ -502,8 +596,8 @@
 				'<td><input style="width:100px;text-align:center;"  id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
 				'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(descuento_producto)+'"></td>' +
 				'<td><input style="text-align:center;" disabled name="' + 'preTd' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
-				'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+idVentaRelacional+')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +		
-				'<td style="display:none;">'+idVentaRelacional+'</td>'+
+				'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +		
+				'<td style="display:none;">'+IDVENTARELACIONAL+'</td>'+
 				'</tr>');
 		}
 	//	convertirPaginaDeEstados();
@@ -523,8 +617,7 @@
 
 	} 
 
-	let removerItem = async(id,idFr) => {
-						
+	let removerItem = async(id,idFr) => {						
 				
 		$("#fila" + id).remove();
 		borrarItemBd(idFr);
