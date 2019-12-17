@@ -613,10 +613,10 @@
 				'<tr id="fila' + (i + 1) + '">' +				
 				'<td>' + id + '</td>' +
 				'<td>' + columnaEditable + '</td>' +
-				'<td><input style="width:45px;text-align:center;" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
-				'<td><input style="width:100px;text-align:center;"  id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
+				'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
+				'<td><input style="width:100px;text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
 				'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(descuento_producto)+'"></td>' +
-				'<td><input style="text-align:center;" disabled name="' + 'preTd' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
+				'<td><input style="text-align:center;" disabled name="' + 'totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 				'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +		
 				'<td style="display:none;">'+IDVENTARELACIONAL+'</td>'+
 				'</tr>');
@@ -712,8 +712,8 @@
 		let contador=0;
 		let porcentaje=0, exito=0;
 
-		console.error('entro aca');
-		
+		console.error('NUMEROVENTA ' + NUMEROVENTA);
+	
 		for (var i = 0; i < nFilas; i++) {
 
 			let codigoInterno = tablaC.rows[i].cells[0].innerHTML;
@@ -737,7 +737,7 @@
 
 			let consulta=`UPDATE ventas_relacional , productos p INNER JOIN ventas_relacional vr ON vr.codigo_producto=p.codigo 
 						 set vr.codigo_producto="${codigoInterno}",vr.precio_unitario=${precioUnitarioConvertido},vr.cantidad=${cantidad}
-						,vr.total_unitario=${totalUnitarioConvertido},vr.nombre_producto="${nombre}" ,vr.descuento_producto=${descuento_producto} WHERE vr.id_venta=${NUMEROVENTA}`;		
+						,vr.total_unitario=${totalUnitarioConvertido},vr.nombre_producto="${nombre}",vr.descuento_producto=${descuento_producto} WHERE vr.id=${idfr}`;		
 				
 
 			const sql   = {sql: consulta, tag: `crud`}		

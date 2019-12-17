@@ -221,7 +221,7 @@
 
 					<div id="btn_ventas" style="display:none;">
 
-					<button type="submit"   name="enviar" class="btn btn-success" id="btnVenta"  type="button"><i class="fas fa-check"></i> Realizar ventas </button>
+					<button type="submit"   name="enviar" class="btn btn-success" id="btnVenta" onclick="editar(event)" type="button"><i class="fas fa-check"></i> Realizar ventas </button>
 
 					</div>
 
