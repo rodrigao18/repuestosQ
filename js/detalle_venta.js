@@ -422,11 +422,33 @@
 				timer: 1500
 			});
 			
-			
+			const actualiSt= actualizarStockAdd(cantidad,codigo_producto);
+
 		} catch (error) {  }
 	
 	
 		}
+
+		let actualizarStockAdd = async (stockFinal,idProducto) => {
+
+			const baseUrl = 'php/consultaFetch.php';
+	
+			const consulta = `UPDATE productos set stock =stock + (${stockFinal}) WHERE codigo=${idProducto}`;
+	
+			const sql = {sql: consulta, tag: `array_datos`} 
+			
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.
+			
+			
+			
+		} catch (error) {  }
+	
+	}
 
 		let actualizarPrecioVenta = async (idP,precioVent,descuento) => {
 
@@ -464,8 +486,7 @@
 					});	
 				
 				
-			} catch (error) {  }
-		
+			} catch (error) {  }		
 		
 		}
 		let actualizaMargen = async (idP,margen) => {
@@ -639,47 +660,51 @@
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		
-		const upFacturaa = await editar(1);			
+		//const upFacturaa = await editar(1);	
+		
+	
 		
 		} catch (error) {  }
 	}
 
-	let editar = async(e,index) => {
+	let editar = async(e) => {
 
 		const evento = e.preventDefault();
-		
-		let neto = $("#totalNeto").val();
-		let netoConvertido = convertirNumeros(neto);
-		let descuento = document.getElementById('descuentoPorcentaje').value;
-		let descuento_pesos = document.getElementById('descuentoPesos').value;
-		let iva = $("#iva").val();
+
+		let neto = $("#Neto").val();
+		let netoConvertido = convertirNumeros(neto);	
+		let iva = $("#ivaTotal").val();
 		let ivaConvertido = convertirNumeros(iva);
 		let totalFinal = $("#totalF").val();
 		let totalFinalConvertido = convertirNumeros(totalFinal);
-		let totalsindes=document.getElementById('totalapagar').value;
+		
 
 		const baseUrl = 'php/consultaFetch.php';
 
-		let consulta=`UPDATE ventas set neto=${convertirNumeros(neto)},iva=${convertirNumeros(iva)}
-					,total=${convertirNumeros(total)} WHERE id=${NUMEROVENTA}`;
+		let consulta=`UPDATE ventas set neto=${netoConvertido},iva=${ivaConvertido}	,total=${totalFinalConvertido} WHERE id=${NUMEROVENTA}`;
 					
 
 		const sql   = {sql: consulta, tag: `crud`}		
-
+		console.error(consulta);
 		try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
 		//*-request de los datos en formato texto(viene todo el request)
 		const data = await response.text();
+		console.error(data);
+		if(data==1){
+
+			const upVentas = await updateVentaRelacional();	
+		}
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		
-		const upVentas = await updateVentaRelacional(id,index);			
+				
 		
 		} catch (error) {  }
 		
 	} 
 
-	let updateVentaRelacional = async (id,index) =>{
+	let updateVentaRelacional = async () =>{
 
 		let tablaC = document.getElementById("tablaBodyCotizacion"),
 		rIndex;
@@ -687,7 +712,8 @@
 		let contador=0;
 		let porcentaje=0, exito=0;
 
-
+		console.error('entro aca');
+		
 		for (var i = 0; i < nFilas; i++) {
 
 			let codigoInterno = tablaC.rows[i].cells[0].innerHTML;
@@ -698,16 +724,20 @@
 			let desU=`input[name=desU${(i+1)}]`;
 			var cantidad = `${document.querySelector(input).value}` //usamos innerText para obtener solo el valor			
 			let idfr = tablaC.rows[i].cells[7].innerHTML;
-			var precioUnitario = `${document.querySelector(inputPreU).value}`		
+			var precioUnitario = `${document.querySelector(inputPreU).value}`;
+			var precioUnitarioConvertido = convertirNumeros(precioUnitario);		
 			var totalUnitario = `${document.querySelector(inputTotU).value}`;			
 			let descuento_producto=`${document.querySelector(desU).value}`;
+			var totalUnitarioConvertido = convertirNumeros(totalUnitario);
 		
 
 			const baseUrl = 'php/consultaFetch.php';
 			
+		
 
-			let consulta=`UPDATE ventas_relacional set codigo_producto="${codigoInterno}",precio_unitario=${convertirNumeros(precioUnitario)},cantidad=${cantidad}
-						,total_unitario=${convertirNumeros(totalUnitario)},nombre_producto="${nombre}" ,descuanto_producto=${descuento_producto} WHERE id=${idfr}`;		
+			let consulta=`UPDATE ventas_relacional , productos p INNER JOIN ventas_relacional vr ON vr.codigo_producto=p.codigo 
+						 set vr.codigo_producto="${codigoInterno}",vr.precio_unitario=${precioUnitarioConvertido},vr.cantidad=${cantidad}
+						,vr.total_unitario=${totalUnitarioConvertido},vr.nombre_producto="${nombre}" ,vr.descuento_producto=${descuento_producto} WHERE vr.id_venta=${NUMEROVENTA}`;		
 				
 
 			const sql   = {sql: consulta, tag: `crud`}		
@@ -723,8 +753,13 @@
 				contador++; exito++;
 				if (data == 1 && contador==nFilas) {
 					porcentaje = (exito / nFilas) * 100;				
-					
-				console.error('hecho');
+						if(index==1){
+							console.error('update');
+						}else{
+
+							swal('Venta Actualizada', 'todos los datos actualizados', 'info');	
+						}
+			
 						}	
 				
 				} catch (error) {}
