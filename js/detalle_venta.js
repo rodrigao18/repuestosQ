@@ -765,12 +765,7 @@
 				contador++; exito++;
 				if (data == 1 && contador==nFilas) {
 					porcentaje = (exito / nFilas) * 100;				
-						if(index==1){
-							console.error('update');
-						}else{
-
-							swal('Venta Actualizada', 'todos los datos actualizados', 'info');	
-						}
+					swal('Venta Actualizada', 'todos los datos actualizados', 'info');	
 			
 						}	
 				
