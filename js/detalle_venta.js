@@ -325,7 +325,7 @@
 			'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 			'<td><input style="text-align:center;"  name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
 			'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +					
-			'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+			'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+','+codigo_producto+','+cantidad+',1)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 			'<td style="display:none;">'+idProd+'</td>' +
 			'<td style="display:none;"><input name="venDesU' + parseFloat(nfilas) + '" id="' + 'venDescu' + parseFloat(nfilas) + '" value="'+(precioConOcul)+'"></td>' +	
 			'</tr>');
@@ -334,12 +334,12 @@
 				//`agregarNumeracionItem();
 				recalcularValores();
 				//document.getElementById('obsProducto').value="";
-				 comprobarRepetidos(arrCod,'cols',IDVENTARELACIONAL);
+				 comprobarRepetidos(arrCod,'cols',IDVENTARELACIONAL,codigo_producto,cantidad,1);
 				
 		}
 
 			//comprobar repetidos 
-	let comprobarRepetidos = (arrCod,cols,idVR) => {	
+	let comprobarRepetidos = (arrCod,cols,idVR,codigo_producto,cantidad,index) => {	
 			
 		 			
 		let tablaC = document.getElementById("tablaBodyCotizacion"),
@@ -352,12 +352,12 @@
 			arrCod.push(codigoTemp,cols+(i+1));
 		}		
 	
-		borrarElement(arrCod,idVR);
+		borrarElement(arrCod,idVR,codigo_producto,cantidad,index);
 		
 	}
 
 
-	let borrarElement = (arrCod,idVR) => {
+	let borrarElement = (arrCod,idVR,codigo_producto,cantidad,index) => {
 
 		var uniqs = arrCod.filter(function(item, index, array) {	
 
@@ -372,7 +372,7 @@
 
 			
 				swal('warning','ya ingreso esteproducto','info');
-				removerItem(idfila,idVR);
+				removerItem(idfila,idVR,codigo_producto,cantidad,index);
 				break
 			}
 
@@ -422,19 +422,28 @@
 				timer: 1500
 			});
 			
-			const actualiSt= actualizarStockAdd(cantidad,codigo_producto);
+			const actualiSt= actualizarStockAdd(codigo_producto,cantidad);
 
 		} catch (error) {  }
 	
 	
 		}
 
-		let actualizarStockAdd = async (stockFinal,idProducto) => {
-
+		let actualizarStockAdd = async (idProducto,stockFinal,index) => {
+			console.error('index ' + index);
 			const baseUrl = 'php/consultaFetch.php';
-	
-			const consulta = `UPDATE productos set stock =stock + (${stockFinal}) WHERE codigo=${idProducto}`;
-	
+
+			var consulta=``;
+
+			if(index==1){
+
+				consulta = `UPDATE productos set stock =stock + (${stockFinal}) WHERE codigo=${idProducto}`;
+
+			}else if(index==undefined){
+
+				consulta = `UPDATE productos set stock =stock - (${stockFinal}) WHERE codigo=${idProducto}`;
+			}
+			console.error(consulta);
 			const sql = {sql: consulta, tag: `array_datos`} 
 			
 		try {
@@ -595,7 +604,8 @@
 			let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
 		
 			var IDVENTARELACIONAL = arreglo[i][0];
-			var id = arreglo[i][1];
+			var codigo_producto = arreglo[i][1];
+			console.error('codigo_producto ' + codigo_producto);	
 			var nombre = arreglo[i]["nombre"];
 			//var nombreInput = '<input type="text" class="form-control" rows="5" value="' + nombre + '" "">';
 			var nombreInput = '<div class="form-group"> <textarea class="form-control" rows="3" > ' + nombre + '</textarea> </div>';
@@ -611,13 +621,13 @@
 
 			$("#tablaBodyCotizacion").append(
 				'<tr id="fila' + (i + 1) + '">' +				
-				'<td>' + id + '</td>' +
+				'<td>' + codigo_producto + '</td>' +
 				'<td>' + columnaEditable + '</td>' +
 				'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
 				'<td><input style="width:100px;text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
 				'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(descuento_producto)+'"></td>' +
 				'<td><input style="text-align:center;" disabled name="' + 'totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
-				'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +		
+				'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+','+codigo_producto+','+cantidad+',1)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +		
 				'<td style="display:none;">'+IDVENTARELACIONAL+'</td>'+
 				'</tr>');
 		}
@@ -638,11 +648,13 @@
 
 	} 
 
-	let removerItem = async(id,idFr) => {						
+	let removerItem = async(id,idFr,codigo_producto,cantidad,index) => {						
 				
 		$("#fila" + id).remove();
 		borrarItemBd(idFr);
 		const recal = await recalcularValores();
+		const actuStock = actualizarStockAdd(codigo_producto,cantidad,index)
+
 	}
 
 	let borrarItemBd = async(idFr) =>{
