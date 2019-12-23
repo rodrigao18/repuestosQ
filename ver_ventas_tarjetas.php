@@ -82,7 +82,7 @@
 								<table class="table table-striped " id="tablaProductos">
 								<thead>
 								<tr>
-                                <th width="10%">Boleta</th>
+                                <th width="10%">N° Tarjeta</th>
 								<th width="15%">Vendedor</th>
 								<th width="10%">Cliente</th>	
 								<th width="10%">Neto</th>
