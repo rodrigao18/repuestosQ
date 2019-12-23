@@ -15,6 +15,7 @@
 	function consultarDatosVendedor(id,estado_venta) {
 		IDCLIENTE = id;
 		
+		
 		ESTADOVENTA=estado_venta;
 		//$sql = "SELECT id_cliente, rut_cliente, nombre_cliente, direccion_cliente, telefono_cliente, giro_cliente, nombreContacto1 FROM clientes where id_cliente =" + id;
 		//var sql = "SELECT c.id_cliente, c.rut_cliente, c.nombre_cliente, c.direccion_cliente, c.telefono_cliente, c.giro_cliente, cc.nombre FROM clientes c INNER JOIN contacto_cliente cc ON c.id_cliente = cc.id_cliente where c.id_cliente = " + id;
@@ -73,7 +74,7 @@
 
 		//cotizacion
 		if (ESTADOVENTA == 1) {
-			document.getElementById('titulo-detalle').innerHTML=`Boleta - ${NUMEROVENTA}`;
+			document.getElementById('titulo-detalle').innerHTML=`Boleta - ${NUMEROBOLETA}`;
 			document.getElementById('cabezera').className=`cabezera-boleta`;
 			document.getElementById('btn_ventas').style.display=`block`;
 
@@ -89,11 +90,17 @@
 			document.getElementById('cabezera').className=`cabezera-guia`;
 		}
 		else if (ESTADOVENTA == 4) {
-			document.getElementById('titulo-detalle').innerHTML=`Cotización - ${NUMEROVENTA}`;
+			document.getElementById('titulo-detalle').innerHTML=`Cotización - ${NUMEROBOLETA}`;
 			document.getElementById('cabezera').className=`cabezera-cotizacion`;
 			document.getElementById('btn-ocultar').style.display=`block`;
 
-		}else if (ESTADOVENTA == 2) {
+		}else if (ESTADOVENTA == 5) {
+			document.getElementById('titulo-detalle').innerHTML=`Detalle venta con tarjeta - ${NUMEROBOLETA}`;
+			document.getElementById('cabezera').className=`cabezera-boleta-tarjetas`;
+			document.getElementById('btn-ocultar').style.display=`block`;
+
+		}
+		else if (ESTADOVENTA == 2) {
 			document.getElementById('titulo-detalle').innerHTML=`Factura`;
 			document.getElementById('cabezera').className=`cabezera-factura`;
 			// document.getElementById('btn-ocultar').style.display=`block`;

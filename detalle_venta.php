@@ -273,6 +273,7 @@
 		var id = <?php  echo $_POST['id'];?>;
 		var estado_venta = <?php  echo $_POST['estado_venta'];?>;
 		var NUMEROVENTA = <?php echo $_POST['id'];?>;
+		var NUMEROBOLETA = <?php echo $_POST['num_boleta'];?>;
 		var IDVENDEDOR = <?php echo $idVendedor;?>;
 		window.onload = consultarDatosVendedor(id,estado_venta);
 		//Notifica('Titulo Notificacion', 'Copy texto notificacion');

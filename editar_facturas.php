@@ -149,7 +149,8 @@
 								<th width="10%">Precio Unitario</th>
 								<th width="10%"></th>
 								<th width="10%">Precio Total</th>
-								<th width="10%"></th>
+								<th width="10%" id="checkEntregado"></th>
+								<th width="10%"><centers>stock</centers></th>
 							</tr>
 
 						</thead>
