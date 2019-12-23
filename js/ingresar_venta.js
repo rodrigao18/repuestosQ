@@ -1132,7 +1132,7 @@ let finalizarVenta = async () => {
 		}
 		else if(estadoVenta==5){
 
-			var numeroTajeta=document.getElementById('id_factura').value;
+			var numeroTajeta=document.getElementById('id_tarjeta').value;
 		}
 		else if(estadoVenta==1){
 
