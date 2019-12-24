@@ -86,7 +86,7 @@
 			$("#tablaBodyCotizacion > tr td:nth-last-child(2)").hide();
 
 		} else if (ESTADOVENTA == 3) {
-			document.getElementById('titulo-detalle').innerHTML=`Guía`;
+			document.getElementById('titulo-detalle').innerHTML=`Guía - ${NUMEROBOLETA}`;
 			document.getElementById('cabezera').className=`cabezera-guia`;
 		}
 		else if (ESTADOVENTA == 4) {
@@ -101,7 +101,7 @@
 
 		}
 		else if (ESTADOVENTA == 2) {
-			document.getElementById('titulo-detalle').innerHTML=`Factura`;
+			document.getElementById('titulo-detalle').innerHTML=`Factura - ${NUMEROBOLETA}`;
 			document.getElementById('cabezera').className=`cabezera-factura`;
 			// document.getElementById('btn-ocultar').style.display=`block`;
 		}

@@ -164,6 +164,7 @@ let tablaVentas = (arreglo) => {
 		   <td>${formatearNumeros(i['total'])}</td>				  
 		   <td><form method="POST" action="detalle_venta.php">
 		   <input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
+		   <input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${i['id_cotizacion']}">
 		   <button type="submit" class="btn btn-primary" data-toggle="tooltip"		   
 			data-placement="top" title="ver cotizacion" name="id" value=${i['id']}><i class="fas fa-list fa-1x" aria-hidden="true"></i></button></form></td>
 			<td><form method="POST" action="imprime.php" target="_blank">
