@@ -1,5 +1,6 @@
 
 var ITEM = 0; 
+var IDFACTURARELACIONAL;
 cargarDatos = async (id) => {
     
 	ID=id;
@@ -177,7 +178,7 @@ let tablaProductos = (array) => {
 
 
 //agragar  productos a la tabla factura
-let agregarProductos =  (e,btn) => {
+let agregarProductos = async (e,btn) => {
 
 	$("#tablaProductos").show();
 	$("#salidaTabla").hide();
@@ -205,13 +206,9 @@ let agregarProductos =  (e,btn) => {
 	
 	ITEM++;
 	let nfilas=$("#tablaBodyCotizacion > tr").length + parseFloat(1);
-	insertarNuevoProducto(codigo_proveedor,codigo_producto,precio_costo,cantidad,nombre,precioTotal,nfilas);
-	var estadoEntr = "";
-	estadoEntr = document.getElementById('checkEnt').checked;
 
-	if(estadoEntr == true){
-		actualizarPrecioVenta(idProd,precio_venta,descuento,margen);
-	}
+
+	
 
 	
 	$("#tablaBodyCotizacion").append('<tr id="fila' + nfilas + '" >' +
@@ -230,8 +227,16 @@ let agregarProductos =  (e,btn) => {
 	'</tr>');
 
 		$('[data-toggle="tooltip"]').tooltip();
-		recalcularValores();
-		comprobarRepetidos(arrCod,'cols',codigo_producto,cantidad,parseFloat(nfilas),1);		
+
+		const insert = await insertarNuevoProducto(codigo_proveedor,codigo_producto,precio_costo,cantidad,nombre,precioTotal,nfilas);
+		const com = await comprobarRepetidos(arrCod,'cols',codigo_producto,cantidad,parseFloat(nfilas),1);		
+
+
+
+		const recal = await recalcularValores();
+
+
+	
 }
 
 	let insertarNuevoProducto =async (codigo_proveedor,codigo_producto,precio_costo,cantidad,nombre,precioTotal,nfilas) => {
@@ -251,7 +256,9 @@ let agregarProductos =  (e,btn) => {
 		const data = await response.text();
 
 		document.getElementById(`tdidfr${nfilas}`).innerHTML=data;
+		IDFACTURARELACIONAL=data;
 
+		console.error('IDFACTURARELACIONAL data' + IDFACTURARELACIONAL );
 		
 		$.notify({
 			title: "Update: ",
@@ -449,7 +456,7 @@ let Productos =  (array) => {
 
 	
 	
-		const td = await document.getElementById(`tdidfr${nfilas}`).innerHTML;
+		//const td = await document.getElementById(`tdidfr${nfilas}`).innerHTML;
 
 
 		var uniqs = arrCod.filter(function(item, index, array) {	
@@ -467,15 +474,15 @@ let Productos =  (array) => {
 				let idfila=elimina.slice(4); 
 				console.error('nfilas ' + nfilas);
 
-				let idfr= document.getElementById(`tdidfr${nfilas}`).contentText;
+				// let idfr= document.getElementById(`tdidfr${nfilas}`).contentText;
 
-				console.error(document.getElementById(`tdidfr${nfilas}`).contentText);
-
-				borrarItemBd(idfr);
-				actualizarStock(idProd,parseInt(cantidad)-parseInt(1));
-				//swal('warning','ya ingreso esteproducto','info');
+				// console.error(document.getElementById(`tdidfr${nfilas}`).contentText);
+				console.error('IDFACTURARELACIONAL ' + IDFACTURARELACIONAL);
+				borrarItemBd(IDFACTURARELACIONAL);
+				actualizarStock(idProd,parseInt(cantidad)-parseInt(2));
+				swal('warning','ya ingreso esteproducto','info');
 				
-				//$("#fila" + idfila).remove();	
+				$("#fila" + idfila).remove();	
 				
 				break
 			}
@@ -519,7 +526,7 @@ let Productos =  (array) => {
 		const consulta=`DELETE FROM FACTURAS_RELACIONAL WHERE id=${idFr}`;
 		const sql   = {sql: consulta, tag: `crud`}	
 		
-		
+		console.error('borrrar item' + consulta);
 		try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
