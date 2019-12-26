@@ -65,6 +65,7 @@
 							<br><br>
 
 								<div id="salida">
+								<div id="loading"></div>
 								<div class="my-3 p-3 bg-white rounded box-shadow">
 								
 								<table class="table table-striped " id="tablaProductos">

@@ -375,9 +375,9 @@ let  bucarProductos = async () => {
 
 		if(isNaN(buscar) || buscar.indexOf(" ") !== -1) {
 
-			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion,marca,ubicacion,descuento FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%" || codigo_proveedor LIKE "%${buscar}%"`;
+			var consulta=`SELECT  id,proveedor,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion,marca,ubicacion,descuento FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%" || codigo_proveedor LIKE "%${buscar}%"`;
 		}else{
-			var consulta=`SELECT  id,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion,marca,ubicacion,descuento FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%" || codigo_proveedor LIKE "%${buscar}%"`;
+			var consulta=`SELECT  id,proveedor,codigo,codigo_proveedor,nombre,costo,stock,margen_contado,precio_venta,descripcion,marca,ubicacion,descuento FROM PRODUCTOS where nombre LIKE "%${buscar}%" || codigo LIKE "%${buscar}%" || codigo_proveedor LIKE "%${buscar}%"`;
 		}
 	
 		const sql = {sql: consulta, tag: `array_datos`} 
@@ -473,7 +473,8 @@ let tablaProductos = (array) => {
 				'<td id="' + 'idPro' + parseFloat(i + 1) + '"  style="display:none;">'+id_producto+'</td>' +
 				'<td id="' + 'descr' + parseFloat(i + 1) + '"  style="display:none;">'+descripcion+'</td>' +
 				'<td id="' + 'desOcul' + parseFloat(i + 1) + '" style="display:none;">0</td>' +	
-				'<td style="display:none;"><input type="hidden"  id="' + 'preConOcul' + parseFloat(i + 1) + '" value=' + redondeo(precioFinal,0) + '></td>' +						
+				'<td style="display:none;"><input type="hidden"  id="' + 'preConOcul' + parseFloat(i + 1) + '" value=' + redondeo(precioFinal,0) + '></td>' +	
+				`<td style="display:none;"><input type="hidden"  id="idproveedor${parseFloat(i + 1)}" value=${array[i]['proveedor']}></td>`+						
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fas fa-check" aria-hidden="true"></i></button>' +
 				'</td>' +			
@@ -756,6 +757,7 @@ let tablaProductos = (array) => {
 		let precioConOcul=document.getElementById(`preConOcul${idTabla}`).value;
 		let desOcul=document.getElementById(`desOcul${idTabla}`).innerHTML;
 		let total=document.getElementById(`venCon${idTabla}`).value;
+		let idproveedor=document.getElementById(`idproveedor${idTabla}`).value;
 		
 		let precioTotal = cantidad * precio_sin;
 		// let idProd = table.rows[idTabla].cells[11].innerHTML;
@@ -782,6 +784,7 @@ let tablaProductos = (array) => {
 		'<td><input style="text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +					
 		'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
+		'<td style="display:none;">'+idproveedor+'</td>' +
 		'<td style="display:none;"><input name="venDesU' + parseFloat(nfilas) + '" id="' + 'venDescu' + parseFloat(nfilas) + '" value="'+(precioConOcul)+'"></td>' +	
 		'</tr>');
 
@@ -1202,11 +1205,13 @@ for (var i = 0; i < nFilas; i++) {
 	var totalUnitario = `${document.querySelector(inputTotU).value}`
 	var totalUnitarioConvertido = convertirNumeros(totalUnitario);
 
+	var proveedor = tablaC.rows[i].cells[9].innerText;
+
 	const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto)
+	let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto,id_proveedor)
 
-	VALUES("${codigo}",${precioUnitarioConvertido},${cantidad},${totalUnitarioConvertido},${id},"${nombre}")`;	
+	VALUES("${codigo}",${precioUnitarioConvertido},${cantidad},${totalUnitarioConvertido},${id},"${nombre}",${proveedor})`;	
 
 				const sql   = {sql: consulta, tag: `crud`}		
 				

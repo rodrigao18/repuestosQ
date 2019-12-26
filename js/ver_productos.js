@@ -1,42 +1,86 @@
 var PROVEEDOR;
 
-function cargarCategoria(e) {
+// function cargarCategoria(e) {
 	
-	e.preventDefault();
-	var sql ='SELECT id,nombre FROM proveedores ';
-	$.ajax({
-		type: 'POST',
-		url: 'php/consulta.php',
-		data: {sql:sql, tag: 'array_de_datos' },
-		success: function (data) {
-			var arreglo = JSON.parse(data);
+// 	e.preventDefault();
+// 	var sql ='SELECT id,nombre FROM proveedores ';
+// 	$.ajax({
+// 		type: 'POST',
+// 		url: 'php/consulta.php',
+// 		data: {sql:sql, tag: 'array_de_datos' },
+// 		success: function (data) {
+// 			var arreglo = JSON.parse(data);
 
-			var arr = new Array();
+// 			var arr = new Array();
 
-			for (var i = 0; i < arreglo.length; i++) {
-				arr[arreglo[i][0].toString()] = arreglo[i][1];
+// 			for (var i = 0; i < arreglo.length; i++) {
+// 				arr[arreglo[i][0].toString()] = arreglo[i][1];
 
-			}
-			PROVEEDOR = arr;
-			console.error(PROVEEDOR[2]);
-			cargarProductos();
+// 			}
+// 			PROVEEDOR = arr;
+// 			console.error(PROVEEDOR[2]);
+// 			cargarProductos();
 
-		},
-		error: function (request, status, error) {
-			alert("Error: Could not cargarProveedores");
+// 		},
+// 		error: function (request, status, error) {
+// 			alert("Error: Could not cargarProveedores");
+// 		}
+// 	});
+// }
+
+	let cargarCategoria = async(e) =>{
+
+	
+	// document.getElementById('loading').innerHTML=`<p>Actualizando....... <img width='80px' src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'></p>`;	
+
+	const evento = e.preventDefault();
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`SELECT id,nombre FROM proveedores`;
+
+	const sql   = {sql: consulta, tag: `array_datos`}	
+
+
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+
+		// document.getElementById('loading').innerHTML=`<p>Guardado <img width='30px' src='https://cdn140.picsart.com/289521541024211.png?r1024x1024'></p>`;
+
+		let arreglo = JSON.parse(data);	
+
+				let arr = new Array();
+
+		for (var i = 0; i < arreglo.length; i++) {
+			arr[arreglo[i][0].toString()] = arreglo[i][1];
+
 		}
-	});
-}
 
+		PROVEEDOR = arr;
+
+		const cargarPro = cargarProductos();
+		
+	} catch (error) {  }
+
+	}
 
 
 //*-cargar datos mediante async wait()
 let cargarProductos = async () => { 
+
+	document.getElementById('loading').innerHTML=`<p>Buscando.. <img width='80px' src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'></p>`;	
+
 	const baseUrl = 'php/consultaFetch.php';
-	let consulta=`SELECT id,codigo,nombre,codigo_proveedor,costo,proveedor, ubicacion,stock_m,stock FROM productos`;
+
+	let consulta=`SELECT id,codigo,nombre,codigo_proveedor,costo,proveedor, ubicacion,stock_m,stock FROM productos ORDER BY codigo DESC`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
+
 	
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
@@ -46,40 +90,50 @@ let cargarProductos = async () => {
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);		
 		console.log(array);		
-		tablaProductos(array);
+		const tabla = await	tablaProductos(array);
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		const botones = await lenguaje();	
-		
+		document.getElementById('loading').innerHTML=`<p></p>`;
 	} catch (error) {
 		console.log('error en la conexion ', error);
 	}
 	
 }
 //*-productos
-let tablaProductos = (arreglo) => {
-	let tbody = document.getElementById('tablaBody');
-	
-	for (let i of arreglo) { 
-		tbody.innerHTML +=
-		`<tr>		   
-		   <td>${i['codigo']}</td>
-		   <td>${i['codigo_proveedor']}</td>
-		   <td>${i['nombre']}</td>
-		   <td>${i['costo']}</td>
-		   <td>${PROVEEDOR[i['proveedor']]}</td>		  
-		   <td>${i['stock_m']}</td>		
-		   <td>${i['stock']}</td>				  
-		   <td><form method="POST" action="editar_productos.php">
-		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
-			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
-			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
-		 </tr>`
-	 	
-	}
-	$('[data-toggle="tooltip"]').tooltip();
 
- }
+
+function tablaProductos(arreglo) {
+
+
+	for (var i = 0; i < arreglo.length; i++) {
+
+		var id = arreglo[i]['codigo'];
+		var codigo = arreglo[i]['codigo'];
+		var codigo_proveedor = arreglo[i]['codigo_proveedor'];
+		var nombre = arreglo[i]['nombre'];
+		var costo = arreglo[i]['costo'];
+		var proveedor = arreglo[i]['proveedor'];
+		var stock_m = arreglo[i]['stock_m'];
+		var stock = arreglo[i]["stock"];
+		$("#tablaBody").append('<tr>' +
+			'<td>' + codigo + '</td>' +
+			'<td>' + codigo_proveedor + '</td>' +
+			'<td>' + nombre + '</td>' +
+			'<td>' + costo + '</td>' +
+			'<td>' + PROVEEDOR[proveedor] + '</td>' +
+			'<td>' + stock_m + '</td>' +
+			'<td>' + stock + '</td>' +
+			'<td><form method="POST" action="editar_productos.php">' +
+			'<button type="submit" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Editar" name="id" value="' + id + '" ><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>' +
+			'<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,' + id + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+			'</tr>');
+	}
+
+	$('[data-toggle="tooltip"]').tooltip();
+	//lenguaje();
+
+}
 
  function lenguaje() {
 
@@ -101,6 +155,7 @@ let tablaProductos = (arreglo) => {
 			"processing": "Procesando...",
 			"search": "Buscar:",
 			"zeroRecords": "Sin resultados encontrados",
+			"pageLength": 50,
 			"paginate": {
 				"first": "Primero",
 				"last": "Ultimo",
@@ -113,7 +168,8 @@ let tablaProductos = (arreglo) => {
 			"sortDescending": ": activate to sort column descending"
 		},
 		"order": [[1, "desc"]],
-		"stateSave":true
+		"stateSave":true,
+		"lengthMenu":[ 100, 125, 150, 175, 1000 ]
 	});
 
 
