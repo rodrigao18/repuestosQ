@@ -108,7 +108,7 @@ function tablaProductos(arreglo) {
 
 	for (var i = 0; i < arreglo.length; i++) {
 
-		var id = arreglo[i]['codigo'];
+		var id = arreglo[i]['id'];
 		var codigo = arreglo[i]['codigo'];
 		var codigo_proveedor = arreglo[i]['codigo_proveedor'];
 		var nombre = arreglo[i]['nombre'];

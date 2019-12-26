@@ -8,7 +8,7 @@ let cargarProductos = async (id) => {
     FROM productos where id=${id}`;	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
-	
+	console.error('ID ' +ID);
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
