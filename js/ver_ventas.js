@@ -225,7 +225,8 @@ function lenguaje() {
 			"sortDescending": ": activate to sort column descending"
 		},
 		"order": [[1, "asc"]],
-		"stateSave":true
+		"stateSave":true,
+		"lengthMenu":[ 50, 100, 150, 175, 1000 ]
 	});
 
 

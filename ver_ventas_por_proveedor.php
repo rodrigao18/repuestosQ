@@ -21,9 +21,9 @@
 	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 
 	<main class="app-content">
-		<div class="app-title cabezera-boleta">
+		<div class="app-title cabezera-boleta-proveedor">
 			<div>
-				<h1><i class="fa fa-shopping-cart"></i> Ver ventas agrupadas por proveedor </h1>
+				<h1><i class="fas fa-truck"></i> Ver ventas agrupadas por proveedor </h1>
 				<p>Ver ventas, editar y eliminar</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
@@ -37,7 +37,7 @@
 		
 				<div class="form-group col-md-6">
 				<label>Fecha Término</label>
-					<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d",strtotime($fecha_actual."- 10 days"));?>">
+					<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d",strtotime($fecha_actual."- 5 days"));?>">
 				</div>
 			
 				<div class="form-group col-md-6">
@@ -54,7 +54,7 @@
 						<a style="margin-right: 15px" href="ingresar_productos_nuevos.php" class="btn btn-outline-primary float-right"><i class="icon fa fa-cart-plus"></i>Ingresar productos nuevos</a>
 						<div class="my-3 p-3 bg-white rounded box-shadow">
 
-							<h6 class="border-bottom border-gray pb-2 mb-0 ">Facturas</h6>
+							<h6 class="border-bottom border-gray pb-2 mb-0 ">Ventas</h6>
 							<br><br>
 
 								<div id="salida">
@@ -63,14 +63,15 @@
 								<table class="table table-striped " id="tablaProductos">
 								<thead>
 								<tr>
-                                <th width="10%">Boleta</th>
-								<th width="15%">Vendedor</th>
-								<th width="10%">Cliente</th>	
-								<th width="10%">Neto</th>
-								<th width="10%">Iva</th>										
-                                <th width="5%">Total</th>							
-								<th width="5%"> </th>
-								<th width="5%"> </th>							
+                                <th width="20%">Proveedor</th>
+								<th width="10%">Cod Propio</th>
+								<th width="10%">Cod Proveedor</th>	
+								<th width="5%">Solicitada</th>
+								<th width="20%">Descripcion</th>										
+                                <th width="5%">Cantidad</th>	
+								<th width="10%">Stock actual</th>	
+								<th width="5%">Costo</th>														
+												
 								</tr>
 								</thead>
 								<tbody id="tablaBody"></tbody>
