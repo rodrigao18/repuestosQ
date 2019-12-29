@@ -134,7 +134,7 @@ function GuardarCliente(e) {
     var referencia = $("#referencia").val();
     var credito = $("#credito_autorizado").val();
     var observacion = $("#observacion").val();
-
+	
 
 	var sql = 'INSERT INTO clientes (rut,nombre,direccion,ciudad,fono_1,fono_2, ' +
     ' referencia,giro,credito_autorizado,observacion)VALUES' +

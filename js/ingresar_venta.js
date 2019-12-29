@@ -16,7 +16,7 @@ let cargarDatos = async() => {
 	const ulguia = await ultimoGuia();
 	const ulfactura = await ultimoFactura();
 	const ultTarjeta = await ultimoTarjeta();
-
+	
 	
 
 	if(PRODUCTOS.length > 0){
@@ -1157,11 +1157,12 @@ let finalizarVenta = async () => {
 		let totalsindes=document.getElementById('totalapagar').value;
 		let observacion = document.getElementById('observacion').value;
 		let medio_pago=document.getElementById('selectModoPago').value;
+		let fecha_venta=document.getElementById('fecha_venta').value;
 		const baseUrl = 'php/consultaFetch.php';
 
 	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,
 	fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta,id_boleta)
-	VALUES(${ID_VENDEDOR},NOW(),${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
+	VALUES(${ID_VENDEDOR},${fecha_venta},${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
 	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",${medio_pago}
 	,${ID_TURNO},"${numeroCotizacion}","${numeroFactura}","${numeroGuia}","${numeroTajeta}","${numeroBoleta}")`;
 	
@@ -1354,8 +1355,193 @@ let quitarDescuento = (e) => {
 
 	}
 
-	
-
 
 }
 
+let ingresar_cliente = async() =>{
+
+	$("#ingresarClientes").modal();
+	$('body').on('shown.bs.modal', '#myModal', function () {
+		$('input:visible:enabled:first', this).focus();
+	})
+	const comunas = await cargarRegiones();
+}
+
+
+function cargarComunas() {
+
+	var id = document.getElementById("selectProvincias").value;
+
+	console.log(id);
+	$.ajax({
+		type: 'POST',
+		url: 'php/consulta.php',
+		data: {
+			tag: 'mostrarComunas',
+			id: id
+		},
+		success: function (data) {
+			$('#selectComunas').html(data).fadeIn();
+			document.getElementById("selectComunas").disabled = false;
+
+		},
+		error: function (request, status, error) {
+			console.error("Error: Could not cargarComunas");
+		}
+	});
+
+}
+//Provincias
+function cargarProvincias() {
+
+	var id = document.getElementById("selectRegiones").value;
+
+	console.log(id);
+	$.ajax({
+		type: 'POST',
+		url: 'php/consulta.php',
+		data: {
+			tag: 'mostrarProvincias',
+			id: id
+		},
+		success: function (data) {
+			$('#selectProvincias').html(data).fadeIn();
+			$('#selectComunas').html("").fadeIn();
+
+		},
+		error: function (request, status, error) {
+			console.error("Error: Could not cargarProvincias");
+		}
+	});
+
+}
+//Regiones
+function cargarRegiones() {
+	//document.getElementById("selectProvincias").disabled = true;
+	//document.getElementById("selectComunas").disabled = true;
+
+	$.ajax({
+		type: 'POST',
+		url: 'php/consulta.php',
+		data: {
+			tag: 'mostrarRegiones'
+		},
+		success: function (data) {
+			$('#selectRegiones').html(data).fadeIn();
+			document.getElementById("selectProvincias").disabled = false;
+
+		},
+		error: function (request, status, error) {
+			console.error("Error: Could not cargarRegiones");
+		}
+	});
+}
+
+function comprobarCliente() {	
+	if($("#rutCliente").val() != ""	){
+		var rutCliente = $("#rutCliente").val();
+		console.error(rutCliente);
+
+		var sql = 'SELECT count(*) FROM clientes where rut=' + rutCliente;
+	
+		//-*AJAX	
+		$.ajax({
+			type: 'POST',
+			url: 'php/consulta.php',
+			data: { sql: sql, tag: 'array_de_datos' },
+
+			success: function (data) {
+				var arreglo = JSON.parse(data);
+				existe = arreglo[0][0];
+				if (existe < 1) {
+			
+					} else {
+						$.notify({
+							title: "Rut existente : ",
+							message: "El rut de estes cliente ya existe en la base de datos:",
+							icon: 'fas fa-exclamation-circle'
+						}, {
+							type: "danger",
+							placement: {
+								from: "top",
+								align: "right"
+							},
+							offset: 70,
+							spacing: 70,
+							z_index: 1031,
+							delay: 1000,
+							timer: 1000
+						});
+					document.getElementById('rutCliente').focus();
+					$("#rutCliente").val(convertirRut(rutCliente));	
+					}
+				
+			},
+			error: function (request, status, error) {
+				console.error("Error: Could not comprobarCLiente");
+			}
+		});
+
+	}else{
+		var rutCliente = $("#rutCliente").val();
+		console.error(rutCliente);
+		
+	}	
+	return;
+}
+
+function GuardarCliente(e) {
+    e.preventDefault();
+    var rutCliente = $("#rutCliente").val();
+	var nombre = $("#nombre").val();
+	var direccion = $("#direccion").val();
+	var fono = $("#fono").val();
+    var fono2 = $("#fono2").val();
+    var giro = $("#giro").val();
+	var ciudad = document.getElementById("selectComunas").value;
+	var regiones =document.getElementById("selectRegiones").value;
+	var provincias =document.getElementById("selectProvincias").value;  
+    var referencia = $("#referencia").val();
+    var credito = $("#credito_autorizado").val();
+    var observacion = $("#observacion").val();
+
+	if(rutCliente=='' || nombre=='' || direccion =='' || fono=='' || ciudad==0 || 
+	 provincias==0  ||  regiones==0){
+		swal('Advertencia','debe llenar los datos','warning');
+		return;
+	}
+	
+	var  sql =`INSERT INTO clientes (rut,nombre,direccion,ciudad,fono_1,fono_2,referencia,giro,credito_autorizado,observacion)
+	VALUES("${sacarPuntosGuionRut(rutCliente)}","${nombre}","${direccion}",${ciudad},"${fono}",NULL,NULL,NULL,NULL,NULL)`;
+
+    console.error(sql);
+ ;
+    //AJAX
+	$.ajax({
+		type: 'POST',
+		url: 'php/consulta.php',
+		data: {
+			sql: sql,
+			tag: 'crud_productos'
+		},
+		success: function (data) {
+			console.log(data);
+			if (!isNaN(data)) {
+				console.log(data);
+				swal("Datos ingresados correctamente", "", "success");
+				document.getElementById('rutCliente').focus();	
+                document.getElementById('rutCliente').value='';	
+				clientes();
+
+			} else {
+				console.error("No es correto");
+			} //	window.location.href = "ver_clientes.php";
+
+		},
+		error: function (request, status, error) {
+			console.error("Error: Could not guardarCliente2");
+		}
+	});
+
+
+}

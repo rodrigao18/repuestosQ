@@ -130,9 +130,10 @@
 					<div class="float-right">
 					<?php date_default_timezone_set("America/Santiago"); setlocale(LC_ALL, "es_ES"); ?>
 				<?php $fecha =strftime("%Y-%m-%d"); ?>
-				<?php echo $fecha; 
+				<?php //echo $fecha; 
 				 $fecha_actual = date("d-m-Y");
 				 ?>
+				
 					</div><br>
 
 
@@ -143,11 +144,16 @@
 
 
 							<div class="form-row">
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-4">
 									<label> Clientes </label>
+									<div class="input-group">	
 									<select  class="form-control" id="selectClientes"></select>
+									<div class="input-group-append">
+											<button  target="_blank" class="btn btn-primary" id="addTipo_Equipo" onclick="ingresar_cliente()" data-toggle="tooltip" title="agregar" type="button"><i class="fas fa-plus"></i> </button>
+										</div>
+								</div>		
 								</div>
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-4">
 									<label> Seleccione tipo documento</label>
 									<div class="input-group">
 									<select  class="form-control" id="selectDocumento">                                    
@@ -155,10 +161,15 @@
                                     <option value="2">Factura electrónica</option>
                                     <option value="3">Guía interna</option>
                                     <option value="4">Cotización</option>
-									<option value="5">N° Tarjeta</option>
+									<option value="5">Tarjeta</option>
                                     </select>
-										</div>
+							 	</div>
+								 
 									</div>
+									<div class="form-group col-md-4">
+									<label> Fecha venta </label>
+									<input type="date" class="form-control" id="fecha_venta"  min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d");?>">
+								</div>
 								</div>
 							</div>
 
@@ -324,7 +335,75 @@
       </div>
     </div>
   </div>
-</div>		
+</div>	
+
+			<!-- The Modal -->
+	<div class="modal fade" id="ingresarClientes">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Ingresar  <span id="producto"></span></h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">       
+        <div id="salidaModal">
+		<input type="hidden" id="dato_in">          
+        </div>
+        <div id="filaProductos">
+            <div class="form-row">
+                <div class="form-group col-md-6"> 
+				<label>R.U.T</label>              
+				<input type="text" class="form-control" id="rutCliente" name="rutCliente" maxlength="9" placeholder=" Ej:123456789 (sin digito)" onfocus="this.value=sacarPuntosGuionRut(this.value)" onkeyup="this.value=soloRut(this.value)" onblur="this.value=validaRut(this.value,1)" >
+                </div>
+				<div class="form-group col-md-6">
+				<label>Nombre</label>
+				<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese nombre" onkeyup="this.value=mayusculas(this.value)" >
+				</div>
+				<div class="form-group col-md-6">
+				<label>Dirección</label>
+				<input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingrese dirección" onkeyup="this.value=mayusculas(this.value)" >
+							</div>
+				<div class="form-group col-md-6">
+				<label>Telefono</label>
+				<input type="text" class="form-control" id="fono" name="fono" placeholder="Ingrese telefono" onkeyup="this.value=mayusculas(this.value)" >
+				</div>	             
+            </div> 
+			<div class="form-row">
+							    <div class="form-group col-md-12">
+                                <label>Región</label>
+						        <div class="form-group">
+							        <select onchange="cargarProvincias()" class="form-control" id="selectRegiones"></select>
+						        </div>									
+							    </div>
+								<div class="form-group col-md-12">
+                                <label>Provincia</label>
+						        <div class="form-group">
+							        <select onchange="cargarComunas()" class="form-control" id="selectProvincias"></select>
+						        </div>
+								</div>	
+								<div class="form-group col-md-12">
+                                <label>Comuna</label>
+						        <div class="form-group">
+							        <select class="form-control" id="selectComunas" name="ciudad"></select>
+						        </div>
+								</div>
+															
+							</div>            		
+        </div>	
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button"  id="addPromocion"  class="btn btn-success" onclick=GuardarCliente(event)>Guardar</button>
+        </div>
+        
+      </div>
+    </div>
+  </div> 
 	</main>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/popper.min.js"></script>
@@ -336,6 +415,8 @@
     <script type="text/javascript" src="js/funciones.js?vknet32"></script>
 	<script type="text/javascript" src="js/editarVenta.js?vknet32"></script>
 	<script type="text/javascript" src="js/ingresar_venta.js?vknet32"></script>
+	
+
 	<!-- Page specific javascripts-->
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <!-- <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script> -->

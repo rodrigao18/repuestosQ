@@ -110,7 +110,7 @@
 									<input type="number" class="form-control" id="stock_minimo" name="stock_minimo" min="0" placeholder="Ingrese stock minimo" value="0">									
 								</div>
 								<div class="form-group col-md-3">
-									<label>Stock máximo</label>
+									<label>Stock</label>
 									<input type="number" class="form-control" id="stock_maximo" name="stock_maximo" min="0" placeholder="Ingrese stock maximo" value="0">
 								</div>	
 								<div class="form-group col-md-3">
