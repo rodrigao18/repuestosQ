@@ -1206,7 +1206,7 @@ for (var i = 0; i < nFilas; i++) {
 	var totalUnitario = `${document.querySelector(inputTotU).value}`
 	var totalUnitarioConvertido = convertirNumeros(totalUnitario);
 
-	var proveedor = tablaC.rows[i].cells[9].innerText;
+	var proveedor = tablaC.rows[i].cells[10].innerText;
 
 	const baseUrl = 'php/consultaFetch.php';
 
