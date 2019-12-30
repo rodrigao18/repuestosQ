@@ -26,7 +26,11 @@ let vendedor = async () => {
 		VENDEDORES=arr;
 		console.error(VENDEDORES);
 		const clie = await clientes();	
-	
+		let fecha_inicio = document.getElementById('fecha_inicio').value;
+		document.getElementById('fecha_inicio_text').value=fecha_inicio;
+		
+		let fecha_termino = document.getElementById('fecha_termino').value;
+		document.getElementById('fecha_termino_text').value=fecha_termino;
 
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
@@ -47,8 +51,8 @@ let cargar_ventas_onchange = async() =>{
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_boleta,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
-					FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=1`;
+    let consulta=`SELECT id,estado_venta,fecha_venta,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total,id_boleta,
+				id_cotizacion,id_factura,id_guia,id_tarjeta FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" ORDER BY id DESC`;
 	
 	
 	
@@ -64,9 +68,11 @@ let cargar_ventas_onchange = async() =>{
 		let array = JSON.parse(data);		
 		
 		const tablaFactutass = await tablaVentas(array);
-		//*-promesa de la funcion denguaje la ejecuto a la espera
-		//*-de la respuesta del servidor.	
-		//const botones = await lenguaje();	
+		let fecha_ini = document.getElementById('fecha_inicio').value;
+		document.getElementById('fecha_inicio_text').value=fecha_ini;
+		
+		let fecha_term = document.getElementById('fecha_termino').value;
+		document.getElementById('fecha_termino_text').value=fecha_term;	
 	
 	} catch (error) {
 		console.log('error en la conexion ', error);
@@ -114,7 +120,7 @@ let clientes = async () => {
 let cargarVentas = async () => { 
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_boleta,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
+    let consulta=`SELECT id,id_boleta,id_vendedor,id_cliente,estado_venta,DATE_FORMAT(fecha_venta ,'%m-%d-%YYYY') as fecha,neto,iva, total 
     FROM ventas`;
 	 
 	
@@ -145,28 +151,48 @@ let tablaVentas = (arreglo) => {
 	
 
 	for (let i of arreglo) { 
+
 		let estadoColumna;
+		let estadoDocumento;
+		let numero;
+
 		console.error("estado " + VENDEDORES[i['id_vendedor']]);
 		if(CLIENTES[i['id_cliente']]!=undefined){			
 			estadoColumna=CLIENTES[i['id_cliente']];
 		}if(CLIENTES[i['id_cliente']]==undefined){
 			estadoColumna=`<span class='badge badge-danger'>Sin cliente</span>`;
 		}
-		
+
+		if(i['estado_venta']==1){
+			estadoDocumento=`<span class='badge badge-success'>Boleta</span>`;
+			numero=i['id_boleta'];
+		}else if(i['estado_venta']==2){
+			estadoDocumento=`<span class='badge badge-warning'>Factura</span>`;
+			numero=i['id_factura'];	
+		}
+		else if(i['estado_venta']==3){
+			estadoDocumento=`<span class='badge badge-danger'>Guía</span>`;
+			numero=i['id_guia'];		
+		}
+		else if(i['estado_venta']==4){
+			estadoDocumento=`<span class='badge badge-dark'>Cotización</span>`;
+			numero=i['id_cotizacion'];	
+		}
+		else if(i['estado_venta']==5){
+			estadoDocumento=`<span class='badge badge-primary'>Tarjeta</span>`;	
+			numero=i['id_tarjeta'];	
+		}
+	
 		tbody.innerHTML +=
         `<tr>
-            <td>${i['id_boleta']}</td>			   
+			<td>${i['fecha_venta']}</td>
+			<td>${estadoDocumento}</td>	
+			<td>${numero}</td>			   
 			<td>${VENDEDORES[i['id_vendedor']]}</td>
 			<td>${estadoColumna}</td>
 		   <td>${formatearNumeros(i['neto'])}</td>
 		   <td>${formatearNumeros(i['iva'])}</td>					
-		   <td>${formatearNumeros(i['total'])}</td>				  
-		   <td><form method="POST" action="detalle_venta.php">
-		   <input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
-		   <input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${i['id_boleta']}">
-		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
-			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
-			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Anular" onclick=eliminarProducto(event,${i['id']})><i class="fas fa-trash-alt"></i></button></td>			
+		   <td>${formatearNumeros(i['total'])}</td>	 
 		 </tr>`
 	 	
 	}
@@ -186,7 +212,7 @@ let totalVentasCols =() => {
 		//valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
 		//console.log("valor total: " + valorTotal);
 		valor += parseInt(convertirNumeros(tablaC.rows[i].cells[columna].innerHTML));
-		console.error("valor total: " + valor);
+	
 	  }
 	  document.getElementById('totalVentaCols').innerHTML=`<h5>TOTAL: $${formatearNumeros(valor)}</h5>`;
 
@@ -226,7 +252,8 @@ function lenguaje() {
 		},
 		"order": [[1, "asc"]],
 		"stateSave":true,
-		"lengthMenu":[ 50, 100, 150, 175, 1000 ]
+		"lengthMenu":[ 50, 100, 150, 175, 1000 ],
+		
 	});
 
 
@@ -245,10 +272,24 @@ function lenguaje() {
 	table.buttons(0, null).container().prependTo(
 		table.table().container()
 	);
+}
 
-	
-
-
+function format ( d ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Full name:</td>'+
+            '<td>'+d.name+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Extension number:</td>'+
+            '<td>'+d.extn+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Extra info:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+    '</table>';
 }
 
 
@@ -316,7 +357,7 @@ let obtenerStock = async(idP) => {
 
 			const sql = {sql: consulta, tag: `array_datos`} 
 
-			console.error(consulta);
+		
 	
 		try {
 			//*-llamar ajax al servidor mediate api fetch.

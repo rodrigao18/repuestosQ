@@ -1162,7 +1162,7 @@ let finalizarVenta = async () => {
 
 	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,
 	fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta,id_boleta)
-	VALUES(${ID_VENDEDOR},${fecha_venta},${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
+	VALUES(${ID_VENDEDOR},"${fecha_venta} TIMESTAMP",${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
 	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",${medio_pago}
 	,${ID_TURNO},"${numeroCotizacion}","${numeroFactura}","${numeroGuia}","${numeroTajeta}","${numeroBoleta}")`;
 	

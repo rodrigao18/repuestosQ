@@ -42,8 +42,8 @@
 	<main class="app-content">
 		<div class="app-title cabezera-boleta">
 			<div>
-				<h1><i class="fa fa-shopping-cart"></i> Ver ventas </h1>
-				<p>Ver ventas, editar y eliminar</p>
+				<h1><i class="fas fa-calendar"></i> Ver ventas por fecha </h1>
+				<p>Ver ventas por fecha</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -56,7 +56,7 @@
 		
 				<div class="form-group col-md-6">
 				<label>Fecha Término</label>
-					<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d",strtotime($fecha_actual."- 10 days"));?>">
+					<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d",strtotime($fecha_actual."- 1 days"));?>">
 				</div>
 			
 				<div class="form-group col-md-6">
@@ -70,10 +70,14 @@
 			<div class="col-md-12">
 				<div class="tile">
 					<div class="tile-body">
-						<a style="margin-right: 15px" href="ingresar_productos_nuevos.php" class="btn btn-outline-primary float-right"><i class="icon fa fa-cart-plus"></i>Ingresar productos nuevos</a>
+					<form method="POST" action="imprime_ventas.php" target="_blank">
+					<input type="hidden" class="form-control" id="fecha_inicio_text" name="fecha_inicio_text">
+		   			<input type="hidden" class="form-control" id="fecha_termino_text" name="fecha_termino_text">
+		  			 <button type="submit" class="btn btn-primary"></i>Ve detalles</button>
+					 </form>
 						<div class="my-3 p-3 bg-white rounded box-shadow">
 
-							<h6 class="border-bottom border-gray pb-2 mb-0 ">Facturas</h6>
+							<h6 class="border-bottom border-gray pb-2 mb-0 "></h6>
 							<br><br>
 
 								<div id="salida">
@@ -82,14 +86,15 @@
 								<table class="table table-striped " id="tablaProductos">
 								<thead>
 								<tr>
-                                <th width="10%">Boleta</th>
+                                <th width="10%">Fecha vta.</th>
+								<th width="15%">Documento</th>
+								<th width="15%">Nro</th>
 								<th width="15%">Vendedor</th>
 								<th width="10%">Cliente</th>	
 								<th width="10%">Neto</th>
 								<th width="10%">Iva</th>										
-                                <th width="5%">Total</th>							
-								<th width="5%"> </th>
-								<th width="5%"> </th>							
+                                <th width="5%">Total</th>					
+								
 								</tr>
 								</thead>
 								<tbody id="tablaBody"></tbody>
@@ -130,8 +135,21 @@
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<?php include "./js/table.php"; ?>
 
+<!-- 
+	<script>
+	
+	$(document).ready(function() {
+  $('tr:not(.header)').hide();
 
-
+  $('tr.header').click(function() {
+    $(this).find('span').text(function(_, value) {
+      return value == '-' ? '+' : '-'
+    });
+    
+    $(this).nextUntil('tr.header').slideToggle(100, function() {});
+  });
+});
+	</script> -->
 
 
 </body>
