@@ -17,17 +17,12 @@ td {
 
 table {
 	border: 1px solid black;
-	width: 100%;
+	width: 95%;
 	line-height: 1.5;
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-#cabezera {
-	width: 100%;
-	line-height: 1.0 !important;
-	font-family: Arial, Helvetica, sans-serif;
 
-}
 table.productos {
 	border: 0px;
 	font-family: Arial, Helvetica, sans-serif;
