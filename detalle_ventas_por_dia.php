@@ -100,7 +100,7 @@ include 'php/consulta.php';
 			<td width="10%" class="encabezado-graficos">Documento</td>
 			<td width="10%" class="encabezado-graficos">Nro</td>
 			<td width="10%" class="encabezado-graficos">total desc</td>
-			<td width="30%"class="encabezado-graficos">Repuesto</td>
+			<td width="10%"class="encabezado-graficos">Repuesto</td>
 			<td width="10%" class="encabezado-graficos">Codigo</td>
 			<td width="10%" class="encabezado-graficos">Cantidad</td>
 			<td width="10%" class="encabezado-graficos">Total</td>
@@ -111,10 +111,33 @@ include 'php/consulta.php';
 	$filasAgregadas= 20 - count($detalleVentas);
 	for ($i = 0; $i < count($detalleVentas); $i++) {
 
+		$documento;
+		$numero;
+
+		if($detalleVentas[$i]['estado_venta']==1){
+			$documento='boleta';
+			$numero=$detalleVentas[$i]['id_boleta'];	
+		}else if($detalleVentas[$i]['estado_venta']==2){
+			$documento='factura';
+			$numero=$detalleVentas[$i]['id_factura'];
+		}else if($detalleVentas[$i]['estado_venta']==3){
+			$documento='guia';
+			$numero=$detalleVentas[$i]['id_guia'];
+		}else if($detalleVentas[$i]['estado_venta']==4){
+			$documento='cotizacion';
+			$numero=$detalleVentas[$i]['id_cotizacion'];
+		}else if($detalleVentas[$i]['estado_venta']==5){
+			$documento='tarjeta';
+			$numero=$detalleVentas[$i]['id_tarjeta'];
+		}
 
 
-		echo '<tr>';
-		echo '<td colspan="4"><span class="fecha-clas">'. $detalleVentas[$i]['fecha'] .'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="estado-clas">'. $detalleVentas[$i]['estado_venta'] .'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $detalleVentas[$i]['id_boleta'] .'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="des-clas">'.$detalleVentas[$i]['descuento'] .'</span></td>';			
+
+		echo '<tr>';		
+		echo '<td>'.$detalleVentas[$i]['fecha'].'</td>';
+		echo '<td>'.$documento.'</td>';
+		echo '<td>'.$numero.'</td>';
+		echo '<td>'.$detalleVentas[$i]['descuento'].'</td>';		
 		echo '<td>'.$detalleVentas[$i]['nombre_producto'].'</td>';
 		echo '<td>'.$detalleVentas[$i]['codigo_producto'].'</td>';
 		echo '<td>'.$detalleVentas[$i]['cantidad'].'</td>';
