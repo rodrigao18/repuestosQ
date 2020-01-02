@@ -21,7 +21,7 @@
 		//var sql = "SELECT c.id_cliente, c.rut_cliente, c.nombre_cliente, c.direccion_cliente, c.telefono_cliente, c.giro_cliente, cc.nombre FROM clientes c INNER JOIN contacto_cliente cc ON c.id_cliente = cc.id_cliente where c.id_cliente = " + id;
 		var sql = "SELECT id_vendedor,nombreVendedor, correoVendedor FROM vendedores WHERE id_vendedor=" + IDVENDEDOR;
 
-		//
+		console.error('ESTADOVENTA '  + ESTADOVENTA);
 		
 		
 		$("#tablaProductos").hide();
@@ -74,7 +74,8 @@
 
 		//cotizacion
 		if (ESTADOVENTA == 1) {
-			document.getElementById('titulo-detalle').innerHTML=`Boleta - ${NUMEROBOLETA}`;
+			document.getElementById('titulo-detalle').value=`${NUMEROBOLETA}`;
+			document.getElementById('titulo_documento').innerHTML=`Boleta`;
 			document.getElementById('cabezera').className=`cabezera-boleta`;
 			document.getElementById('btn_ventas').style.display=`block`;
 
@@ -86,25 +87,126 @@
 			$("#tablaBodyCotizacion > tr td:nth-last-child(2)").hide();
 
 		} else if (ESTADOVENTA == 3) {
-			document.getElementById('titulo-detalle').innerHTML=`Guía - ${NUMEROBOLETA}`;
+			document.getElementById('titulo-detalle').value=`${NUMEROBOLETA}`;
+			document.getElementById('titulo_documento').innerHTML=`Guia`;
 			document.getElementById('cabezera').className=`cabezera-guia`;
+			document.getElementById('grupo-btn').style.display=`none`;
 		}
 		else if (ESTADOVENTA == 4) {
-			document.getElementById('titulo-detalle').innerHTML=`Cotización - ${NUMEROBOLETA}`;
+			document.getElementById('titulo-detalle').value=`${NUMEROBOLETA}`;
+			document.getElementById('titulo_documento').innerHTML=`Cotizacion`;
 			document.getElementById('cabezera').className=`cabezera-cotizacion`;
 			document.getElementById('btn-ocultar').style.display=`block`;
+			document.getElementById('grupo-btn').style.display=`none`;
 
 		}else if (ESTADOVENTA == 5) {
-			document.getElementById('titulo-detalle').innerHTML=`Detalle venta con tarjeta - ${NUMEROBOLETA}`;
+			document.getElementById('titulo-detalle').value=`${NUMEROBOLETA}`;
+			document.getElementById('titulo_documento').innerHTML=`Tarjeta`;
 			document.getElementById('cabezera').className=`cabezera-boleta-tarjetas`;
 			document.getElementById('btn-ocultar').style.display=`block`;
+			document.getElementById('grupo-btn').style.display=`none`;
 
 		}
 		else if (ESTADOVENTA == 2) {
-			document.getElementById('titulo-detalle').innerHTML=`Factura - ${NUMEROBOLETA}`;
+			document.getElementById('titulo-detalle').value=`${NUMEROBOLETA}`;
+			document.getElementById('titulo_documento').innerHTML=`Factura`;
 			document.getElementById('cabezera').className=`cabezera-factura`;
 			// document.getElementById('btn-ocultar').style.display=`block`;
 		}
+
+	}
+	//comprobar si el documento ya esta en la base
+	let cambiarNumeroBoleta = async(e)=>{
+
+		const evento = e.preventDefault();
+		let n_documento;
+		let id_documento='';
+		n_documento=document.getElementById(`titulo-detalle`).value;
+		console.error('ESTADOVENTA ' + ESTADOVENTA);
+		if(ESTADOVENTA==1){
+		
+		id_documento=`id_boleta`;	
+			}
+		else{
+			id_documento=`id_factura`;		
+		}			
+
+		const baseUrl = 'php/consultaFetch.php';
+		
+		let consulta=`SELECT count(*) FROM ventas WHERE ${id_documento}=${n_documento}`;
+		const sql = {sql: consulta, tag: `array_datos`}  
+		
+		try {			
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });		
+			const data = await response.text();			
+			let array = JSON.parse(data);
+			let existe=array[0][0];
+			if(existe==0){
+					
+				upBoleta(n_documento);
+			}else{
+				$.notify({
+					title: "Error: ",
+					message: `El numero de documento ya existe:`,
+					icon: 'fas fa-exclamation-circle'
+				}, {
+					type: "danger",
+					placement: {
+						from: "top",
+						align: "right"
+					},
+					offset: 70,
+					spacing: 70,
+					z_index: 1031,
+					delay: 1500,
+					timer: 1500
+				});
+			}
+			
+		} catch (error) {  }
+
+	}
+
+	//actualizar el numero del documento
+	let upBoleta = async(n_documento) =>{
+		console.error('ESTADOVENTA ' + ESTADOVENTA);
+		if(ESTADOVENTA==1){		
+			id_documento=`id_boleta`;	
+			}
+		else {
+			id_documento=`id_factura`;		
+		}
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		let consulta=`UPDATE VENTAS SET ${id_documento}=${n_documento} WHERE id=${NUMEROVENTA}`;
+
+		const sql = {sql: consulta, tag: `crud`}  
+		console.error(consulta);
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();	
+			$.notify({
+				title: "Info : ",
+				message: ` Se cambio el numero del Documento a ${n_documento} :`,
+				icon: 'fas fa-exclamation-circle'
+			}, {
+				type: "success",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 1500,
+				timer: 1500
+			});		
+			document.getElementById(`titulo-detalle`).value=n_documento;
+			
+		} catch (error) {  }
 
 	}
 

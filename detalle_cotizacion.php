@@ -1,3 +1,5 @@
+
+<?php error_reporting(0); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,7 +97,7 @@
 			<tr>
 				<td width="50%">
 					&nbsp;&nbsp;Cliente:
-					<?php echo $nombreCliente; ?>
+					<?php if( $nombreCliente==null){echo 'Sin datos';}else{echo $nombreCliente;} ?>
 				</td>
 				<!-- 2 -->
 				<td width="50%">
@@ -107,8 +109,8 @@
 			<!-- 2 -->
 			<tr>
 				<td>
-					&nbsp;&nbsp;RUT :
-					<?php echo $rutCliente; ?>
+					&nbsp;&nbsp;RUT :					
+					<?php if( $rutCliente==null){echo 'Sin datos';}else{echo $rutCliente;} ?>
 				</td>
 				<!-- 2 -->
 				<td>
@@ -120,13 +122,13 @@
 			<!-- 2 -->
 			<tr>
 				<td>
-					&nbsp;&nbsp;Dirección:
-					<?php echo $direccionCliente; ?>
+					&nbsp;&nbsp;Dirección:				
+					<?php if( $direccionCliente==null){echo 'Sin datos';}else{echo $direccionCliente;} ?>
 				</td>
 				<!-- 2 -->
 				<td>
-					&nbsp;&nbsp;Celular:
-					<?php echo $celular; ?>
+					&nbsp;&nbsp;Celular:				
+					<?php if( $celular==null){echo 'Sin datos';}else{echo $celular;} ?>
 				</td>
 			</tr>
 

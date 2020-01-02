@@ -77,7 +77,12 @@
 		<div id="cabezera-detalle">
 		<div class="app-title">
 			<div>
-				<h1 id="titulo-detalle">  </h1>
+				<h1 id="titulo_documento"></h1><div class="input-group mb-3"><input type='number' style="width:130px;text-align:left;font-size:14px;" min=1 id="titulo-detalle" value='0'>
+				<div id="grupo-btn" class="input-group-append">
+					<button id="btn-boleta" class="btn btn-outline-secondary" onclick="cambiarNumeroBoleta(event)" type="button">Cambiar numero</button>
+				</div>
+			</div>
+		
 				<p>Ver documento</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
