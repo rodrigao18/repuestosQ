@@ -1190,7 +1190,7 @@ let insertProductos = async (id) => {
 	var tablaC = document.getElementById("tablaBodyCotizacion"),
 	rIndex;
 	var nFilas = $("#tablaBodyCotizacion > tr").length;
-
+	let cotizacion=document.getElementById(`selectDocumento`).value;
 
 for (var i = 0; i < nFilas; i++) {
 
@@ -1225,8 +1225,17 @@ for (var i = 0; i < nFilas; i++) {
 
 				} catch (error) {  }		
 			}
-			desContarStock();
 
+			if(cotizacion!=4){
+			console.error('cotizacion ' + cotizacion);
+
+
+			desContarStock();
+			}else{
+				swal("Cotizacion creada", "la cotizacion fue creada exitosamente", "success");
+			setTimeout('window.location.href = "ingresar_venta.php";', 1500);	
+			}
+			
 
 }
 	let desContarStock = () => {
