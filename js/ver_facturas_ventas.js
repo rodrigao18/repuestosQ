@@ -163,8 +163,15 @@ let tablaVentas = (arreglo) => {
 		   <input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
 		   <input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${i['id_factura']}">
 		   <button type="submit" class="btn btn-primary" data-toggle="tooltip"		   
-			data-placement="top" title="ver facturas ventas" name="id" value=${i['id']}><i class="fas fa-list" aria-hidden="true"></i></button></form></td>		
-			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
+			data-placement="top" title="ver factura" name="id" value=${i['id']}><i class="fas fa-list fa-1x" aria-hidden="true"></i></button></form></td>
+			<td><form method="POST" action="impr_factura.php" target="_blank">
+			<input type="hidden" for name="facturaNumero" value="${i['id_factura']}">
+			<input type="hidden" for name="id" value="${i['id']}">
+			<input type="hidden" for name="estadoVenta" value="${i['estado_venta']}">
+			<input type="hidden" for name="id_cliente" value="${i['id_cliente']}">
+			<button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Ver documento pdf"><i class="fas fa-file-pdf fa-1x"></i> </button>
+		</form></td>		
+			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash fa-1x" aria-hidden="true"></i></button></td>			
 		 </tr>`
 	 	
 	}

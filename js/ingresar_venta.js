@@ -1233,7 +1233,7 @@ for (var i = 0; i < nFilas; i++) {
 			desContarStock();
 			}else{
 				swal("Cotizacion creada", "la cotizacion fue creada exitosamente", "success");
-			setTimeout('window.location.href = "ingresar_venta.php";', 1500);	
+				setTimeout('window.location.href = "ingresar_venta.php";', 1500);	
 			}
 			
 

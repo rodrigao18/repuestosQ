@@ -89,7 +89,8 @@
 								<th width="10%">Iva</th>										
                                 <th width="5%">Total</th>							
 								<th width="5%"> </th>
-								<th width="5%"> </th>							
+								<th width="5%"> </th>
+								<th width="5%"> </th>									
 								</tr>
 								</thead>
 								<tbody id="tablaBody"></tbody>
