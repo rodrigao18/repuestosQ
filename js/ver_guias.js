@@ -1,5 +1,6 @@
 var VENDEDORES;
 var CLIENTES;
+var ARRPRODUCTOS=[];
 
 
 
@@ -47,8 +48,8 @@ let cargar_ventas_onchange = async() =>{
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_vendedor,id_cliente,id_guia,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
-					FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=3`;
+    let consulta=`SELECT COUNT(vr.id_venta) AS producto, v.id,id_vendedor,id_cliente,id_guia,estado_venta,DATE(fecha_venta) AS fecha,neto,iva, total 
+	FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=3  GROUP BY v.id`;
 	
 	
 	
@@ -112,8 +113,8 @@ let clientes = async () => {
 let cargarVentas = async () => { 
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
-    FROM ventas`;
+    let consulta=`SELECT count(*) as producto ,id,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
+    FROM ventas WHERE estado_venta=3`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
@@ -156,21 +157,52 @@ let tablaVentas = (arreglo) => {
             <td>${i['id_guia']}</td>			   
 			<td>${VENDEDORES[i['id_vendedor']]}</td>
 			<td>${estadoColumna}</td>
-		   <td>${formatearNumeros(i['neto'])}</td>
-		   <td>${formatearNumeros(i['iva'])}</td>					
-		   <td>${formatearNumeros(i['total'])}</td>				  
-		   <td><form method="POST" action="detalle_venta.php">
-		   <input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
-		   <input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${i['id_guia']}">
-		   <button type="submit" class="btn btn-primary" data-toggle="tooltip"
-			data-placement="top" title="ver guias" name="id" value=${i['id']}><i class="fas fa-list" aria-hidden="true"></i></button></form></td>		
-			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
+			<td>${i['producto']}</td>
+		   	<td>${formatearNumeros(i['neto'])}</td>
+		   	<td>${formatearNumeros(i['iva'])}</td>					
+		   	<td>${formatearNumeros(i['total'])}</td>				  
+		   	<td><form method="POST" action="detalle_venta.php">
+		   	<input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
+		   	<input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${i['id_guia']}">
+		   	<button type="submit" class="btn btn-primary" data-toggle="tooltip"
+		    data-placement="top" title="ver guias" name="id" value=${i['id']}><i class="fas fa-list" aria-hidden="true"></i></button></form></td>		
+		   	<td><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>					   
+		   	<td><input type="checkbox" class="form-control" onchange="obtProductos(${i['id']})" id="estado_guia_${i['id']}"></td>
 		 </tr>`
 	 	
 	}
 	$('[data-toggle="tooltip"]').tooltip();
 	totalVentasCols();
  }
+
+ let obtProductos = async(id) => {
+	const baseUrl = 'php/consultaFetch.php';
+    let consulta=`SELECT vr.id,vr.codigo_producto,p.codigo_proveedor,id_cliente,p.precio_venta,vr.nombre_producto AS nombre,DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta,vr.descuento_producto
+	FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta JOIN productos p ON p.codigo=vr.codigo_producto WHERE vr.id_venta=${id} AND v.estado_venta=3`;
+	 
+	
+	const sql = {sql: consulta, tag: `array_datos`} 
+    console.error(sql);
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.
+		let array = JSON.parse(data);
+		console.error(array);
+		for(let i=0; i < array.length;i++){
+			ARRPRODUCTOS.push(array[i]['id'],array[i]['codigo_producto'], array[i]['codigo_proveedor'],array[i]['id_cliente'],array[i]['precio_venta'],array[i]['nombre'],
+			array[i]['fecha_venta'],array[i]['cantidad'],array[i]['precio_unitario'],array[i]['total_unitario'],array[i]['id_venta'],array[i]['descuento_producto'])
+		}		
+		console.error(ARRPRODUCTOS);
+		
+	
+	} catch (error) {
+		console.log('error en la conexion ', error);
+	}
+
+ 	}
 
 let totalVentasCols =() => {
 

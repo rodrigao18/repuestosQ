@@ -74,6 +74,14 @@
 						<div class="bg-white rounded box-shadow">
 
 							<h6 class="border-bottom border-gray pb-2 mb-0 ">Guias</h6>
+							<br>
+							<form method="POST" action="imprime_guia_fac.php" target="_blank">
+								<input type="hidden" class="form-control" id="fecha_inicio_text" name="fecha_inicio_text">
+								<input type="hidden" class="form-control" id="fecha_termino_text" name="fecha_termino_text">
+								<button type="submit"  class="btn btn-primary"><i class="fas fa edit"></i>Ver documento</button>
+							</form> 
+							<br>
+							<button  class="btn btn-success"><i class="fas fa edit"></i>Pasar guias a factura</button>
 							<br><br>
 
 								<div id="salida">
@@ -84,12 +92,14 @@
 								<tr>
                                 <th width="10%">N° Guías</th>
 								<th width="15%">Vendedor</th>
-								<th width="10%">Cliente</th>	
+								<th width="10%">Cliente</th>
+								<th width="10%">Nro Productos</th>	
 								<th width="10%">Neto</th>
 								<th width="10%">Iva</th>										
                                 <th width="5%">Total</th>							
-								<th width="5%"> </th>
-								<th width="5%"> </th>							
+								<th width="5%"></th>
+								<th width="5%"></th>	
+								<th width="5%">Traspasar</th>							
 								</tr>
 								</thead>
 								<tbody id="tablaBody"></tbody>
