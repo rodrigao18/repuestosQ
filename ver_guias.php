@@ -76,12 +76,12 @@
 							<h6 class="border-bottom border-gray pb-2 mb-0 ">Guias</h6>
 							<br>
 							<form method="POST" action="imprime_guia_fac.php" target="_blank">
-								<input type="hidden" class="form-control" id="fecha_inicio_text" name="fecha_inicio_text">
-								<input type="hidden" class="form-control" id="fecha_termino_text" name="fecha_termino_text">
+								<input type="hidden" class="form-control" id="array_productos" name="array_productos">
+								<input type="hidden" class="form-control" id="id_cliente" name="id_cliente">
 								<button type="submit"  class="btn btn-primary"><i class="fas fa edit"></i>Ver documento</button>
 							</form> 
 							<br>
-							<button  class="btn btn-success"><i class="fas fa edit"></i>Pasar guias a factura</button>
+							<button  class="btn btn-success" onclick="trasFactura()"><i class="fas fa edit"></i>Pasar guias a factura</button>
 							<br><br>
 
 								<div id="salida">
@@ -139,7 +139,9 @@
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<?php include "./js/table.php"; ?>
 
-
+	<script>
+		var ID_TURNO = <?php echo $idTurno;?>;
+	</script>
 
 </body>
 

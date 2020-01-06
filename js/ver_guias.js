@@ -1,7 +1,39 @@
 var VENDEDORES;
 var CLIENTES;
 var ARRPRODUCTOS=[];
+var ULTIMAFACTURA;
 
+
+let ultimoNFactura = async() => {
+
+	const baseUrl = 'php/consultaFetch.php';
+
+    let consulta=`SELECT (id_factura+1) as numeroFactura FROM ventas where estado_venta=2 ORDER BY id DESC LIMIT 1 `;
+
+    const sql = {sql: consulta, tag: `array_datos`}  
+
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		
+		let array = JSON.parse(data);
+		let ultima_boleta;	
+		ULTIMAFACTURA=ultima_boleta=array[0]['numeroFactura'];
+		
+		
+
+		
+
+		document.getElementById('id_factura').value=ultima_boleta;
+      
+        //const provinciass = await provincias(array);
+        
+    } catch (error) {  }
+
+
+}
 
 
 let vendedor = async () => {
@@ -18,16 +50,16 @@ let vendedor = async () => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);
-		console.error(array);
+	
 		var arr = new Array();
 		for (var i = 0; i < array.length; i++) {
 			arr[array[i][0].toString()] = array[i][1];
 
 			}		
 		VENDEDORES=arr;
-		console.error(VENDEDORES);
+		
 		const clie = await clientes();	
-	
+		const ult = await ultimoNFactura();	
 
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
@@ -48,7 +80,7 @@ let cargar_ventas_onchange = async() =>{
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT COUNT(vr.id_venta) AS producto, v.id,id_vendedor,id_cliente,id_guia,estado_venta,DATE(fecha_venta) AS fecha,neto,iva, total 
+    let consulta=`SELECT COUNT(vr.id_venta) AS producto,v.total_sin_des, v.id,id_vendedor,id_cliente,id_guia,estado_venta,DATE(fecha_venta) AS fecha,neto,iva,total 
 	FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=3  GROUP BY v.id`;
 	
 	
@@ -97,7 +129,7 @@ let clientes = async () => {
 
 			}		
 		CLIENTES=arrs;
-		console.error(CLIENTES);	
+			
 		const vende = await cargarVentas();
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
@@ -118,7 +150,7 @@ let cargarVentas = async () => {
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
-    console.error(sql);
+   
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -144,8 +176,8 @@ let tablaVentas = (arreglo) => {
 	
 
 	for (let i of arreglo) { 
-		let estadoColumna;
-		console.error("estado " + VENDEDORES[i['id_vendedor']]);
+
+		let estadoColumna;		
 		if(CLIENTES[i['id_cliente']]!=undefined){			
 			estadoColumna=CLIENTES[i['id_cliente']];
 		}if(CLIENTES[i['id_cliente']]==undefined){
@@ -177,7 +209,8 @@ let tablaVentas = (arreglo) => {
 
  let obtProductos = async(id) => {
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT vr.id,vr.codigo_producto,p.codigo_proveedor,id_cliente,p.precio_venta,vr.nombre_producto AS nombre,DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta,vr.descuento_producto
+	let consulta=`SELECT vr.id,vr.codigo_producto,p.codigo_proveedor,id_vendedor,id_cliente,v.total_sin_des,p.precio_venta,vr.nombre_producto AS nombre,
+	DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta,vr.descuento_producto,vr.id_proveedor
 	FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta JOIN productos p ON p.codigo=vr.codigo_producto WHERE vr.id_venta=${id} AND v.estado_venta=3`;
 	 
 	
@@ -190,10 +223,13 @@ let tablaVentas = (arreglo) => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);
-		console.error(array);
+	
 		for(let i=0; i < array.length;i++){
-			ARRPRODUCTOS.push(array[i]['id'],array[i]['codigo_producto'], array[i]['codigo_proveedor'],array[i]['id_cliente'],array[i]['precio_venta'],array[i]['nombre'],
-			array[i]['fecha_venta'],array[i]['cantidad'],array[i]['precio_unitario'],array[i]['total_unitario'],array[i]['id_venta'],array[i]['descuento_producto'])
+
+			ARRPRODUCTOS.push({"id":array[i]['id'],"cod_producto":array[i]['codigo_producto'],"cod_proveedor":array[i]['codigo_proveedor'],"cliente":array[i]['id_cliente']
+			,"vendedor":array[i]['id_vendedor'],"p_venta":array[i]['precio_venta'],"nombre":array[i]['nombre'],"totalSinDes":array[i]['total_sin_des'],
+			"fe_venta":array[i]['fecha_venta'],"cantidad":array[i]['cantidad'],"p_unitario":array[i]['precio_unitario'],"to_unitario":array[i]['total_unitario']
+			,"id_venta":array[i]['id_venta'],"des_producto":array[i]['descuento_producto'],"id_proveedor":array[i]['id_proveedor']})
 		}		
 		console.error(ARRPRODUCTOS);
 		
@@ -202,27 +238,121 @@ let tablaVentas = (arreglo) => {
 		console.log('error en la conexion ', error);
 	}
 
- 	}
-
-let totalVentasCols =() => {
-
-	let nFilas = $("#tablaBody > tr").length;
-	let tablaC = document.getElementById("tablaBody"),
-		rIndex;
-	let columna=5;
-	let valorTotal=0;
-	let valor=0;
-	for (let i = 0; i < nFilas; i++) {
-		//valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
-		//console.log("valor total: " + valorTotal);
-		valor += parseInt(convertirNumeros(tablaC.rows[i].cells[columna].innerHTML));
-		console.error("valor total: " + valor);
-	  }
-	  document.getElementById('totalVentaCols').innerHTML=`<h5>TOTAL: $${formatearNumeros(valor)}</h5>`;
-
+	 }
+	 
+	 let trasFactura = async() => {
 	
-}
-function lenguaje() {
+		
+		let sum_total_unitario=0;
+		let cliente;
+		let vendedor;
+		let totaSinDes;
+		let id;
+		for(let i=0; i < ARRPRODUCTOS.length;i++){
+			id=(ARRPRODUCTOS[i]['id_venta']);
+			sum_total_unitario +=parseInt(ARRPRODUCTOS[i]['to_unitario']);
+			cliente=(ARRPRODUCTOS[i]['cliente']);
+			vendedor=(ARRPRODUCTOS[i]['vendedor']);
+			totaSinDes=(ARRPRODUCTOS[i]['totalSinDes']);					
+		}
+		console.error('totaSinDes ' + totaSinDes);
+		console.error('ULTIMAFACTURA ' + ULTIMAFACTURA);
+		console.error('cliente ' + cliente);
+		
+		const insfact = await insertFactura(sum_total_unitario,cliente,vendedor,totaSinDes,id);
+
+	 }
+
+	 let insertFactura = async(sum_total_unitario,cliente,vendedor,totaSinDes,id)=> {
+
+		 let neto=redondeo(parseInt(sum_total_unitario)/1.19,0);
+		 let iva=redondeo(neto * 0.19,0);
+		 let total=parseInt(neto) + parseInt(iva);
+
+		 const baseUrl = 'php/consultaFetch.php';
+		
+		 
+		 let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,
+						fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta,id_boleta)
+						VALUES(${vendedor},"NOW()",2,${cliente},0,0,${neto},${iva}
+						,${total},${totaSinDes},NULL,"NULL",1,${ID_TURNO},"NULL","${ULTIMAFACTURA}","NULL","NULL","NULL")`;
+
+		const sql   = {sql: consulta, tag: `insert_return_id`}					
+
+		//console.error(consulta);	
+
+		 try {
+		
+		 const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });	
+		 const data = await response.text();			 
+		 if (!isNaN(data)) {
+			 insertProductos(data,id);
+			}//		 
+		 
+		 } catch (error) {  }
+
+		
+	 }
+
+	 let insertProductos = async(id_Venta,id) => {
+
+
+		for (var i = 0; i < ARRPRODUCTOS.length; i++) {
+
+
+			const baseUrl = 'php/consultaFetch.php';
+
+			let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto,id_proveedor)
+
+			VALUES("${ARRPRODUCTOS[i]['cod_producto']}",${ARRPRODUCTOS[i]['p_unitario']},${ARRPRODUCTOS[i]['cantidad']},${ARRPRODUCTOS[i]['to_unitario']},${id_Venta}
+			,"${ARRPRODUCTOS[i]['nombre']}",${ARRPRODUCTOS[i]['id_proveedor']})`;	
+
+				const sql   = {sql: consulta, tag: `crud`}		
+				
+				//console.error(consulta);
+	
+				try {
+				
+				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+				
+				const data = await response.text();	
+
+				let check = document.getElementById(`estado_guia_${id}`).checked=false;
+				console.error('id' + id);	
+				console.error(check);
+				} catch (error) {  }	
+				
+			}
+
+			ARRPRODUCTOS=[];
+			console.error(ARRPRODUCTOS);
+
+			}
+
+			
+
+	 
+
+	let totalVentasCols =() => {
+
+		let nFilas = $("#tablaBody > tr").length;
+		let tablaC = document.getElementById("tablaBody"),
+			rIndex;
+		let columna=5;
+		let valorTotal=0;
+		let valor=0;
+		for (let i = 0; i < nFilas; i++) {
+			//valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
+			//console.log("valor total: " + valorTotal);
+			valor += parseInt(convertirNumeros(tablaC.rows[i].cells[columna].innerHTML));
+			console.error("valor total: " + valor);
+		}
+		document.getElementById('totalVentaCols').innerHTML=`<h5>TOTAL: $${formatearNumeros(valor)}</h5>`;
+
+		
+	}
+
+	function lenguaje() {
 	
 	
 	var f = new Date();

@@ -52,7 +52,7 @@ let cargar_ventas_onchange = async() =>{
 
 	const baseUrl = 'php/consultaFetch.php';
     let consulta=`SELECT id,estado_venta,fecha_venta,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total,id_boleta,
-				id_cotizacion,id_factura,id_guia,id_tarjeta FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" ORDER BY id DESC`;
+				id_cotizacion,id_factura,id_guia,id_tarjeta FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" ORDER BY fecha_venta DESC`;
 	
 	
 	
@@ -121,7 +121,7 @@ let cargarVentas = async () => {
 
 	const baseUrl = 'php/consultaFetch.php';
     let consulta=`SELECT id,id_boleta,id_vendedor,id_cliente,estado_venta,DATE_FORMAT(fecha_venta ,'%m-%d-%YYYY') as fecha,neto,iva, total 
-    FROM ventas`;
+    FROM ventas ORDER BY fecha_venta DESC`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 

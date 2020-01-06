@@ -1144,7 +1144,7 @@ let finalizarVenta = async () => {
 
 
 
-
+		let fecha_ac = new Date();
 		let cliente = document.getElementById('selectClientes').value;
 		let neto = $("#totalNeto").val();
 		let netoConvertido = convertirNumeros(neto);
@@ -1158,18 +1158,21 @@ let finalizarVenta = async () => {
 		let observacion = document.getElementById('observacion').value;
 		let medio_pago=document.getElementById('selectModoPago').value;
 		let fecha_venta=document.getElementById('fecha_venta').value;
+		let fecha_hora=fecha_venta + "  " + fecha_ac.getHours() + ":" + fecha_ac.getMinutes() + ":" + fecha_ac.getSeconds();
+		
 		const baseUrl = 'php/consultaFetch.php';
 
 	let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,
 	fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta,id_boleta)
-	VALUES(${ID_VENDEDOR},"${fecha_venta} TIMESTAMP",${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
+	VALUES(${ID_VENDEDOR},"${fecha_hora}",${estadoVenta},${cliente},${descuento},${convertirNumeros(descuento_pesos)},${netoConvertido},${ivaConvertido}
 	,${totalFinalConvertido},${convertirNumeros(totalsindes)},NULL,"${observacion}",${medio_pago}
 	,${ID_TURNO},"${numeroCotizacion}","${numeroFactura}","${numeroGuia}","${numeroTajeta}","${numeroBoleta}")`;
 	
 		
 
-	const sql   = {sql: consulta, tag: `insert_return_id`}		
+				const sql   = {sql: consulta, tag: `insert_return_id`}		
 
+				console.error(consulta);
 	
 				try {
 				//*-llamar ajax al servidor mediate api fetch.
