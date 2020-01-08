@@ -78,10 +78,11 @@
 							<form method="POST" action="imprime_guia_fac.php" target="_blank">
 								<input type="hidden" class="form-control" id="array_productos" name="array_productos">
 								<input type="hidden" class="form-control" id="id_cliente" name="id_cliente">
-								<button type="submit" disabled  class="btn btn-primary"><i class="fas fa edit"></i>Ver documento</button>
+								<input type="hidden" class="form-control" id="ul_factura" name="ul_factura">
+								<button type="submit"   class="btn btn-primary"><i class="fas fa edit"></i>Ver documento</button>
 							</form> 
 							<br>
-							<button  class="btn btn-success" disabled onclick="trasFactura()"><i class="fas fa edit"></i>Pasar guias a factura</button>
+							<button  class="btn btn-success"  onclick="trasFactura()"><i class="fas fa edit"></i>Pasar guias a factura</button>
 							<br><br>
 
 								<div id="salida">

@@ -2,6 +2,7 @@ var VENDEDORES;
 var CLIENTES;
 var ARRPRODUCTOS=[];
 var ULTIMAFACTURA;
+var ARRAYPROPHP;
 
 
 let ultimoNFactura = async() => {
@@ -177,13 +178,21 @@ let tablaVentas = (arreglo) => {
 
 	for (let i of arreglo) { 
 
-		let estadoColumna;		
+		let estadoColumna;
+		let checkHtml;
+
 		if(CLIENTES[i['id_cliente']]!=undefined){			
 			estadoColumna=CLIENTES[i['id_cliente']];
 		}if(CLIENTES[i['id_cliente']]==undefined){
 			estadoColumna=`<span class='badge badge-danger'>Sin cliente</span>`;
 		}
+		if(i['id_cliente']<1){
+		checkHtml=``;
+		}else{
+		checkHtml=`<input type="checkbox" class="form-control" onchange="obtProductos(this,${i['id']})" id="estado_guia_${i['id']}"`;
+		}
 		
+
 		tbody.innerHTML +=
         `<tr>
             <td>${i['id_guia']}</td>			   
@@ -199,7 +208,7 @@ let tablaVentas = (arreglo) => {
 		   	<button type="submit" class="btn btn-primary" data-toggle="tooltip"
 		    data-placement="top" title="ver guias" name="id" value=${i['id']}><i class="fas fa-list" aria-hidden="true"></i></button></form></td>		
 		   	<td><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>					   
-		   	<td><input type="checkbox" class="form-control" onchange="obtProductos(${i['id']})" id="estado_guia_${i['id']}"></td>
+		   	<td>${checkHtml}</td>
 		 </tr>`
 	 	
 	}
@@ -207,150 +216,154 @@ let tablaVentas = (arreglo) => {
 	totalVentasCols();
  }
 
- let obtProductos = async(id) => {
-	const baseUrl = 'php/consultaFetch.php';
-	let consulta=`SELECT vr.id,vr.codigo_producto,p.codigo_proveedor,id_vendedor,id_cliente,v.total_sin_des,p.precio_venta,vr.nombre_producto AS nombre,
-	DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta,vr.descuento_producto,vr.id_proveedor
-	FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta JOIN productos p ON p.codigo=vr.codigo_producto WHERE vr.id_venta=${id} AND v.estado_venta=3`;
+ let obtProductos = async(btn,id) => {
+
+	let idcheck=btn.id;
+	if(document.getElementById(idcheck).checked==true){
+	
+		const baseUrl = 'php/consultaFetch.php';
+
+		let consulta=`SELECT vr.id,vr.codigo_producto,p.codigo_proveedor,id_vendedor,id_cliente,v.total_sin_des,p.precio_venta,vr.nombre_producto AS nombre,
+		DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta,vr.descuento_producto,vr.id_proveedor
+		FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta JOIN productos p ON p.codigo=vr.codigo_producto WHERE vr.id_venta=${id} AND v.estado_venta=3`;
 	 
 	
-	const sql = {sql: consulta, tag: `array_datos`} 
-    console.error(sql);
-	try {
-		//*-llamar ajax al servidor mediate api fetch.
-		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-		//*-request de los datos en formato texto(viene todo el request)
-		const data = await response.text();
-		//*-se parsea solo la respuesta del Json enviada por el servidor.
-		let array = JSON.parse(data);
+		const sql = {sql: consulta, tag: `array_datos`} 
 	
-		for(let i=0; i < array.length;i++){
-
-			ARRPRODUCTOS.push({"id":array[i]['id'],"cod_producto":array[i]['codigo_producto'],"cod_proveedor":array[i]['codigo_proveedor'],"cliente":array[i]['id_cliente']
-			,"vendedor":array[i]['id_vendedor'],"p_venta":array[i]['precio_venta'],"nombre":array[i]['nombre'],"totalSinDes":array[i]['total_sin_des'],
-			"fe_venta":array[i]['fecha_venta'],"cantidad":array[i]['cantidad'],"p_unitario":array[i]['precio_unitario'],"to_unitario":array[i]['total_unitario']
-			,"id_venta":array[i]['id_venta'],"des_producto":array[i]['descuento_producto'],"id_proveedor":array[i]['id_proveedor']})
-		}		
-		console.error(ARRPRODUCTOS);
+		try {
 		
-	
-	} catch (error) {
-		console.log('error en la conexion ', error);
-	}
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });		
+			const data = await response.text();		
+			let array = JSON.parse(data);
+		
+			for(let i=0; i < array.length;i++){
+
+				ARRPRODUCTOS.push({"id":array[i]['id'],"cod_producto":array[i]['codigo_producto'],"cod_proveedor":array[i]['codigo_proveedor'],"cliente":array[i]['id_cliente']
+				,"vendedor":array[i]['id_vendedor'],"p_venta":array[i]['precio_venta'],"nombre":array[i]['nombre'],"totalSinDes":array[i]['total_sin_des'],
+				"fe_venta":array[i]['fecha_venta'],"cantidad":array[i]['cantidad'],"p_unitario":array[i]['precio_unitario'],"to_unitario":array[i]['total_unitario']
+				,"id_venta":array[i]['id_venta'],"des_producto":array[i]['descuento_producto'],"id_proveedor":array[i]['id_proveedor']})
+				}		
+				ARRAYPROPHP=JSON.stringify(ARRPRODUCTOS);		
+				document.getElementById('array_productos').value=ARRAYPROPHP;
+				document.getElementById('id_cliente').value=ARRPRODUCTOS[0]['cliente'];
+				document.getElementById('ul_factura').value=ULTIMAFACTURA;
+		
+			} 	catch (error) {
+			console.log('error en la conexion ', error);
+				}
+	}	else{
+			document.getElementById('array_productos').value=``;
+			document.getElementById('id_cliente').value=``;
+			document.getElementById('ul_factura').value=``;
+			
+			return;
+		}
 
 	 }
 	 
 	 let trasFactura = async() => {
-	
-		
+
+		if(ARRPRODUCTOS.length < 1){
+			swal('Precaucion','no hay datos a traspasar','warning')
+		}else{
+
 		let sum_total_unitario=0;
 		let cliente;
 		let vendedor;
 		let totaSinDes;
 		let id;
+
 		for(let i=0; i < ARRPRODUCTOS.length;i++){
 			id=(ARRPRODUCTOS[i]['id_venta']);
 			sum_total_unitario +=parseInt(ARRPRODUCTOS[i]['to_unitario']);
 			cliente=(ARRPRODUCTOS[i]['cliente']);
 			vendedor=(ARRPRODUCTOS[i]['vendedor']);
 			totaSinDes=(ARRPRODUCTOS[i]['totalSinDes']);					
-		}
-		console.error('totaSinDes ' + totaSinDes);
-		console.error('ULTIMAFACTURA ' + ULTIMAFACTURA);
-		console.error('cliente ' + cliente);
-		
+		}				
 		const insfact = await insertFactura(sum_total_unitario,cliente,vendedor,totaSinDes,id);
 
+		}
 	 }
 
-	 let insertFactura = async(sum_total_unitario,cliente,vendedor,totaSinDes,id)=> {
+let insertFactura = async(sum_total_unitario,cliente,vendedor,totaSinDes,id)=> {
 
-		 let neto=redondeo(parseInt(sum_total_unitario)/1.19,0);
-		 let iva=redondeo(neto * 0.19,0);
-		 let total=parseInt(neto) + parseInt(iva);
+		let neto=redondeo(parseInt(sum_total_unitario)/1.19,0);
+		let iva=redondeo(neto * 0.19,0);
+		let total=parseInt(neto) + parseInt(iva);
 
-		 const baseUrl = 'php/consultaFetch.php';
-		
-		 
-		 let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,
-						fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta,id_boleta)
-						VALUES(${vendedor},"NOW()",2,${cliente},0,0,${neto},${iva}
-						,${total},${totaSinDes},NULL,"NULL",1,${ID_TURNO},"NULL","${ULTIMAFACTURA}","NULL","NULL","NULL")`;
+		const baseUrl = 'php/consultaFetch.php';
 
-		const sql   = {sql: consulta, tag: `insert_return_id`}					
-
-		//console.error(consulta);	
-
-		 try {
-		
-		 const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });	
-		 const data = await response.text();			 
-		 if (!isNaN(data)) {
-			 insertProductos(data,id);
-			}//		 
-		 
-		 } catch (error) {  }
-
-		
-	 }
-
-	 let insertProductos = async(id_Venta,id) => {
-
-
-		for (var i = 0; i < ARRPRODUCTOS.length; i++) {
-
-
-			const baseUrl = 'php/consultaFetch.php';
-
-			let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto,id_proveedor)
-
-			VALUES("${ARRPRODUCTOS[i]['cod_producto']}",${ARRPRODUCTOS[i]['p_unitario']},${ARRPRODUCTOS[i]['cantidad']},${ARRPRODUCTOS[i]['to_unitario']},${id_Venta}
-			,"${ARRPRODUCTOS[i]['nombre']}",${ARRPRODUCTOS[i]['id_proveedor']})`;	
-
-				const sql   = {sql: consulta, tag: `crud`}		
-				
-				//console.error(consulta);
 	
-				try {
-				
-				const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
-				
-				const data = await response.text();	
+		let consulta=`INSERT INTO VENTAS (id_vendedor,fecha_venta,estado_venta,id_cliente,descuento,descuento_pesos,neto,iva,total,total_sin_des,
+					fecha_nulo,observacion,medio_pago,id_turno,id_cotizacion,id_factura,id_guia,id_tarjeta,id_boleta)
+					VALUES(${vendedor},NOW(),2,${cliente},0,0,${neto},${iva}
+					,${total},${totaSinDes},NULL,"NULL",1,${ID_TURNO},"NULL","${ULTIMAFACTURA}","NULL","NULL","NULL")`;
 
-				let check = document.getElementById(`estado_guia_${id}`).checked=false;
-				console.error('id' + id);	
-				console.error(check);
-				} catch (error) {  }	
-				
-			}
+		const sql   = {sql: consulta, tag: `insert_return_id`}
+		try {
 
-			ARRPRODUCTOS=[];
-			console.error(ARRPRODUCTOS);
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });	
+		const data = await response.text();			 
+		if (!isNaN(data)) {
+			insertProductos(data,id);
+		}	 
+	
+		} catch (error) {  }
 
-			}
+
+}
+
+let insertProductos = async(id_Venta,id) => {
+
+
+	for (var i = 0; i < ARRPRODUCTOS.length; i++) {
+
+		const baseUrl = 'php/consultaFetch.php';
+		let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto,id_proveedor)
+
+		VALUES("${ARRPRODUCTOS[i]['cod_producto']}",${ARRPRODUCTOS[i]['p_unitario']},${ARRPRODUCTOS[i]['cantidad']},${ARRPRODUCTOS[i]['to_unitario']},${id_Venta}
+				,"${ARRPRODUCTOS[i]['nombre']}",${ARRPRODUCTOS[i]['id_proveedor']})`;	
+
+		const sql   = {sql: consulta, tag: `crud`}	
+		try {
+		
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });				
+			const data = await response.text();	
+			let check = document.getElementById(`estado_guia_${id}`).checked=false;
+
+			swal("Factura creada", "los datos fueron crados exitosamente", "success");
+			setTimeout('window.location.href = "ver_facturas_ventas.php";', 1500);
+
+		} catch (error) {  }	
+			
+		}
+		ARRPRODUCTOS=[];		
+
+		}
 
 			
 
 	 
 
-	let totalVentasCols =() => {
+let totalVentasCols =() => {
 
-		let nFilas = $("#tablaBody > tr").length;
-		let tablaC = document.getElementById("tablaBody"),
-			rIndex;
-		let columna=5;
-		let valorTotal=0;
-		let valor=0;
-		for (let i = 0; i < nFilas; i++) {
-			//valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
-			//console.log("valor total: " + valorTotal);
-			valor += parseInt(convertirNumeros(tablaC.rows[i].cells[columna].innerHTML));
-			console.error("valor total: " + valor);
-		}
-		document.getElementById('totalVentaCols').innerHTML=`<h5>TOTAL: $${formatearNumeros(valor)}</h5>`;
+	let nFilas = $("#tablaBody > tr").length;
+	let tablaC = document.getElementById("tablaBody"),
+		rIndex;
+	let columna=5;
+	let valorTotal=0;
+	let valor=0;
 
-		
+	for (let i = 0; i < nFilas; i++) {
+		//valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
+		//console.log("valor total: " + valorTotal);
+		valor += parseInt(convertirNumeros(tablaC.rows[i].cells[columna].innerHTML));
+		console.error("valor total: " + valor);
 	}
+	document.getElementById('totalVentaCols').innerHTML=`<h5>TOTAL: $${formatearNumeros(valor)}</h5>`;
+
+	
+}
 
 	function lenguaje() {
 	

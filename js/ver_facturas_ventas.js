@@ -111,9 +111,12 @@ let clientes = async () => {
 //*-cargar datos mediante async wait()
 let cargarVentas = async () => { 
 
+	let fecha_inicio=document.getElementById('fecha_inicio').value;				
+	let fecha_termino=document.getElementById('fecha_termino').value;
+	
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
-    FROM ventas`;
+    let consulta=`SELECT id,id_vendedor,id_cliente,id_factura,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
+	FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=2`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
