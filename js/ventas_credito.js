@@ -292,7 +292,7 @@ let tablaVentas = async (arreglo) => {
 		console.error('fecha_Ca ' + fecha_Ca);
 		const baseUrl = 'php/consultaFetch.php';
         const consulta=`INSERT INTO pagos (id_cliente,fecha_cancelacion,valor_abono,total_variable,forma_pago,id_venta)
-                        VALUES(${cliente},"${fecha_Ca} TIMESTAMP",${abono},(${total_restante-abono}),${forma_p},${i_venta})`;
+                        VALUES(${cliente},"${fecha_Ca}",${abono},(${total_restante-abono}),${forma_p},${i_venta})`;
 						
 		const sql   = {sql: consulta, tag: `crud`}	
 		
