@@ -156,7 +156,7 @@
 								<div class="form-group col-md-4">
 									<label> Seleccione tipo documento</label>
 									<div class="input-group">
-									<select  class="form-control" id="selectDocumento">                                    
+									<select  class="form-control" onchange=verificarDocumento() id="selectDocumento">                                    
                                     <option value="1">Boleta</option>
                                     <option value="2">Factura electrónica</option>
                                     <option value="3">Guía interna</option>

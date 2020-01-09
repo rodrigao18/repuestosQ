@@ -78,7 +78,7 @@
 			document.getElementById('titulo_documento').innerHTML=`Boleta`;
 			document.getElementById('cabezera').className=`cabezera-boleta`;
 			document.getElementById('btn_ventas').style.display=`block`;
-
+			
 		} else if (ESTADOVENTA == 0) {
 			var row = document.getElementById("borrar");
 			row.deleteCell(-1);
@@ -105,6 +105,8 @@
 			document.getElementById('cabezera').className=`cabezera-boleta-tarjetas`;
 			document.getElementById('btn-ocultar').style.display=`block`;
 			document.getElementById('grupo-btn').style.display=`none`;
+			document.getElementById('btnImportar').style.display=`none`;
+
 
 		}
 		else if (ESTADOVENTA == 2) {

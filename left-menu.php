@@ -86,6 +86,7 @@
 					<li><a class="treeview-item" href="ventas_por_dia.php"><i class="icon fas fa-angle-right"></i>Ventas por dia</a></li>
 					<li><a class="treeview-item" href="ver_ventas_por_proveedor.php"><i class="icon fas fa-angle-right"></i>Ventas agrupada por proveedor</a></li>					
 					<li><a class="treeview-item" href="ver_ventas_tarjetas.php"><i class="icon fas fa-angle-right"></i> Ventas con tarjetas</a></li>
+					<li><a class="treeview-item" href="ventas_creditos.php"><i class="icon fas fa-angle-right"></i> Creditos</a></li>
 					<li><a class="treeview-item" href="ver_cotizaciones.php"><i class="icon fas fa-angle-right"></i> Cotizaciones</a></li>
 					<li><a class="treeview-item" href="ver_guias.php"><i class="icon fas fa-angle-right"></i> Guías</a></li>
 					<li><a class="treeview-item" href="ver_facturas_ventas.php"><i class="icon fas fa-angle-right"></i> Facturas ventas</a></li>

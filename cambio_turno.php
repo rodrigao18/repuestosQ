@@ -47,7 +47,7 @@
 		<input type="text" class="form-control" disabled id="cajaAnteriorCambioTurno" name="cajaAnteriorCambioTurno" >
 	</div>
 	<div class="form-group col-md-6">
-		<label>Transbank</label>
+		<label>Débito</label>
 		<input type="text" class="form-control" disabled id="transbankCambioTurno" name="transbankCambioTurno" >
 	</div>
 	</div>

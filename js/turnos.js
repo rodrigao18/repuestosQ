@@ -327,12 +327,14 @@ console.error('tipo turno en transbank es: ' + tipoTurno);
 //*-consultar  el transbank actual.
 function consultarTransbank(index, transVal) {
 	
-	
+	//SELECT  SUM(total) AS transbank, (SELECT SUM(total) FROM ventas WHERE id_turno=1 AND (medio_pago=3)) AS credito FROM ventas  WHERE id_turno=1 AND (medio_pago = 2 )
 	var trasnsActual = 0;
+	var creditoActual=0;
 	if (index == 'cambio turno') {
-		var sql = 'SELECT  sum(total) as transbank from ventas  where id_turno=' + ID_TURNO + ' and (medio_pago = 2 or medio_pago = 3)';
+		
+		var sql = `SELECT  SUM(total) AS transbank, (SELECT SUM(total) FROM ventas WHERE id_turno=${ID_TURNO} AND (medio_pago=3)) AS credito FROM ventas  WHERE id_turno=${ID_TURNO} AND (medio_pago = 2 )`;
 	} else if (index == 'turno final') {
-		var sql = 'SELECT  sum(total) as transbank from ventas  where id_turno=' + ID_TURNO + ' and (medio_pago = 2 or medio_pago = 3)';
+		var sql = `SELECT  SUM(total) AS transbank, (SELECT SUM(total) FROM ventas WHERE id_turno=${ID_TURNO} AND (medio_pago=3)) AS credito FROM ventas  WHERE id_turno=${ID_TURNO} AND (medio_pago = 2 )`;
 	}
 	console.log(sql);
 	

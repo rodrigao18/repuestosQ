@@ -57,6 +57,33 @@ let cargarDatos = async() => {
 			
 	}
 
+	let verificarDocumento = ()=>{
+
+		let documento=document.getElementById('selectDocumento').value;
+		console.error('documento ' + documento);
+		if(documento == 2 || documento==4 || documento==3){
+			$.notify({
+				title: "Warning: ",
+				message: `Recuerde selecionar un cliente:`,
+				icon: 'fas fa-exclamation-circle'
+			}, {
+				type: "info",
+				placement: {
+					from: "top",
+					align: "center"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 2000,
+				timer: 2000
+			});
+
+		}else{
+			return;
+		}
+	}
+
 
 	let marcas = async() => {
 		const baseUrl = 'php/consultaFetch.php';

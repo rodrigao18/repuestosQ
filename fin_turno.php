@@ -57,13 +57,13 @@
 		</div>	
    
 		<div class="form-group col-md-6">
-		<label>Total transbank tarde</label>
+		<label>Total Débito tarde</label>
 		<input type="text" class="form-control" disabled id="totalTrasnTarde" name="totalTrasnTarde" >
 		</div>
 	</div>
     <div class="form-row">
 		<div class="form-group col-md-12">
-		<label>Total venta turno tarde efectivo y transbank</label>
+		<label>Total venta turno tarde efectivo y Débito</label>
 		<input type="text" class="form-control" disabled id="totalTurnoTarde" name="totalTurnoTarde" >
 		</div>
 	</div>
@@ -73,14 +73,14 @@
 		<input type="text" class="form-control" disabled id="totalVentaFinal" name="totalVentaFinal" >
 		</div>
     <div class="form-group col-md-6">
-		<label>Total Transbank del dia</label>
+		<label>Total Débito del dia</label>
 		<input type="text" class="form-control"  disabled id="transbankFinal" name="transbankFinal"  >
 	</div>
     
     </div>
     <div class="form-row">
 		<div class="form-group col-md-12">
-		<label>Total del dia efectivo y transbank</label>
+		<label>Total del dia efectivo y Débito</label>
 		<input type="text" class="form-control" disabled id="totalDia" name="totalDia" >
 		</div>
 	</div>

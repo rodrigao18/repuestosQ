@@ -255,6 +255,7 @@ let tablaVentas = (arreglo) => {
 			document.getElementById('array_productos').value=``;
 			document.getElementById('id_cliente').value=``;
 			document.getElementById('ul_factura').value=``;
+			ARRPRODUCTOS=[];
 			
 			return;
 		}
