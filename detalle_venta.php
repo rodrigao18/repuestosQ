@@ -116,19 +116,17 @@
 											<input type="text" class="form-control" id="nombreVendedor" disabled>
 										</div>
 										<div class="form-group col-md-6">											
-											<label> Celular </label>
-											<input type="text" class="form-control" id="celular" disabled">
+										<label>Correo </label>
+											<input type="text" class="form-control" id="correo" disabled">
 											</div>
 										</div>
 									</div>								
 									<div class="form-row">
 										<div class="form-group col-md-6">
-											<label> Dirección </label>
-											<input type="text" class="form-control" id="direccion" disabled">
+											<label> Cliente </label>
+											<select  class="form-control" onchange="updateCliente()" id="selectClientes"></select>
 										</div>
-										<div class="form-group col-md-6">
-											<label>Correo </label>
-											<input type="text" class="form-control" id="correo" disabled">
+									
 										</div>
 									</div>
 								</form>										

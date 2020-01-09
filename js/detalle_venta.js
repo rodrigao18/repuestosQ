@@ -50,6 +50,45 @@
 
 	}
 
+	let cargarCliente = async(id)=>{
+
+		const baseUrl = 'php/consultaFetch.php';
+    	let consulta=`SELECT id,nombre FROM clientes`;
+    	
+    	const sql   = {sql: consulta, tag: `array_clientes`}
+    
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+	        		
+        $('#selectClientes').html(data).fadeIn();		
+        $('#selectClientes option[value="' + id + '"]').attr("selected", true);		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+	}
+
+	let updateCliente = async()=>{
+
+		let id = document.getElementById(`selectClientes`).value;
+		const baseUrl = 'php/consultaFetch.php';
+    	let consulta=`UPDATE VENTAS SET id_cliente=${id} WHERE id=${NUMEROVENTA}`;
+    	
+    	const sql   = {sql: consulta, tag: `crud`}
+    
+		try {
+			
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			const data = await response.text();
+			console.log('update cliente');
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+
+
+	}
+
 	//funcion que pone los datos del cliente
 	function FormDatosVendedor(arreglo) {
 
@@ -682,8 +721,8 @@
 			success: function (data) {
 
 				var arreglo = JSON.parse(data);	
-					
-	
+				let id_cliente=arreglo[0]['id_cliente'];	
+				cargarCliente(id_cliente);
 				tablaProductos(arreglo);
 				var nFilas = $("#tablaBodyCotizacion > tr").length;
 				if (nFilas <= 0) {
