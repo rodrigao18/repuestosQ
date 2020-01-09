@@ -164,7 +164,7 @@ let cargarDeuda = async(id,total) =>{
 		 const data = await response.text();
 		 let valor;		 
 		 let array = JSON.parse(data);
-		 console.error(document.getElementById(`deuda${id}`));
+		
 		 if(array.length < 1){
 			document.getElementById(`deuda${id}`).innerHTML=formatearNumeros(total);
 		 }else{
