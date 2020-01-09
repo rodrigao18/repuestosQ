@@ -202,11 +202,11 @@ let tablaVentas = (arreglo) => {
 		   <input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${numero}">
 		   <button type="submit" class="btn btn-success" data-toggle="tooltip"
             data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>
-            <td><form method="POST" action="detalle_pago.php">
+            <td><form method="POST" action="historial_abonos.php">
             <input type="hidden" class="form-control" id="estado_pago" name="estado_pago" value="${i['estado_venta']}">
             <input type="hidden" class="form-control" id="n_boleta" name="n_boleta" value="${numero}">
             <button type="submit" class="btn btn-primary" data-toggle="tooltip"
-            data-placement="top" title="Historial" name="id" value=${i['id']}><i class="fas fa-clipboard-list"></i></button></form></td>				
+            data-placement="top" title="Historial de abonos" name="id" value=${i['id']}><i class="fas fa-clipboard-list"></i></button></form></td>				
 			<td><button class="btn btn-info" data-toggle="tooltip" data-placement="top" onclick=modalAbono(${i['id']},${i['total']},${i['id_cliente']}) title="Abonar"><i class="fas fa-check-circle"></i></button></td>			
 		 </tr>`
 	 	
@@ -250,17 +250,18 @@ let tablaVentas = (arreglo) => {
 
     let abonar = async(e)=>{
 
-        const evento=e.preventDefault();
+		const evento=e.preventDefault();
+		
         let cliente = document.getElementById('id_cliente').value;
         let abono=document.getElementById('abono').value;
-        let fecha_cancelacion=document.getElementById('fecha_cancelacion').value;
+        let fecha_Ca=document.getElementById('fecha_cancelacion').value;
         let i_venta=document.getElementById('id_venta').value;
         let total_restante=document.getElementById('total_restante').value; 
 		let forma_p=document.getElementById('selectModoPago').value;   
-		
+		console.error('fecha_Ca ' + fecha_Ca);
 		const baseUrl = 'php/consultaFetch.php';
         const consulta=`INSERT INTO pagos (id_cliente,fecha_cancelacion,valor_abono,total_variable,forma_pago,id_venta)
-                        VALUES(${cliente},${fecha_cancelacion},${abono},(${total_restante-abono}),${forma_p},${i_venta})`;
+                        VALUES(${cliente},"${fecha_Ca} TIMESTAMP",${abono},(${total_restante-abono}),${forma_p},${i_venta})`;
 						
 		const sql   = {sql: consulta, tag: `crud`}	
 		
