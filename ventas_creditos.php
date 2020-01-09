@@ -85,8 +85,9 @@
                                 <th width="10%">Fecha vta.</th>
 								<th width="10%">Documento</th>
 								<th width="10%">Nro</th>								
-								<th width="10%">Cliente</th>																			
-                                <th width="10%">Total</th>					
+								<th width="10%">Cliente</th>
+								<th width="10%">Deuda</th>																					
+                                <th width="10%">Total Inicial</th>					
 								<th width="5%"></th>	
 								<th width="5%"></th>	
 								<th width="5%"></th>	

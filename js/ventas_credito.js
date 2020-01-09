@@ -141,9 +141,7 @@ let cargarVentas = async () => {
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);		
 		const cargar = await cargar_ventas_onchange();
-		//const tablaFactutass = await tablaVentas(array);
-		//*-promesa de la funcion denguaje la ejecuto a la espera
-		//*-de la respuesta del servidor.	
+		
 		const botones = await lenguaje();	
 	
 	} catch (error) {
@@ -152,12 +150,44 @@ let cargarVentas = async () => {
 	
 }
 
-let tablaVentas = (arreglo) => {
+let cargarDeuda = async(id,total) =>{
+
+	const baseUrl = 'php/consultaFetch.php';
+    
+    let consulta=`SELECT total_variable FROM pagos WHERE id_venta=${id} order by id desc limit 1`;
+	 
+	 const sql = {sql: consulta, tag: `array_datos`} 
+	 console.error(sql);
+	 try {
+		
+		 const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });		
+		 const data = await response.text();
+		 let valor;		 
+		 let array = JSON.parse(data);
+		 console.error(document.getElementById(`deuda${id}`));
+		 if(array.length < 1){
+			document.getElementById(`deuda${id}`).innerHTML=formatearNumeros(total);
+		 }else{
+		     valor=array[0]['total_variable'];		
+			 document.getElementById(`deuda${id}`).innerHTML=formatearNumeros(valor);
+		 }
+		
+		//  
+	 
+	 } catch (error) {
+		 console.log('error en la conexion ', error);
+	 }
+
+	}
+
+let tablaVentas = async (arreglo) => {
 	
 	let tbody = document.getElementById('tablaBody');
 	
 
 	for (let i of arreglo) { 
+
+		
 
 		let estadoColumna;
 		let estadoDocumento;
@@ -195,7 +225,8 @@ let tablaVentas = (arreglo) => {
 			<td>${i['fecha_venta']}</td>
 			<td>${estadoDocumento}</td>	
 			<td>${numero}</td>		
-			<td>${estadoColumna}</td>		  				
+			<td>${estadoColumna}</td>
+			<td id='deuda${i['id']}'></td>		  				
            <td>${formatearNumeros(i['total'])}</td>
            <td><form method="POST" action="detalle_venta.php">
 		   <input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
@@ -209,7 +240,7 @@ let tablaVentas = (arreglo) => {
             data-placement="top" title="Historial de abonos" name="id" value=${i['id']}><i class="fas fa-clipboard-list"></i></button></form></td>				
 			<td><button class="btn btn-info" data-toggle="tooltip" data-placement="top" onclick=modalAbono(${i['id']},${i['total']},${i['id_cliente']}) title="Abonar"><i class="fas fa-check-circle"></i></button></td>			
 		 </tr>`
-	 	
+	 	const deuda=await cargarDeuda(i['id'],i['total']);
 	}
 	$('[data-toggle="tooltip"]').tooltip();
 
