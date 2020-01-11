@@ -707,9 +707,10 @@
 		//$("#tablaTotalAgregado").html("");
 		$("#salidaTablaTotal").html("");
 
-		var sql = `SELECT vr.id,vr.codigo_producto,p.codigo_proveedor,id_cliente,p.precio_venta,vr.nombre_producto AS nombre,DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta,vr.descuento_producto
+		var sql = `SELECT vr.id,vr.codigo_producto,p.codigo_proveedor,id_cliente,p.precio_venta,id_proveedor,p.id AS idproducto,
+		vr.nombre_producto AS nombre,DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta,vr.descuento_producto
 		FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta JOIN productos p ON p.codigo=vr.codigo_producto WHERE vr.id_venta=${NUMEROVENTA} AND v.estado_venta=${ESTADOVENTA}`;
-
+		console.error(sql);
 		
 		$.ajax({
 			type: 'POST',

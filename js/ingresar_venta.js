@@ -42,7 +42,9 @@ let cargarDatos = async() => {
 		'<td><input name="desU' + parseFloat(ITEM) + '" id="' + 'desc' + parseFloat(ITEM) + '"   type="text" min=0 value="'+formatearNumeros(0)+'"></td>' +
 		'<td><input name="preU' + parseFloat(ITEM) + '" id="' + 'vent' + parseFloat(ITEM) + '"  type="text" min=0 value="'+formatearNumeros(PRODUCTOS[i]['total_unitario'])+'"></td>' +		
 		'<td><button class="btn  btn-danger" id="cols' + ITEM + '" onclick=removerItem(' + parseFloat(ITEM) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
-		'<td style="display:none;">'+PRODUCTOS[i]['id']+'</td>' +
+		'<td style="display:none;">'+PRODUCTOS[i]['idproducto']+'</td>' +
+		'<td style="display:none;">'+PRODUCTOS[i]['id_proveedor']+'</td>' +
+		'<td style="display:none;">'+PRODUCTOS[i]['descuento_producto']+'</td>' +
 		'</tr>');
 		$('#selectClientes option[value="' + PRODUCTOS[i]['id_cliente'] + '"]').attr("selected", true);
 
@@ -1244,8 +1246,9 @@ for (var i = 0; i < nFilas; i++) {
 
 	VALUES("${codigo}",${precioUnitarioConvertido},${cantidad},${totalUnitarioConvertido},${id},"${nombre}",${proveedor})`;	
 
+	console.error(consulta);
 				const sql   = {sql: consulta, tag: `crud`}		
-				
+					
 	
 				try {
 				
