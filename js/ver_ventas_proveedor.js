@@ -48,14 +48,10 @@ let cargar_ventas_onchange = async() =>{
 
 	const baseUrl = 'php/consultaFetch.php';
 
-	/*SELECT p.nombre,vr.codigo_producto,vr.nombre_producto,vr.cantidad,pr.stock,pr.codigo_proveedor,pr.costo FROM
-	 ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN proveedores p ON p.id=vr.id_proveedor JOIN productos pr ON pr.codigo=vr.codigo_producto
-	 WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=1*/
-
- 	let consulta=`SELECT p.nombre,vr.codigo_producto,vr.nombre_producto,SUM(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
+ 	let consulta=`SELECT v.estado_venta AS estadoventa,p.nombre,vr.codigo_producto,vr.nombre_producto,SUM(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
 	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN proveedores p ON p.id=vr.id_proveedor JOIN productos pr ON pr.codigo=vr.codigo_producto
 	WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59"
-	OR estado_venta=2 OR estado_venta=1 OR estado_venta=3 OR estado_venta=5  GROUP BY vr.codigo_producto DESC`;
+	GROUP BY vr.codigo_producto DESC`;
 	
 	
 	
@@ -125,10 +121,10 @@ let cargarVentas = async () => {
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-	let consulta=`SELECT p.nombre,vr.codigo_producto,vr.nombre_producto,SUM(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
+	let consulta=`SELECT v.estado_venta AS estadoventa,p.nombre,vr.codigo_producto,vr.nombre_producto,SUM(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
 	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN proveedores p ON p.id=vr.id_proveedor JOIN productos pr ON pr.codigo=vr.codigo_producto
 	WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59"
-	OR estado_venta=2 OR estado_venta=1 OR estado_venta=3 OR estado_venta=5  GROUP BY vr.codigo_producto DESC`;
+	GROUP BY vr.codigo_producto DESC`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
@@ -157,7 +153,7 @@ let tablaVentas = (arreglo) => {
 	let tbody = document.getElementById('tablaBody');
 
 	for (let i of arreglo) { 
-		
+		if(i['estadoventa']!=4){
 		tbody.innerHTML +=
         `<tr>
             <td>${i['nombre']}</td>			   
@@ -169,7 +165,9 @@ let tablaVentas = (arreglo) => {
 		   <td>${i['stock']}</td>	  
 		   <td>${i['costo']}</td>	  
 		 </tr>`
-	 	
+		}else{
+			console.error('4');
+		}
 	}
 	$('[data-toggle="tooltip"]').tooltip();
 	totalVentasCols();
