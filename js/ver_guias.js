@@ -3,7 +3,7 @@ var CLIENTES;
 var ARRPRODUCTOS=[];
 var ULTIMAFACTURA;
 var ARRAYPROPHP;
-
+var IDCLIENTE;
 
 let ultimoNFactura = async() => {
 
@@ -175,12 +175,12 @@ let tablaVentas = (arreglo) => {
 	
 	let tbody = document.getElementById('tablaBody');
 	
-
+	
 	for (let i of arreglo) { 
 
 		let estadoColumna;
 		let checkHtml;
-
+	
 		if(CLIENTES[i['id_cliente']]!=undefined){			
 			estadoColumna=CLIENTES[i['id_cliente']];
 		}if(CLIENTES[i['id_cliente']]==undefined){
@@ -189,7 +189,8 @@ let tablaVentas = (arreglo) => {
 		if(i['id_cliente']<1){
 		checkHtml=``;
 		}else{
-		checkHtml=`<input type="checkbox" class="form-control" onchange="obtProductos(this,${i['id']})" id="estado_guia_${i['id']}"`;
+			
+		checkHtml=`<input type="checkbox" class="form-control" onchange="comprobarCliente(this,${i['id']},${i['id_cliente']})" id="estado_guia_${i['id']}"`;
 		}
 		
 
@@ -216,6 +217,33 @@ let tablaVentas = (arreglo) => {
 	totalVentasCols();
  }
 
+	let comprobarCliente = (btn,id,id_cliente)=>{
+			
+			let idcheck=btn.id;
+			console.error('idcheck ' + idcheck);
+		
+			if(document.getElementById(idcheck).checked==true){
+				if(IDCLIENTE==id_cliente || IDCLIENTE==undefined){
+
+					obtProductos(btn,id);
+					
+				}else{
+				swal('Error','esta eligiendo una guia de un cliente distinto','error');
+					document.getElementById(idcheck).checked=false;
+					return;
+				}
+				IDCLIENTE=id_cliente;
+				
+				console.error('IDCLIENTE ' + IDCLIENTE);	
+			}else{
+				document.getElementById('array_productos').value=``;
+				document.getElementById('id_cliente').value=``;
+				document.getElementById('ul_factura').value=``;
+				ARRPRODUCTOS=[];
+				return;
+			}				
+	}
+
  let obtProductos = async(btn,id) => {
 
 	let idcheck=btn.id;
@@ -235,7 +263,8 @@ let tablaVentas = (arreglo) => {
 			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });		
 			const data = await response.text();		
 			let array = JSON.parse(data);
-		
+
+	
 			for(let i=0; i < array.length;i++){
 
 				ARRPRODUCTOS.push({"id":array[i]['id'],"cod_producto":array[i]['codigo_producto'],"cod_proveedor":array[i]['codigo_proveedor'],"cliente":array[i]['id_cliente']
@@ -251,11 +280,7 @@ let tablaVentas = (arreglo) => {
 			} 	catch (error) {
 			console.log('error en la conexion ', error);
 				}
-	}	else{
-			document.getElementById('array_productos').value=``;
-			document.getElementById('id_cliente').value=``;
-			document.getElementById('ul_factura').value=``;
-			ARRPRODUCTOS=[];
+	}	else{		
 			
 			return;
 		}
