@@ -201,19 +201,21 @@ let tablaVentas = (arreglo) => {
  }
 
 let totalVentasCols =() => {
-
+	document.getElementById('totalVentaCols').innerHTML=``;
 	let nFilas = $("#tablaBody > tr").length;
 	let tablaC = document.getElementById("tablaBody"),
 		rIndex;
-	let columna=5;
+	let columna=7;
 	let valorTotal=0;
 	let valor=0;
 	for (let i = 0; i < nFilas; i++) {
 		//valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
 		//console.log("valor total: " + valorTotal);
 		valor += parseInt(convertirNumeros(tablaC.rows[i].cells[columna].innerHTML));
-	
+		console.log(tablaC.rows[i].cells[columna].innerHTML);
 	  }
+	  console.log('valor ' + valor);
+
 	  document.getElementById('totalVentaCols').innerHTML=`<h5>TOTAL: $${formatearNumeros(valor)}</h5>`;
 
 	

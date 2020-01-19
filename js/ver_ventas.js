@@ -179,7 +179,7 @@ let totalVentasCols =() => {
 	let nFilas = $("#tablaBody > tr").length;
 	let tablaC = document.getElementById("tablaBody"),
 		rIndex;
-	let columna=5;
+	let columna=7;
 	let valorTotal=0;
 	let valor=0;
 	for (let i = 0; i < nFilas; i++) {
