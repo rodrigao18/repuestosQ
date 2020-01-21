@@ -27,7 +27,35 @@
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff"> -->
 </head>
+<style>
 
+.rut_invalido-input{
+	border:2px solid red;
+}
+.rut_valido-input{
+	border:2px solid green;
+}
+.rut_label_invalido{
+	color:red;
+	font-size:1em;
+	font-weight: bold !important;
+}
+.rut_label_valido{
+	color:green;
+	font-size:1em;
+	font-weight: bold !important;
+}
+.compro_icon_error{
+	width:30px;
+	height:30px;
+	background:url("imagenes/Close-32.png")no-repeat;
+}
+.compro_icon_val{
+	width:30px;
+	height:30px;
+	background:url("imagenes/Check-32.png")no-repeat;
+}
+</style>
 <body class="app sidebar-mini rtl">
 	<!-- Navbar-->
 	<?php include "header.php"; ?>
@@ -56,9 +84,10 @@
 						<form method="POST" id="formularioGuardar">
 							<input type="hidden" class="form-control" id="id" name="id">						
 							<div class="form-row">
-							<div class="form-group col-md-12">
-								<label>R.U.T</label>
-								<input type="text" class="form-control" id="rutProveedor" name="rutProveedor" maxlength="9" placeholder=" Ej:123456789 (sin digito)" onfocus="this.value=sacarPuntosGuionRut(this.value)" onkeyup="this.value=soloRut(this.value)" onblur="this.value=validaRut(this.value,1)" >
+							<div class="form-group col-md-12">		
+							<div id="comprobacion">_</div>
+								<label id="rut_label_id">R.U.T</label>														
+								<input type="text" class="form-control" id="rutProveedor" name="rutProveedor" maxlength="10" placeholder=" ingrese rut " oninput="checkRut(this)"  onblur="this.value=validaRut(this.value)"> 
 							</div>
 							</div>
 							<div class="form-row">
