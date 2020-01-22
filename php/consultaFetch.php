@@ -148,8 +148,13 @@ function clientes($sql)	     {
 		mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;   
 	$result = mysqli_query($conect,$sql) or die ('Consulta fallida :');       
 	$arreglo_usuario=array();
+	
 		echo '<option value="0">Sin cliente</option>';
-			while($fila=mysqli_fetch_array($result)){	echo '<option value="'.$fila["id"].'">'.$fila["nombre"].'</option>'; }
+			while($fila=mysqli_fetch_array($result)){
+				$cuerpo=substr($fila["rut"],0,-1);				
+				$dv=substr($fila["rut"],-1);
+				$rutFormateado = $cuerpo ."-".  $dv;	
+				echo '<option value="'.$fila["id"].'">'.$fila["nombre"].' ('.$rutFormateado.')</option>'; }
 		mysqli_free_result($result);
 	mysqli_close($conect);
 	

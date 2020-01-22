@@ -206,10 +206,10 @@
 						<?php echo number_format($cantidad);?>
 					</td>
 					<td>
-						<?php echo number_format($precio);?>
+						<?php echo number_format($total);?>
 					</td>
 					<td>
-						<?php echo number_format($total);?>
+						<?php echo number_format($precio);?>
 					</td>
 				</tr>
 				<?php } ?>

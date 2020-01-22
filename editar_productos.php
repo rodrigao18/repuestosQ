@@ -111,7 +111,7 @@
 									<input type="number" class="form-control" id="stock_minimo" name="stock_minimo" min="0" placeholder="Ingrese stock minimo" value="0">									
 								</div>
 								<div class="form-group col-md-3">
-									<label>Stock máximo</label>
+									<label>Stock</label>
 									<input type="number" class="form-control" id="stock_maximo" name="stock_maximo" min="0" placeholder="Ingrese stock maximo" value="0">
 								</div>	
 								<div class="form-group col-md-3">
@@ -131,7 +131,7 @@
 							</div>	
 							<div class="form-group">
                             <label for="comment">Descripcion:</label>
-                                <textarea class="form-control" rows="3" id="descripcion" name="descripcion" onkeyup="this.value=mayusculas(this.value)"></textarea>
+                                <textarea class="form-control" rows="3" id="descripcion" name="descripcion"></textarea>
                          </div> 						
 							<!--Parte de Clientes Dinamicos-->						
 							<br>

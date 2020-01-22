@@ -211,7 +211,9 @@ let editarProductos = async (e) => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		console.error(data);
-		if(data==1){  swal('UPDATE','El producto fue actualizado exitosamente','success'); }     		
+		if(data==1){  swal('UPDATE','El producto fue actualizado exitosamente','success'); 
+		//setTimeout('window.location.href = "ver_productos.php";', 2000);
+					}     		
 		
 	} catch (error) { console.log('error en la conexion ', error); }
 

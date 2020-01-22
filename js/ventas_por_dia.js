@@ -52,7 +52,7 @@ let cargar_ventas_onchange = async() =>{
 
 	const baseUrl = 'php/consultaFetch.php';
     let consulta=`SELECT id,estado_venta,fecha_venta,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total,id_boleta,
-				id_cotizacion,id_factura,id_guia,id_tarjeta FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" ORDER BY fecha_venta DESC`;
+				id_cotizacion,id_factura,id_guia,id_tarjeta FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" ORDER BY estado_venta ASC`;
 	
 	
 	
@@ -156,7 +156,7 @@ let tablaVentas = (arreglo) => {
 		let estadoDocumento;
 		let numero;
 
-		console.error("estado " + VENDEDORES[i['id_vendedor']]);
+		
 		if(CLIENTES[i['id_cliente']]!=undefined){			
 			estadoColumna=CLIENTES[i['id_cliente']];
 		}if(CLIENTES[i['id_cliente']]==undefined){
@@ -182,18 +182,24 @@ let tablaVentas = (arreglo) => {
 			estadoDocumento=`<span class='badge badge-primary'>Tarjeta</span>`;	
 			numero=i['id_tarjeta'];	
 		}
-	
-		tbody.innerHTML +=
-        `<tr>
-			<td>${i['fecha_venta']}</td>
-			<td>${estadoDocumento}</td>	
-			<td>${numero}</td>			   
-			<td>${VENDEDORES[i['id_vendedor']]}</td>
-			<td>${estadoColumna}</td>
-		   <td>${formatearNumeros(i['neto'])}</td>
-		   <td>${formatearNumeros(i['iva'])}</td>					
-		   <td>${formatearNumeros(i['total'])}</td>	 
-		 </tr>`
+		
+		if(i['estado_venta']!=4){
+			tbody.innerHTML +=
+			`<tr>
+				<td>${i['fecha_venta']}</td>
+				<td>${estadoDocumento}</td>	
+				<td>${numero}</td>			   
+				<td>${VENDEDORES[i['id_vendedor']]}</td>
+				<td>${estadoColumna}</td>
+			   <td>${formatearNumeros(i['neto'])}</td>
+			   <td>${formatearNumeros(i['iva'])}</td>					
+			   <td>${formatearNumeros(i['total'])}</td>	 
+			 </tr>`
+		}else{
+			console.log('entro a ca');
+			console.error('4');
+		}
+
 	 	
 	}
 	$('[data-toggle="tooltip"]').tooltip();

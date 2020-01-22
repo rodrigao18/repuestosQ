@@ -361,7 +361,7 @@ let ultimoTarjeta = async () => {
 let clientes =  async() => {
 
     const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id , nombre FROM clientes`;
+    let consulta=`SELECT id , nombre, rut FROM clientes ORDER BY nombre ASC`;
 
     const sql = {sql: consulta, tag: `array_clientes`}  
 
@@ -1547,7 +1547,7 @@ function GuardarCliente(e) {
     var credito = $("#credito_autorizado").val();
     var observacion = $("#observacion").val();
 
-	if(rutCliente=='' || nombre=='' || direccion =='' || fono=='' || ciudad==0 || 
+	if(rutCliente=='' || nombre=='' || ciudad==0 || 
 	 provincias==0  ||  regiones==0){
 		swal('Advertencia','debe llenar los datos','warning');
 		return;

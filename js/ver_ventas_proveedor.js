@@ -51,7 +51,7 @@ let cargar_ventas_onchange = async() =>{
  	let consulta=`SELECT v.estado_venta AS estadoventa,p.nombre,vr.codigo_producto,vr.nombre_producto,SUM(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
 	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN proveedores p ON p.id=vr.id_proveedor JOIN productos pr ON pr.codigo=vr.codigo_producto
 	WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59"
-	GROUP BY vr.codigo_producto DESC`;
+	GROUP BY vr.codigo_producto DESC ORDER BY nombre ASC`;
 	
 	
 	
@@ -124,7 +124,7 @@ let cargarVentas = async () => {
 	let consulta=`SELECT v.estado_venta AS estadoventa,p.nombre,vr.codigo_producto,vr.nombre_producto,SUM(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
 	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN proveedores p ON p.id=vr.id_proveedor JOIN productos pr ON pr.codigo=vr.codigo_producto
 	WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59"
-	GROUP BY vr.codigo_producto DESC`;
+	GROUP BY vr.codigo_producto DESC ORDER BY nombre ASC`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
