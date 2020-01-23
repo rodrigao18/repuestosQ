@@ -127,7 +127,7 @@ let cargarInputs = async (array) => {
     document.getElementById('fono2').value=array[0]['fono_2'];
     document.getElementById('referencia').value=array[0]['referencia'];
     document.getElementById('giro').value=array[0]['giro'];
-    document.getElementById('credito_autorizado').value=array[0]['credito_autorizado'];
+    document.getElementById('credito_autorizado').value=0;
     document.getElementById('observacion').value=array[0]['observacion'];
 
 }

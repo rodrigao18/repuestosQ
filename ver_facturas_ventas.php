@@ -82,15 +82,18 @@
 								<table class="table table-striped " id="tablaProductos">
 								<thead class="cabezera-factura">
 								<tr>
-                                <th width="10%">Factura</th>
+                                <th width="5%">N°</th>
+								<th width="10%">Fecha</th>
 								<th width="15%">Vendedor</th>
+								<th width="15%">Estado</th>
 								<th width="10%">Cliente</th>	
 								<th width="10%">Neto</th>
 								<th width="10%">Iva</th>										
                                 <th width="5%">Total</th>							
 								<th width="5%"> </th>
 								<th width="5%"> </th>
-								<th width="5%"> </th>									
+								<th width="5%"> </th>
+								<th width="5%"> </th>										
 								</tr>
 								</thead>
 								<tbody id="tablaBody"></tbody>

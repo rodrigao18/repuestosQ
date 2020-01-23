@@ -27,9 +27,7 @@
 	/* overflow: hidden; */
 	/* text-overflow: ellipsis; */
 	}
-	.cabezera{
-		background-color:#980;
-	}
+
 
 /* Column widths are based on these cells */
 .row-1 {
@@ -78,7 +76,19 @@
 .row-15 {
   width: 7.6%;
 }
-
+.color_fila_rojo{
+	background-color:rgba(240, 52, 52, 0.3);
+}
+.color_fila_verde{
+	background-color:rgba(77, 175, 124, 0.3);
+}
+.cabezera{
+	background-color:rgba(44, 130, 201, 1);
+}
+.cabezera-tabla th{
+		background-color:rgba(58, 83, 155, 1);
+		color:white;
+	}
 	</style>
 </head>
 

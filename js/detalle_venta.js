@@ -53,7 +53,7 @@
 	let cargarCliente = async(id)=>{
 
 		const baseUrl = 'php/consultaFetch.php';
-    	let consulta=`SELECT id,nombre FROM clientes`;
+    	let consulta=`SELECT id,nombre,rut FROM clientes`;
     	
     	const sql   = {sql: consulta, tag: `array_clientes`}
     
@@ -392,7 +392,7 @@
 					'<td>' + stock + '</td>' +
 					'<td>' + ubicacion + '</td>' +
 					'<td>' + MARCAS[marca] + '</td>' +
-					'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=cantidadCalculo('+(i+1)+',1)  min=1 type="number" value="1"></td>' +
+					'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=calculoTablaUp('+(i+1)+')  min=1 type="number" value="1"></td>' +
 					'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="hidden" value=' + costo + '></td>' +
 					'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" '+
 					'min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
@@ -452,7 +452,7 @@
 			let desOcul=document.getElementById(`desOcul${idTabla}`).innerHTML;
 			let total=document.getElementById(`venCon${idTabla}`).value;
 			
-			let precioTotal = cantidad * precio_sin;
+			let precioTotal = cantidad * precio_Con;
 			// let idProd = table.rows[idTabla].cells[11].innerHTML;
 			let descuento = document.getElementById(`des${idTabla}`).value;
 			
@@ -474,7 +474,7 @@
 			'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+',2)  type="number" min=1 value="'+cantidad+'"></td>' +						
 			'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 			'<td><input style="text-align:center;"  name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
-			'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +					
+			'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +					
 			'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+','+codigo_producto+','+cantidad+',1)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 			'<td style="display:none;">'+idProd+'</td>' +
 			'<td style="display:none;"><input name="venDesU' + parseFloat(nfilas) + '" id="' + 'venDescu' + parseFloat(nfilas) + '" value="'+(precioConOcul)+'"></td>' +	
@@ -775,9 +775,9 @@
 				'<td>' + codigo_producto + '</td>' +
 				'<td>' + columnaEditable + '</td>' +
 				'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
-				'<td><input style="width:100px;text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
+				'<td><input style="width:100px;text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
 				'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(descuento_producto)+'"></td>' +
-				'<td><input style="text-align:center;" disabled name="' + 'totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
+				'<td><input style="text-align:center;" disabled name="' + 'totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 				'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+','+codigo_producto+','+cantidad+',1)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +		
 				'<td style="display:none;">'+IDVENTARELACIONAL+'</td>'+
 				'</tr>');
@@ -787,7 +787,14 @@
 
 	recalcularValores();
 	}
-
+	
+	let calculoTablaUp = (id)=>{
+		let cantidad=document.getElementById('cant'+id).value;
+		let precioVenta=convertirNumeros(document.getElementById('venCon'+id).value);
+		let precioTotal=cantidad*precioVenta;
+		console.log('precioTotal ' + precioTotal);
+		document.getElementById('total'+id).value=(precioTotal);
+	}
 	let cantidadCalculo = (id) =>{
 		
 		let cantidad=document.getElementById('cant'+id).value;
@@ -798,6 +805,14 @@
 		recalcularValores();
 
 	} 
+
+		//*-boton volver en la tabla busqueda-*//
+	let regresar = (e)=> {
+		const evento = e.preventDefault();
+		$("#volverBtn").show(); // mostramos nuevamente  los botones
+		$("#tablaBuscar").hide(); //tabla donde se buscan los productos
+	}
+
 
 	let removerItem = async(id,idFr,codigo_producto,cantidad,index) => {						
 				

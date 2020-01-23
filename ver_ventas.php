@@ -51,7 +51,9 @@
 				
 			</ul>
 		</div>
-		<?php $fecha_actual = date("d-m-Y");?>
+		<?php 
+		date_default_timezone_set("America/Santiago"); setlocale(LC_ALL, "es_ES");
+		$fecha_actual = date("d-m-Y");?>
 		<div class="form-row">
 		
 				<div class="form-group col-md-6">
@@ -83,13 +85,15 @@
 								<thead>
 								<tr>
                                 <th width="10%">Boleta</th>
+								<th width="10%">Fecha</th>
 								<th width="15%">Vendedor</th>
-								<th width="10%">Cliente</th>	
+								<th width="10%">Estado</th>	
 								<th width="10%">Neto</th>
 								<th width="10%">Iva</th>										
                                 <th width="5%">Total</th>							
 								<th width="5%"> </th>
-								<th width="5%"> </th>							
+								<th width="5%"> </th>
+								<th width="5%"> </th>								
 								</tr>
 								</thead>
 								<tbody id="tablaBody"></tbody>

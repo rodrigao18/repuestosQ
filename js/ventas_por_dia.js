@@ -51,7 +51,7 @@ let cargar_ventas_onchange = async() =>{
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,estado_venta,fecha_venta,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total,id_boleta,
+    let consulta=`SELECT id,estado_venta,fecha_venta,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total,id_boleta,nula_boleta,nula_factura,nula_guia,nula_tarjeta,
 				id_cotizacion,id_factura,id_guia,id_tarjeta FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" ORDER BY estado_venta ASC`;
 	
 	
@@ -164,22 +164,47 @@ let tablaVentas = (arreglo) => {
 		}
 
 		if(i['estado_venta']==1){
-			estadoDocumento=`<span class='badge badge-success'>Boleta</span>`;
+
+			if(i['nula_boleta']==2){
+
+				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
+			}else{
+				estadoDocumento=`<span class='badge badge-success'>Boleta</span>`;
+			}			
 			numero=i['id_boleta'];
 		}else if(i['estado_venta']==2){
-			estadoDocumento=`<span class='badge badge-warning'>Factura</span>`;
+
+			if(i['nula_factura']==2){
+				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
+			}else{
+				estadoDocumento=`<span class='badge badge-warning'>Factura</span>`;
+			}
+		
 			numero=i['id_factura'];	
 		}
 		else if(i['estado_venta']==3){
-			estadoDocumento=`<span class='badge badge-danger'>Guía</span>`;
+
+			if(i['nula_guia']==2){
+				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
+			}else{
+				estadoDocumento=`<span class='badge badge-danger'>Guía</span>`;
+			}
+		
 			numero=i['id_guia'];		
 		}
 		else if(i['estado_venta']==4){
+			
 			estadoDocumento=`<span class='badge badge-dark'>Cotización</span>`;
 			numero=i['id_cotizacion'];	
 		}
 		else if(i['estado_venta']==5){
-			estadoDocumento=`<span class='badge badge-primary'>Tarjeta</span>`;	
+
+			if(i['nula_tarjeta']==2){
+				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
+			}else{
+				estadoDocumento=`<span class='badge badge-primary'>Tarjeta</span>`;	
+			}
+			
 			numero=i['id_tarjeta'];	
 		}
 		

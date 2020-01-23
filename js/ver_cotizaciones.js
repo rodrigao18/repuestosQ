@@ -47,7 +47,7 @@ let cargar_ventas_onchange = async() =>{
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,id_vendedor,id_cliente,id_cotizacion,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total 
+    let consulta=`SELECT id,id_vendedor,id_cliente,id_cotizacion,estado_venta,(fecha_venta) as fecha,neto,iva, total 
 					FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=4`;
 	
 	
@@ -156,7 +156,8 @@ let tablaVentas = (arreglo) => {
 		
 		tbody.innerHTML +=
         `<tr>
-            <td>${i['id_cotizacion']}</td>			   
+			<td>${i['id_cotizacion']}</td>
+			<td>${i['fecha']}</td>					   
 			<td>${VENDEDORES[i['id_vendedor']]}</td>
 			<td>${estadoColumna}</td>
 		   <td>${formatearNumeros(i['neto'])}</td>
@@ -187,7 +188,7 @@ let totalVentasCols =() => {
 	let nFilas = $("#tablaBody > tr").length;
 	let tablaC = document.getElementById("tablaBody"),
 		rIndex;
-	let columna=5;
+	let columna=6;
 	let valorTotal=0;
 	let valor=0;
 	for (let i = 0; i < nFilas; i++) {

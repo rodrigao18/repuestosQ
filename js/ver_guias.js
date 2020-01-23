@@ -81,7 +81,7 @@ let cargar_ventas_onchange = async() =>{
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT COUNT(vr.id_venta) AS producto,v.total_sin_des, v.id,id_vendedor,id_cliente,id_guia,estado_venta,DATE(fecha_venta) AS fecha,neto,iva,total 
+    let consulta=`SELECT COUNT(vr.id_venta) AS producto,v.total_sin_des, v.id,id_vendedor,id_cliente,id_guia,estado_venta,(fecha_venta) AS fecha,neto,iva,total,nula_guia 
 	FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" AND estado_venta=3  GROUP BY v.id`;
 	
 	
@@ -193,11 +193,24 @@ let tablaVentas = (arreglo) => {
 		checkHtml=`<input type="checkbox" class="form-control" onchange="comprobarCliente(this,${i['id']},${i['id_cliente']})" id="estado_guia_${i['id']}"`;
 		}
 		
-
+		let activo;
+		let boton;
+		let boton_eliminar;
+		if(i['nula_guia']==2){
+			activo=`<span class='badge badge-dark'>Nula</span>`;
+			boton=``;
+			boton_eliminar=`<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
+		}else{
+			activo=`<span class='badge badge-success'>Activa</span>`;
+			boton=`<button class="btn  btn-dark" data-toggle="tooltip" data-placement="top" title="Anular" onclick=eliminarProducto(event,${i['id']})><i class="fas fa-times-circle"></i></button>`;
+			boton_eliminar=`<button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
+		}
 		tbody.innerHTML +=
         `<tr>
-            <td>${i['id_guia']}</td>			   
+			<td>${i['id_guia']}</td>			   
+			<td>${i['fecha']}</td>		
 			<td>${VENDEDORES[i['id_vendedor']]}</td>
+			<td>${activo}</td>
 			<td>${estadoColumna}</td>
 			<td>${i['producto']}</td>
 		   	<td>${formatearNumeros(i['neto'])}</td>
@@ -208,8 +221,9 @@ let tablaVentas = (arreglo) => {
 		   	<input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${i['id_guia']}">
 		   	<button type="submit" class="btn btn-primary" data-toggle="tooltip"
 		    data-placement="top" title="ver guias" name="id" value=${i['id']}><i class="fas fa-list" aria-hidden="true"></i></button></form></td>		
-		   	<td><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>					   
-		   	<td>${checkHtml}</td>
+			<td>${boton_eliminar}</td>
+			<td>${boton}</td>					   
+			<td>${checkHtml}</td>		   
 		 </tr>`
 	 	
 	}
@@ -376,7 +390,7 @@ let totalVentasCols =() => {
 	let nFilas = $("#tablaBody > tr").length;
 	let tablaC = document.getElementById("tablaBody"),
 		rIndex;
-	let columna=6;
+	let columna=8;
 	let valorTotal=0;
 	let valor=0;
 
@@ -450,18 +464,29 @@ let totalVentasCols =() => {
 }
 
 
-function eliminarProducto(e, id) {
+function eliminarProducto(e, id,index) {
 	e.preventDefault();
+	let mensaje;
+	let titulo;
+	if(index==1){
+		titulo=`Eliminar factura`;
+		mensaje=`¿esta seguro de eliminar la factura ?`;
+	}else{
+		titulo=`Anular producto`;
+		mensaje=`¿esta seguro de anular la factura ?`;
+	}
+
 	swal({
-		title: "Eliminar producto",
-		text: "¿esta seguro de eliminar el producto ?",
+		title: `${titulo}`,
+		text: `${mensaje}`,
 		icon: "warning",
 		buttons: true,
 		dangerMode: true,
 	})
 	.then((willDelete) => {
 		if (willDelete) {
-			borrarVenta(id);
+			//borrarVenta(id);
+			obtenerStock(id,index);
 		} else {
 			return;
 		}
@@ -470,13 +495,14 @@ function eliminarProducto(e, id) {
 
 }
 
-let borrarVenta =async (idP) =>{
+let obtenerStock = async(idP,index) => {
 
 	const baseUrl = 'php/consultaFetch.php';
 
-	let consulta=`DELETE FROM VENTAS  WHERE id=${idP}`;
+	let consulta=`SELECT vr.id,vr.codigo_producto,p.id as idProducto,p.codigo_proveedor,id_cliente,p.precio_venta,vr.nombre_producto AS nombre,DATE(v.fecha_venta) AS fecha_venta, vr.cantidad,vr.precio_unitario,vr.total_unitario,vr.id_venta
+	FROM ventas_relacional vr INNER JOIN ventas v ON v.id=vr.id_venta JOIN productos p ON p.codigo=vr.codigo_producto WHERE vr.id_venta=${idP} AND v.estado_venta=3`;
 
-	const sql   = {sql: consulta, tag: `crud`}	
+	const sql   = {sql: consulta, tag: `array_datos`}	
 
 	console.error(consulta);
 	
@@ -487,31 +513,103 @@ let borrarVenta =async (idP) =>{
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.	
 
-			
-			// $.notify({
-			// 	title: "Update: ",
-			// 	message: "Se actualizo el precio de venta:",
-			// 	icon: 'fas fa-check'
-			// }, {
-			// 	type: "success",
-			// 	placement: {
-			// 		from: "top",
-			// 		align: "right"
-			// 	},
-			// 	offset: 70,
-			// 	spacing: 70,
-			// 	z_index: 1031,
-			// 	delay: 2000,
-			// 	timer: 3000
-			// });	
+		let array = JSON.parse(data);		
+		
 
-			const borraVrelacional = borrVentaRe (idP);
+		for(let i=0; i < array.length; i++){			
+			
+			const devol = await devolverStock(array[i]['cantidad'],array[i]['idProducto']);
+		
+			}
+			if(index==1){
+				const eliminar = await elimiarVenta(idP);	
+			}else{
+				const borrar = await actualizarVenta(idP);	
+			}
+					
 		
 		
 	} catch (error) { console.log('error en la conexion ', error); }
 
-}
+	}
+		
 
+		let devolverStock = async(cantidad,idProducto) =>{
+
+			const baseUrl = 'php/consultaFetch.php';
+
+			const consulta = `UPDATE productos set stock =stock + (${cantidad}) WHERE id=${idProducto}`;
+
+			const sql = {sql: consulta, tag: `array_datos`} 
+
+			console.error(consulta);
+	
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.
+			console.error('actulizado');
+			
+			
+		} catch (error) { console.log('error en la conexion ', error); }
+
+
+		}
+	let elimiarVenta =async(idP)=>{
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		let consulta=`DELETE FROM ventas WHERE id=${idP}`;
+
+		const sql   = {sql: consulta, tag: `crud`}	
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();		
+			const borraVrelacional = borrVentaRe (idP);				
+		} catch (error) { console.log('error en la conexion ', error); }
+
+	}
+
+	let actualizarVenta =async (idP) =>{
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		let consulta=`UPDATE ventas set nula_guia=2 WHERE id=${idP}`;
+
+		const sql   = {sql: consulta, tag: `crud`}	
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();	
+
+			$.notify({
+				title: "Anulado: ",
+				message: "Se Anulo la boleta:",
+				icon: 'fas fa-check'
+			}, {
+				type: "success",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 2000,
+				timer: 3000
+			});	
+
+			setTimeout('location.reload()', 1000);				
+		} catch (error) { console.log('error en la conexion ', error); }
+
+	}
 
 let borrVentaRe = async (idP) => {
 
@@ -547,7 +645,7 @@ let borrVentaRe = async (idP) => {
 				timer: 3000
 			});	
 
-			
+			setTimeout('location.reload()', 1000);
 		
 		
 	} catch (error) { console.log('error en la conexion ', error); }

@@ -431,8 +431,8 @@ let  bucarProductos = async () => {
 let tablaProductos = (array) => {
 
 	$("#salidaTabla").append('<div id="container"><div class="table-responsive" data-pattern="priority-columns"><div class="scroll"><button class="btn btn-sm btn-primary float-right" onclick = regresar(event)  data-toggle="tooltip" data-placement="top" title="" data-original-title="Regresar a resumen" ><i class="fas fa-chevron-left"></i>  </button>' +		
-			'<table  class="users table-striped" id="tablaBuscar" >' +
-			'<thead class="cabezera">' +
+			'<table  class="cabezera-tabla" id="tablaBuscar" >' +
+			'<thead>' +
 			'<tr class="table-success">' +
 			'	<th  class="row-1 ">Int</th>' +
 			'	<th  class="row-2 ">Prov.</th>' +
@@ -483,11 +483,11 @@ let tablaProductos = (array) => {
 			//total alreves en cotizacion a venta y a que aparezca el descuento
 			//generar excel al eliminar venta
 			//sacar costo y descuento
-			$("#tablaBody").append('<tr>' +
+			$("#tablaBody").append('<tr id="' + 'fila_add' + parseFloat(i + 1) + '">' +
 				'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
 				'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
 				`<td id="nomPro${parseFloat(i + 1)}" style="cursor:pointer;"><span id="${id_producto}" onclick=obser(this,'${descripcion.split(" ")}',${codigo})>${nombre}</span></td>`+
-				'<td>' + stock + '</td>' +
+				'<td id="' + 'stk' + parseFloat(i + 1) + '">' + stock + '</td>' +
 				'<td>' + ubicacion + '</td>' +
 				'<td>' + MARCAS[marca] + '</td>' +
 				'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=cantidadCalculo('+(i+1)+',1)  min=1 type="number" value="1"></td>' +
@@ -508,6 +508,12 @@ let tablaProductos = (array) => {
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fas fa-check" aria-hidden="true"></i></button>' +
 				'</td>' +			
 				'</tr>');
+
+				if(stock<1){
+					document.getElementById(`fila_add${parseFloat(i + 1)}`).className=`color_fila_rojo`;
+				}else{
+					document.getElementById(`fila_add${parseFloat(i + 1)}`).className=`color_fila_verde`;
+				}
 				
 		}
 				
@@ -788,7 +794,7 @@ let tablaProductos = (array) => {
 		let total=document.getElementById(`venCon${idTabla}`).value;
 		let idproveedor=document.getElementById(`idproveedor${idTabla}`).value;
 		
-		let precioTotal = cantidad * precio_sin;
+		let precioTotal = cantidad * precio_Con;
 		// let idProd = table.rows[idTabla].cells[11].innerHTML;
 		let descuento = document.getElementById(`des${idTabla}`).value;
 		ITEM++;
@@ -810,7 +816,7 @@ let tablaProductos = (array) => {
 		'<td><input style="text-align:center;" name="totunitaU' + parseFloat(nfilas) + '" id="' + 'precuni' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
 		'<td><input style="text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 		'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
-		'<td><input style="text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precio_Con)+'"></td>' +					
+		'<td><input style="text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +					
 		'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 		'<td style="display:none;">'+idProd+'</td>' +
 		'<td style="display:none;">'+idproveedor+'</td>' +
@@ -844,7 +850,7 @@ function validar_descuento(e,id, descuento_max, id_precio_venta, id_precio_final
 
 	if (e.keyCode === 13 && !e.shiftKey) {
 		e.preventDefault();
-		var precio_venta = document.getElementById('venCon'+id_precio_venta).value;//document.getElementById("pres" + id_precio_venta).value //PRECIO VENTA
+		var precio_venta = document.getElementById('venSin'+id_precio_venta).value;//document.getElementById("pres" + id_precio_venta).value //PRECIO VENTA
 
 		id_descuento = id.id; // SE OBTIENE EL ID DESDE EL INPUT DESCUENTO  CON  LA PROPIEDAD THIS
 		var valor_descuento = document.getElementById(id_descuento).value //SACO EL VALOR DEL INPUT GRACIAS AL ID ENVIADO DESDE LA FUNCION;
@@ -951,13 +957,36 @@ let recalcularValores = () => {
 
 let cantidadCalculo = (id,indice) =>{
 	
-	
+	console.log('id ' + id);
 	let input=`input[name=can${(id)}]`;
 	var cantidad=0;
+	var stock=0;
 	if(indice==1){
-
+		console.log('entro aca');
 		 cantidad = document.getElementById(`cant${id}`).value;
-		 
+		 stock=document.getElementById(`stk${id}`).innerHTML;
+		 console.log('stock ' + stock);
+
+		 if(stock<1){
+
+			$.notify({
+				title: "Precaución: ",
+				message: "Stock se encuentra agotado !!!:",
+				icon: 'fas fa-close'
+			}, {
+				type: "danger",
+				placement: {
+					from: "bottom",
+					align: "center"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 2000,
+				timer: 3000
+			});	
+
+		 }
 
 	}else{
 		

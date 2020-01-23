@@ -26,7 +26,7 @@ let cargarProveedores = async () => {
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
-	
+	console.log(consulta);	
 	try {
 		//*-llamar ajax al servidor mediate api fetch.
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -163,27 +163,11 @@ let borrar =async (idP) =>{
 		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
 		//*-request de los datos en formato texto(viene todo el request)
 		const data = await response.text();
-		//*-se parsea solo la respuesta del Json enviada por el servidor.	
-
-			
-			// $.notify({
-			// 	title: "Update: ",
-			// 	message: "Se actualizo el precio de venta:",
-			// 	icon: 'fas fa-check'
-			// }, {
-			// 	type: "success",
-			// 	placement: {
-			// 		from: "top",
-			// 		align: "right"
-			// 	},
-			// 	offset: 70,
-			// 	spacing: 70,
-			// 	z_index: 1031,
-			// 	delay: 2000,
-			// 	timer: 3000
-			// });	
-
-			setTimeout('location.reload()', 1000);
+		//*-se parsea solo la respuesta del Json enviada por el servidor.				
+	
+		swal("Exito","El Proveddor fue eliminado","info");
+		setTimeout('location.reload()', 2000);
+		
 		
 		
 	} catch (error) { console.log('error en la conexion ', error); }

@@ -42,8 +42,8 @@
 	<main class="app-content">
 		<div class="app-title cabezera-boleta">
 			<div>
-				<h1><i class="fas fa-calendar"></i> Ver ventas por fecha </h1>
-				<p>Ver ventas por fecha</p>
+				<h1><i class="fas fa-calendar"></i> Ver ventas del dia </h1>
+				<p>Ver ventas del dia</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
@@ -56,7 +56,7 @@
 		
 				<div class="form-group col-md-6">
 				<label>Fecha Término</label>
-					<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d",strtotime($fecha_actual."- 1 days"));?>">
+					<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d");?>">
 				</div>
 			
 				<div class="form-group col-md-6">

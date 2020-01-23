@@ -82,7 +82,8 @@
 								<table class="table table-striped " id="tablaProductos">
 								<thead class="cabezera-cotizacion">
 								<tr>
-                                <th width="10%">Cotizacion</th>
+                                <th width="10%">N°</th>
+								<th width="10%">Fecha</th>
 								<th width="15%">Vendedor</th>
 								<th width="10%">Cliente</th>	
 								<th width="10%">Neto</th>

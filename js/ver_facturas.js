@@ -141,5 +141,93 @@ function lenguaje() {
 
 
 }
+function eliminarProducto(e, id,index) {
+	e.preventDefault();
+	let mensaje;
+	let titulo;
+	if(index==1){
+		titulo=`Eliminar producto`;
+		mensaje=`¿esta seguro de eliminar la boleta ?`;
+	}else{
+		titulo=`Anular producto`;
+		mensaje=`¿esta seguro de anular la boleta ?`;
+	}
+
+	swal({
+		title: `${titulo}`,
+		text: `${mensaje}`,
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	})
+	.then((willDelete) => {
+		if (willDelete) {
+			elimiarVenta(id);
+		
+		} else {
+			return;
+		}
+
+	});	
+}
+
+let elimiarVenta =async(idP)=>{
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`DELETE FROM facturas WHERE id=${idP}`;
+
+	const sql   = {sql: consulta, tag: `crud`}	
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();		
+		const borraVrelacional = borrVentaRe (idP);				
+	} catch (error) { console.log('error en la conexion ', error); }
+
+}
+let borrVentaRe = async (idP) => {
+
+	const baseUrl = 'php/consultaFetch.php';
+	let consulta=`DELETE FROM FACTURAS_RELACIONAL  WHERE idfactura=${idP}`;
+
+	const sql   = {sql: consulta, tag: `crud`}	
+
+	console.error(consulta);
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.	
+
+			
+			$.notify({
+				title: "Borrado: ",
+				message: "Se Borro la factura:",
+				icon: 'fas fa-check'
+			}, {
+				type: "success",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 2000,
+				timer: 3000
+			});	
+
+			setTimeout('location.reload()', 1000);
+		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
+
+
+}
 
 window.onload = proveedores

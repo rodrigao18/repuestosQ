@@ -22,7 +22,7 @@ function cargarComunasArray() {
 //*-cargar datos mediante async wait()
 let cargarProveedores = async () => { 
 	const baseUrl = 'php/consultaFetch.php';
-	let consulta=`SELECT id,rut,nombre,ciudad,fono,contacto FROM proveedores`;
+	let consulta=`SELECT id,rut,nombre,ciudad,fono,contacto FROM proveedores WHERE estado=1`;
 	 
 	
 	const sql = {sql: consulta, tag: `array_datos`} 
@@ -127,25 +127,46 @@ let tablaProveedores = (arreglo) => {
 
 function eliminarProducto(e, id) {
 	e.preventDefault();
-	var sql = 'DELETE from productos where id =' + id;
-	$.ajax({
-		type: 'POST',
-		url: 'php/consulta.php',
-		data: {
-			sql: sql, tag: 'crud_datos' },
-		success: function (data) {
-			// console.log(data);
-			if (data == 1) {
-				alert('Borrado exitoso');
-				cargar_productos(e);
-			} else {
-				alert('No Borrado');
-			}
-		},
-		error: function (request, status, error) {
-			alert("Error: Could not eliminarProducto");
+	swal({
+		title: "Eliminar factura",
+		text: "¿esta seguro de eliminar la factura ?",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	})
+	.then((willDelete) => {
+		if (willDelete) {
+			borrar(id);
+		} else {
+			return;
 		}
-	});
+
+	});	
+
+}
+
+let borrar =async (idP) =>{
+
+	const baseUrl = 'php/consultaFetch.php';
+
+	let consulta=`UPDATE PROVEEDORES SET estado=0 WHERE id=${idP}`;
+
+	const sql   = {sql: consulta, tag: `crud`}	
+
+	console.error(consulta);
+	
+	try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+		//*-se parsea solo la respuesta del Json enviada por el servidor.				
+	
+		swal("Exito","La factura fue eliminada","info");
+			setTimeout('location.reload()', 2000);
+		
+		
+	} catch (error) { console.log('error en la conexion ', error); }
 
 }
 
