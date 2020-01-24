@@ -160,7 +160,7 @@ let tablaVentas = (arreglo) => {
 			boton=``;
 			boton_eliminar=`<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
 		}else{
-			activo=`<span class='badge badge-success'>Activa</span>`;
+			activo=`<span class='badge badge-success'>Realizada</span>`;
 			boton=`<button class="btn  btn-dark" data-toggle="tooltip" data-placement="top" title="Anular" onclick=eliminarProducto(event,${i['id']})><i class="fas fa-times-circle"></i></button>`;
 			boton_eliminar=`<button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
 		}

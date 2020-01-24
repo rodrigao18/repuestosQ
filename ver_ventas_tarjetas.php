@@ -85,7 +85,7 @@
                                 <th width="10%">N° Tarjeta</th>
 								<th width="10%">Fecha</th>
 								<th width="15%">Vendedor</th>
-								<th width="15%">Activo</th>
+								<th width="15%">Estado</th>
 								<th width="10%">Cliente</th>	
 								<th width="10%">Neto</th>
 								<th width="10%">Iva</th>										

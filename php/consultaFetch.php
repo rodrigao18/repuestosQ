@@ -154,7 +154,7 @@ function clientes($sql)	     {
 				$cuerpo=substr($fila["rut"],0,-1);				
 				$dv=substr($fila["rut"],-1);
 				$rutFormateado = $cuerpo ."-".  $dv;	
-				echo '<option value="'.$fila["id"].'">'.$fila["nombre"].' ('.$rutFormateado.')</option>'; }
+				echo '<option value="'.$fila["id"].'">'.$rutFormateado.' ('.$fila["nombre"].')</option>'; }
 		mysqli_free_result($result);
 	mysqli_close($conect);
 	
