@@ -73,7 +73,13 @@
 					<form method="POST" action="imprime_ventas.php" target="_blank">
 					<input type="hidden" class="form-control" id="fecha_inicio_text" name="fecha_inicio_text">
 		   			<input type="hidden" class="form-control" id="fecha_termino_text" name="fecha_termino_text">
-		  			 <button type="submit" class="btn btn-primary"></i>Ve detalles</button>
+		  			 <button type="submit" class="btn btn-primary"></i>Ver detalle ventas</button>
+					 </form>
+					 <br>
+					 <form method="POST" action="imprime_nulas.php" target="_blank">
+					<input type="hidden" class="form-control" id="fecha_inicio_text_nula" name="fecha_inicio_text_nula">
+		   			<input type="hidden" class="form-control" id="fecha_termino_text_nula" name="fecha_termino_text_nula">
+		  			 <button type="submit" class="btn btn-success"></i>Ver documentos nulos</button>
 					 </form>
 						<div class="my-3 p-3 bg-white rounded box-shadow">
 

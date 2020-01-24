@@ -610,10 +610,52 @@ let tablaProductos = (array) => {
 		document.getElementById('obsProducto').value=nombreOri.replace(/,/g," ");
 		document.getElementById('idprodescripcion').value=idpro;	
 		let ultimaVentaPro =await buscarUltimaVenta(codigo);	
-		let ultimaCompra = await buscarUltimaCompra(codigo);	  
+		let ultimaCompra = await buscarUltimaCompra(codigo);
+		let id_Proveedor= await idProveedor(idpro);	  
 		let modal=await mostrarModal();	
 
 	}
+
+	let idProveedor=async(id)=>{
+
+		const baseUrl = 'php/consultaFetch.php';
+		const consulta=`SELECT proveedor FROM productos WHERE id=${id}`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.	
+			let array = JSON.parse(data);
+			let proveedor=array[0]['proveedor'];
+			let prove = await nombreProveedor(proveedor);				
+			
+		} catch (error) {  }
+	}
+	let nombreProveedor=async(id)=>{
+
+		const baseUrl = 'php/consultaFetch.php';
+		const consulta=`SELECT nombre FROM proveedores WHERE id=${id}`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.	
+			let array = JSON.parse(data);
+			let nombre=array[0]['nombre'];
+			document.getElementById('nombre_proveedor').innerHTML=`<ul><li>Proveedor : <strong>${nombre}</strong></li></ul>`;				
+			
+		} catch (error) {  }
+
+	}
+
 	/*BUSCAR LA ULTIMA VENTA DEL PRODUCTO*/ 
 	let buscarUltimaVenta =async (codigo) => {
 
@@ -636,13 +678,7 @@ let tablaProductos = (array) => {
 				document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha ultima <strong>venta</strong> : ${array[0]['fecha']}</li></ul>`;
 				document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong>  : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;				
 			}
-			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta <strong></strong> : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;
-			
-		
-			
-			
-		
-			
+			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta <strong></strong> : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;		
 			
 		} catch (error) {  }
 		
@@ -690,6 +726,7 @@ let tablaProductos = (array) => {
 		document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha  <strong>venta</strong>  : `;
 		document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha  <strong>venta</strong>  : `;
 		document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Fecha  <strong>Compra</strong>  : `;
+		document.getElementById('nombre_proveedor').innerHTML=``;		
 
 	}
 

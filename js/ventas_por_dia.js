@@ -28,10 +28,10 @@ let vendedor = async () => {
 		const clie = await clientes();	
 		let fecha_inicio = document.getElementById('fecha_inicio').value;
 		document.getElementById('fecha_inicio_text').value=fecha_inicio;
-		
+		document.getElementById('fecha_inicio_text_nula').value=fecha_inicio;
 		let fecha_termino = document.getElementById('fecha_termino').value;
 		document.getElementById('fecha_termino_text').value=fecha_termino;
-
+		document.getElementById('fecha_termino_text_nula').value=fecha_termino;
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 
@@ -70,9 +70,10 @@ let cargar_ventas_onchange = async() =>{
 		const tablaFactutass = await tablaVentas(array);
 		let fecha_ini = document.getElementById('fecha_inicio').value;
 		document.getElementById('fecha_inicio_text').value=fecha_ini;
-		
+		document.getElementById('fecha_inicio_text_nula').value=fecha_ini;
 		let fecha_term = document.getElementById('fecha_termino').value;
 		document.getElementById('fecha_termino_text').value=fecha_term;	
+		document.getElementById('fecha_termino_text_nula').value=fecha_term;
 	
 	} catch (error) {
 		console.log('error en la conexion ', error);
