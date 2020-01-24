@@ -455,8 +455,10 @@
 			let precioTotal = cantidad * precio_Con;
 			// let idProd = table.rows[idTabla].cells[11].innerHTML;
 			let descuento = document.getElementById(`des${idTabla}`).value;
+			if(ESTADOVENTA!=4){
+				const insert = await insertarNuevoProducto(codigo_producto,total,cantidad,nombre,precioTotal,desOcul);
+			}
 			
-			const insert = await insertarNuevoProducto(codigo_producto,total,cantidad,nombre,precioTotal,desOcul);
 
 			// var estadoEntr = "";
 			// estadoEntr = document.getElementById('checkEnt').checked;
@@ -822,7 +824,7 @@
 	let regresar = (e)=> {
 		const evento = e.preventDefault();
 		$("#volverBtn").show(); // mostramos nuevamente  los botones
-		$("#tablaBuscar").hide(); //tabla donde se buscan los productos
+		$("#salidaTabla").hide(); //tabla donde se buscan los productos
 	}
 
 
@@ -831,7 +833,10 @@
 		$("#fila" + id).remove();
 		borrarItemBd(idFr);
 		const recal = await recalcularValores();
-		const actuStock = actualizarStockAdd(codigo_producto,cantidad,index)
+		if(ESTADOVENTA!=4){			
+			const actuStock = actualizarStockAdd(codigo_producto,cantidad,index);
+		}
+	
 
 	}
 
@@ -860,7 +865,8 @@
 	let editar = async(e) => {
 
 		const evento = e.preventDefault();
-
+		document.getElementById('loading').innerHTML=`<p>Actualizando....... <img width='80px' src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'></p>`;
+		document.getElementById('contenido').className=`fade`;
 		let neto = $("#Neto").val();
 		let netoConvertido = convertirNumeros(neto);	
 		let iva = $("#ivaTotal").val();
@@ -942,7 +948,9 @@
 				//*-se parsea solo la respuesta del Json enviada por el servidor.
 				contador++; exito++;
 				if (data == 1 && contador==nFilas) {
-					porcentaje = (exito / nFilas) * 100;				
+					porcentaje = (exito / nFilas) * 100;
+					document.getElementById('contenido').className=`fade-in`;
+					document.getElementById('loading').innerHTML=``;				
 					swal('Venta Actualizada', 'todos los datos actualizados', 'info');	
 						
 						}	

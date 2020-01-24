@@ -881,6 +881,8 @@ let regresar = (e)=> {
 	const evento = e.preventDefault();
 	$("#volverBtn").show(); // mostramos nuevamente  los botones
 	$("#tablaProductos").hide(); //tabla donde se buscan los productos
+	document.getElementById('buscar').value='';
+	document.getElementById('buscar').focus();
 }
 
 function validar_descuento(e,id, descuento_max, id_precio_venta, id_precio_final) {

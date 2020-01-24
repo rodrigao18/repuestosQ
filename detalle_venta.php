@@ -60,7 +60,15 @@
 .row-15 {
   width: 7.6%;
 }
-
+.fade{
+    opacity: 0.3;
+	pointer-events : none;
+	
+  }
+  .fade-in{
+    opacity: 1; 
+    pointer-events : auto ; 
+  }
 	</style>
 
 </head>
@@ -74,6 +82,7 @@
 	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 
 	<main class="app-content" id="imprimeme">
+		
 		<div id="cabezera-detalle">
 		<div class="app-title">
 			<div>
@@ -148,8 +157,10 @@
 				</div>
 			</div>
 		</div>
-
-			<div class="row">		
+		<div id="contenido">
+			<div id="loading"></div>	
+			<div class="row">
+				
 			<div class="col-md-12" id="tablaProductos">
 				<div class="tile">
 					<div id="salidaTabla"></div>
@@ -241,7 +252,7 @@
 
 			<!-- fin row -->
 		</div>
-
+		</div>
 	</main>
 	<!-- Essential javascripts for application to work-->
 	<script src="js/jquery-3.2.1.min.js"></script>
