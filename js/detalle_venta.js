@@ -392,7 +392,7 @@
 					'<td>' + stock + '</td>' +
 					'<td>' + ubicacion + '</td>' +
 					'<td>' + MARCAS[marca] + '</td>' +
-					'<td><input class="form-control" id="' + 'cant' + parseFloat(i + 1) + '" onClick=calculoTablaUp('+(i+1)+')  min=1 type="number" value="1"></td>' +
+					'<td><input class="form-control" id="' + 'canBus' + parseFloat(i + 1) + '" onClick=calculoTablaUp('+(i+1)+')  min=1 type="number" value="1"></td>' +
 					'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '" disabled onClick=cantidadCosto('+(i+1)+') onkeyup=cantidadCosto('+(i+1)+')  type="hidden" value=' + costo + '></td>' +
 					'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" '+
 					'min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeypress="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
@@ -444,7 +444,7 @@
 		
 			// let codigo_proveedor = table.rows[idTabla].cells[1].innerHTML; //OBTEnGO EL VALOR NOMBRE DESDE LA COLUMNA 1;
 			// let nombre = table.rows[idTabla].cells[2].innerHTML;
-			let cantidad = document.getElementById('cant' + idTabla).value;
+			let cantidad = document.getElementById('canBus' + idTabla).value;
 			let margen = document.getElementById('mar' + idTabla).value;
 			let precio_sin = document.getElementById('venSin' + idTabla).value; // ID DEL SELECT PRECIO;
 			let precio_Con= document.getElementById('venCon' + idTabla).value;
@@ -471,10 +471,10 @@
 			// '<td> <span  class="editar" onclick="transformarEnEditable(this,2)" style="cursor:pointer;">'+codigo_proveedor+'</span> </td>' +
 			'<td>' + codigo_producto + '</td>' +
 			'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
-			'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+',2)  type="number" min=1 value="'+cantidad+'"></td>' +						
-			'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
+			'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '" style="width:50px" id="' + 'canAdd' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculoAdd('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +						
+			'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'venAdd' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 			'<td><input style="text-align:center;"  name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
-			'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +					
+			'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'precAdd' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +					
 			'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+','+codigo_producto+','+cantidad+',1)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 			'<td style="display:none;">'+idProd+'</td>' +
 			'<td style="display:none;"><input name="venDesU' + parseFloat(nfilas) + '" id="' + 'venDescu' + parseFloat(nfilas) + '" value="'+(precioConOcul)+'"></td>' +	
@@ -774,10 +774,10 @@
 				'<tr id="fila' + (i + 1) + '">' +				
 				'<td>' + codigo_producto + '</td>' +
 				'<td>' + columnaEditable + '</td>' +
-				'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +
-				'<td><input style="width:100px;text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
+				'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '"  id="' + 'cant' + parseFloat(nfilas) + '" size="2" onChange=cantidadCalculo(this,' + parseFloat(nfilas) + ')  type="number" min=1 value="'+cantidad+'"></td>' +
+				'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
 				'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(descuento_producto)+'"></td>' +
-				'<td><input style="text-align:center;" disabled name="' + 'totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
+				'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 				'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+','+codigo_producto+','+cantidad+',1)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +		
 				'<td style="display:none;">'+IDVENTARELACIONAL+'</td>'+
 				'</tr>');
@@ -789,22 +789,34 @@
 	}
 	
 	let calculoTablaUp = (id)=>{
-		let cantidad=document.getElementById('cant'+id).value;
+		
+		let cantidad=document.getElementById('canBus'+id).value;
 		let precioVenta=convertirNumeros(document.getElementById('venCon'+id).value);
 		let precioTotal=cantidad*precioVenta;
 		console.log('precioTotal ' + precioTotal);
 		document.getElementById('total'+id).value=(precioTotal);
 	}
-	let cantidadCalculo = (id) =>{
+	let cantidadCalculo = (btn,id) =>{
 		
-		let cantidad=document.getElementById('cant'+id).value;
-		let precioVen=convertirNumeros(document.getElementById('vent'+id).value);
+		let idcan=btn.id;
+		let cantidad=document.getElementById(idcan).value;
+		console.log('cantidad' + cantidad);		
+		let precioVen=convertirNumeros(document.getElementById('vent'+id).value);		
+		console.log('precioVenta ' + precioVen);
 		let precioT=cantidad*precioVen;
-		document.getElementById('prect'+id).value=formatearNumeros(precioT);
-		
+		document.getElementById('prect'+id).value=formatearNumeros(precioT);		
 		recalcularValores();
-
 	} 
+
+	let cantidadCalculoAdd = (id)=>{
+
+		let cantidad=document.getElementById('canAdd'+id).value;
+		console.log('cantidad' + cantidad);		
+		let precioVen=convertirNumeros(document.getElementById('venAdd'+id).value);		
+		console.log('precioVenta ' + precioVen);
+		let precioT=cantidad*precioVen;
+		document.getElementById('precAdd'+id).value=formatearNumeros(precioT);		
+	}
 
 		//*-boton volver en la tabla busqueda-*//
 	let regresar = (e)=> {
@@ -932,7 +944,7 @@
 				if (data == 1 && contador==nFilas) {
 					porcentaje = (exito / nFilas) * 100;				
 					swal('Venta Actualizada', 'todos los datos actualizados', 'info');	
-			
+						
 						}	
 				
 				} catch (error) {}

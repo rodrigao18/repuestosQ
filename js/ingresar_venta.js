@@ -1307,10 +1307,10 @@ for (var i = 0; i < nFilas; i++) {
 	var proveedor = tablaC.rows[i].cells[10].innerText;
 
 	const baseUrl = 'php/consultaFetch.php';
-
+//precioUnitarioConvertido
 	let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto,id_proveedor)
 
-	VALUES("${codigo}",${precioUnitarioConvertido},${cantidad},${totalUnitarioConvertido},${id},"${nombre}",${proveedor})`;	
+	VALUES("${codigo}",${totalUnitarioConvertido},${cantidad},${precioUnitarioConvertido},${id},"${nombre}",${proveedor})`;	
 
 	console.error(consulta);
 				const sql   = {sql: consulta, tag: `crud`}		

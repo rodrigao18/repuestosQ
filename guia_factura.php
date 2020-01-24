@@ -200,10 +200,10 @@
 						<?php echo number_format($cantidad);?>
 					</td>
 					<td>
-						<?php echo number_format(round($total/1.19));?>
+						<?php echo number_format(round($precio/1.19));?>
 					</td>
 					<td>
-						<?php echo number_format(round($precio/1.19));?>
+						<?php echo number_format(round($total/1.19));?>
 					</td>
 				</tr>
 				
