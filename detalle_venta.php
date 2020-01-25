@@ -69,6 +69,20 @@
     opacity: 1; 
     pointer-events : auto ; 
   }
+
+  .color_fila_rojo{
+	background-color:rgba(240, 52, 52, 0.3);
+}
+.color_fila_verde{
+	background-color:rgba(77, 175, 124, 0.3);
+}
+.cabezera{
+	background-color:rgba(44, 130, 201, 1);
+}
+.cabezera-tabla th{
+		background-color:rgba(58, 83, 155, 1);
+		color:white;
+	}
 	</style>
 
 </head>
@@ -253,6 +267,35 @@
 			<!-- fin row -->
 		</div>
 		</div>
+		<!--MODAL-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Datos productos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <input type="hidden" id="idprodescripcion">
+	  <div id="precio_ultima_venta"></div>
+	  	<div id="fecha_ultima_venta"></div>
+		  <div id="fecha_ultima_compra"></div>
+		  <div id="cantidad_ultima_compra"></div>
+		  <div id="costo_ultima_compra"></div>
+		  <div id="precioVenta_ultima_compra"></div>
+		  <div id="nombre_proveedor"></div>
+		  <br>
+		<textarea class="form-control" rows="2" id="obsProducto" onkeypress="editarDescripcion(event)"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="limpiarCampos(event)" data-dismiss="modal">Cerrar</button>
+       
+      </div>
+    </div>
+  </div>
+</div>	
 	</main>
 	<!-- Essential javascripts for application to work-->
 	<script src="js/jquery-3.2.1.min.js"></script>

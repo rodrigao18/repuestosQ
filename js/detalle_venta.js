@@ -333,7 +333,7 @@
 	let tablaProductosBusqueda = (array) => {
 
 		$("#salidaTabla").append('<div id="container"><div class="table-responsive" data-pattern="priority-columns"><div class="scroll"><button class="btn btn-sm btn-primary float-right" onclick = regresar(event)  data-toggle="tooltip" data-placement="top" title="" data-original-title="Regresar a resumen" ><i class="fas fa-chevron-left"></i>  </button>' +		
-				'<table  class="users table-striped" id="tablaBuscar" >' +
+				'<table class="cabezera-tabla" id="tablaBuscar" >' +
 				'<thead class="cabezera">' +
 				'<tr class="table-success">' +
 				'	<th  class="row-1 ">Int</th>' +
@@ -385,7 +385,7 @@
 				//total alreves en cotizacion a venta y a que aparezca el descuento
 				//generar excel al eliminar venta
 				//sacar costo y descuento
-				$("#tablaBody").append('<tr>' +
+				$("#tablaBody").append('<tr id="' + 'fila_add' + parseFloat(i + 1) + '">' +
 					'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
 					'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
 					`<td id="nomPro${parseFloat(i + 1)}" style="cursor:pointer;"><span id="${id_producto}" onclick=obser(this,'${descripcion.split(" ")}',${codigo})>${nombre}</span></td>`+
@@ -409,6 +409,12 @@
 					'<button id="' + parseFloat(i + 1) + '" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fas fa-check" aria-hidden="true"></i></button>' +
 					'</td>' +			
 					'</tr>');
+
+					if(stock<1){
+						document.getElementById(`fila_add${parseFloat(i + 1)}`).className=`color_fila_rojo`;
+					}else{
+						document.getElementById(`fila_add${parseFloat(i + 1)}`).className=`color_fila_verde`;
+					}
 					
 			}
 					
@@ -417,7 +423,196 @@
 					// document.getElementById('chPrecioCon').innerHTML = 'Precio con <input id="chPreCon" ' + chPrecioConDes + ' type="radio"  name="optradio"  onclick="comprobarChck()" data-toggle="tooltip" data-placement="top" title="Precion con descuento">'
 					$('[data-toggle="tooltip"]').tooltip();
 					comprobarRepetidos(arrCod,'cols',IDVENTARELACIONAL);
-		}		
+		}	
+		
+		//PASAR EL MOUSE POR EL NOMBRE DEL PRODUCTO
+	let obser = async (id,nombre,codigo) => {
+
+		let idpro=id.id;
+		
+		let nombreOri=nombre;	
+		limpiarCampos();
+		document.getElementById('obsProducto').value=nombreOri.replace(/,/g," ");
+		document.getElementById('idprodescripcion').value=idpro;	
+		let ultimaVentaPro =await buscarUltimaVenta(codigo);	
+		let ultimaCompra = await buscarUltimaCompra(codigo);
+		let id_Proveedor= await idProveedor(idpro);	  
+		let modal=await mostrarModal();	
+
+	}
+
+	let idProveedor=async(id)=>{
+
+		const baseUrl = 'php/consultaFetch.php';
+		const consulta=`SELECT proveedor FROM productos WHERE id=${id}`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.	
+			let array = JSON.parse(data);
+			let proveedor=array[0]['proveedor'];
+			let prove = await nombreProveedor(proveedor);				
+			
+		} catch (error) {  }
+	}
+	let nombreProveedor=async(id)=>{
+
+		const baseUrl = 'php/consultaFetch.php';
+		const consulta=`SELECT nombre FROM proveedores WHERE id=${id}`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.	
+			let array = JSON.parse(data);
+			let nombre=array[0]['nombre'];
+			document.getElementById('nombre_proveedor').innerHTML=`<ul><li>Proveedor : <strong>${nombre}</strong></li></ul>`;				
+			
+		} catch (error) {  }
+
+	}
+
+	/*BUSCAR LA ULTIMA VENTA DEL PRODUCTO*/ 
+	let buscarUltimaVenta =async (codigo) => {
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		const consulta=`SELECT (fecha_venta) as fecha ,precio_unitario,p.precio_venta FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN productos p ON vr.codigo_producto=p.codigo
+		 WHERE vr.codigo_producto=${codigo} AND estado=1 ORDER BY v.id DESC LIMIT 1`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.	
+			let array = JSON.parse(data);
+
+			if(array.length > 0){
+				document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha ultima <strong>venta</strong> : ${array[0]['fecha']}</li></ul>`;
+				document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong>  : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;				
+			}
+			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta <strong></strong> : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;		
+			
+		} catch (error) {  }
+		
+
+	}
+
+
+	let buscarUltimaCompra =async (codigo) => {
+
+		const baseUrl = 'php/consultaFetch.php';
+
+		const consulta=`SELECT (fecha_ingreso) as fechaEmi , cantidad , precioUnitario  FROM facturas v INNER JOIN facturas_relacional vr ON vr.idfactura=v.id WHERE vr.codigoProducto=${codigo} ORDER BY v.id DESC LIMIT 1`;
+
+		const sql = {sql: consulta, tag: `array_datos`} 
+
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+			//*-se parsea solo la respuesta del Json enviada por el servidor.	
+			let array = JSON.parse(data);	
+			
+			if(array.length > 0){
+				document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha <strong>compra</strong> : ${array[0]['fechaEmi']}</li></ul>`;
+				document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad <strong>compra</strong> : ${array[0]['cantidad']}</li></ul>`;
+				document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo  <strong>compra</strong>  : ${formatearNumeros(array[0]['precioUnitario'])}</li></ul>`;
+			}
+			
+			
+			let precioIva=array[0]['precioUnitario']*0.25;
+			
+		} catch (error) {  }
+		
+
+	}
+
+	let limpiarCampos=() => {
+
+		
+		$("#myModal").modal('hide');
+		document.getElementById('fecha_ultima_compra').innerHTML=`<ul><li>Fecha  <strong>compra</strong>  : `;
+		document.getElementById('cantidad_ultima_compra').innerHTML=`<ul><li>Cantidad  <strong>compra</strong>  : `;
+		document.getElementById('costo_ultima_compra').innerHTML=`<ul><li>Precio Costo  <strong>compra</strong> o : `;
+		document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha  <strong>venta</strong>  : `;
+		document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Fecha  <strong>venta</strong>  : `;
+		document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Fecha  <strong>Compra</strong>  : `;
+		document.getElementById('nombre_proveedor').innerHTML=``;		
+
+	}
+
+	let mostrarModal = () =>{
+
+
+
+		$("#myModal").modal();
+		$('body').on('shown.bs.modal', '#myModal', function () {
+		$('input:visible:enabled:first', this).focus();
+
+	})
+	}
+
+	//EDITAR LA DESCRIPCION EN LA VENTA
+	let editarDescripcion=async (e) =>{
+
+		if(e.keyCode==13){
+		let descripcion = document.getElementById('obsProducto').value;
+		let idProducto =  document.getElementById('idprodescripcion').value;
+		
+		const baseUrl = 'php/consultaFetch.php';
+
+		let consulta=`UPDATE PRODUCTOS set descripcion="${descripcion}" WHERE id=${idProducto}`;
+
+		const sql   = {sql: consulta, tag: `crud`}	
+
+		
+		
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();
+				$.notify({
+					title: "Update: ",
+					message: "Se actualizo la descripcion del producto:",
+					icon: 'fas fa-check'
+				}, {
+					type: "success",
+					placement: {
+						from: "top",
+						align: "right"
+					},
+					offset: 70,
+					spacing: 70,
+					z_index: 1031,
+					delay: 2000,
+					timer: 3000
+				});				
+			
+		} catch (error) {  }
+
+			
+		}
+		
+	}
+	
+
+
+
 		let agregarProductos =  async(e,btn) => {
 
 			// comprobarFactura();
