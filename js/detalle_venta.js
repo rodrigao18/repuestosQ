@@ -669,11 +669,11 @@
 			'<td>' + codigo_producto + '</td>' +
 			'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
 			'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '" style="width:50px" id="' + 'canAdd' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculoAdd('+nfilas+')  type="number" min=1 value="'+cantidad+'"></td>' +						
-			'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'venAdd' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
+			'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'venAdd' + parseFloat(nfilas) + '" onkeypress="calcularPrecioTablaAdd(event,this,' + parseFloat(nfilas) + ')"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 			'<td><input style="text-align:center;"  name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
 			'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'precAdd' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +					
 			'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+','+codigo_producto+','+cantidad+',1)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
-			'<td style="display:none;">'+idProd+'</td>' +
+			'<td style="display:none;">'+IDVENTARELACIONAL+'</td>' +
 			'<td style="display:none;"><input name="venDesU' + parseFloat(nfilas) + '" id="' + 'venDescu' + parseFloat(nfilas) + '" value="'+(precioConOcul)+'"></td>' +	
 			'</tr>');
 
@@ -685,7 +685,24 @@
 				
 		}
 
-			//comprobar repetidos 
+	let calcularPrecioTablaAdd =(e,btn,id)=>{
+
+		if(e.keyCode==13){
+			const evento = e.preventDefault();
+			let idTabla=btn.id;
+			let precio_unitario=convertirNumeros(document.getElementById(idTabla).value);
+			let cantidad=document.getElementById('canAdd'+id).value;
+			console.log('preciounitario '+ (precio_unitario));
+			console.log('cantidad'  + cantidad);
+			let precio_final=precio_unitario*cantidad;
+			document.getElementById('precAdd'+id).value=formatearNumeros(precio_final);
+
+			recalcularValores();
+		}
+
+	}	
+
+	//comprobar repetidos 
 	let comprobarRepetidos = (arrCod,cols,idVR,codigo_producto,cantidad,index) => {	
 			
 		 			
@@ -972,7 +989,7 @@
 				'<td>' + codigo_producto + '</td>' +
 				'<td>' + columnaEditable + '</td>' +
 				'<td><input style="width:45px;text-align:center;" name="can' + parseFloat(nfilas) + '"  id="' + 'cant' + parseFloat(nfilas) + '" size="2" onChange=cantidadCalculo(this,' + parseFloat(nfilas) + ')  type="number" min=1 value="'+cantidad+'"></td>' +
-				'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
+				'<td><input style="width:100px;text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '" onkeypress="calcularPrecioTabla(event,this,' + parseFloat(nfilas) + ')"  type="text" min=0 value="'+formatearNumeros(precio)+'"></td>' +
 				'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(descuento_producto)+'"></td>' +
 				'<td><input style="text-align:center;" disabled name="preU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 				'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ','+IDVENTARELACIONAL+','+codigo_producto+','+cantidad+',1)><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +		
@@ -983,6 +1000,26 @@
 	$('[data-toggle="tooltip"]').tooltip();
 
 	recalcularValores();
+	}
+
+	let calcularPrecioTabla = (e,btn,id) =>{
+
+		if(e.keyCode==13){
+			const evento = e.preventDefault();
+			let idTabla=btn.id;
+			let precio_unitario=convertirNumeros(document.getElementById(idTabla).value);
+			let cantidad=document.getElementById('cant'+id).value;
+			console.log('preciounitario '+ (precio_unitario));
+			console.log('cantidad'  + cantidad);
+			let precio_final=precio_unitario*cantidad;
+			document.getElementById('prect'+id).value=formatearNumeros(precio_final);
+
+			recalcularValores();
+		}
+
+
+
+
 	}
 	
 	let calculoTablaUp = (id)=>{
@@ -1107,12 +1144,17 @@
 	
 		for (var i = 0; i < nFilas; i++) {
 
+			let input;
+			let inputPreU;
+			let inputTotU;
+			let desU;
+
 			let codigoInterno = tablaC.rows[i].cells[0].innerHTML;
 			let nombre = tablaC.rows[i].cells[1].innerText;		
-			let input=`input[name=can${(i+1)}]`;
-			let inputPreU=`input[name=preU${(i+1)}]`;
-			let inputTotU=`input[name=totU${(i+1)}]`;
-			let desU=`input[name=desU${(i+1)}]`;
+			input=`input[name=can${(i+1)}]`;
+			inputPreU=`input[name=preU${(i+1)}]`;
+			inputTotU=`input[name=totU${(i+1)}]`;
+			desU=`input[name=desU${(i+1)}]`;
 			var cantidad = `${document.querySelector(input).value}` //usamos innerText para obtener solo el valor			
 			let idfr = tablaC.rows[i].cells[7].innerHTML;
 			var precioUnitario = `${document.querySelector(inputPreU).value}`;
@@ -1120,15 +1162,16 @@
 			var totalUnitario = `${document.querySelector(inputTotU).value}`;			
 			let descuento_producto=`${document.querySelector(desU).value}`;
 			var totalUnitarioConvertido = convertirNumeros(totalUnitario);
-		
+
+			
 
 			const baseUrl = 'php/consultaFetch.php';
 			
 		
-
+			//totalUnitarioConvertido y precioUnitario al reves para evitar problemas
 			let consulta=`UPDATE ventas_relacional , productos p INNER JOIN ventas_relacional vr ON vr.codigo_producto=p.codigo 
-						 set vr.codigo_producto="${codigoInterno}",vr.precio_unitario=${precioUnitarioConvertido},vr.cantidad=${cantidad}
-						,vr.total_unitario=${totalUnitarioConvertido},vr.nombre_producto="${nombre}",vr.descuento_producto=${descuento_producto} WHERE vr.id=${idfr}`;		
+						 set vr.codigo_producto="${codigoInterno}",vr.precio_unitario=${totalUnitarioConvertido},vr.cantidad=${cantidad}
+						,vr.total_unitario=${precioUnitarioConvertido},vr.nombre_producto="${nombre}",vr.descuento_producto=${descuento_producto} WHERE vr.id=${idfr}`;		
 				
 
 			const sql   = {sql: consulta, tag: `crud`}		
@@ -1150,7 +1193,7 @@
 						
 						}	
 				
-				} catch (error) {}
+				} catch (error) {console.log(error);}
 		
 		}
 	}
