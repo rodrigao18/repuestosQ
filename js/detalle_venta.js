@@ -404,7 +404,7 @@
 					'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
 					'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
 					`<td id="nomPro${parseFloat(i + 1)}" style="cursor:pointer;"><span id="${id_producto}" onclick=obser(this,'${descripcion.split(" ")}',${codigo})>${nombre}</span></td>`+
-					'<td>' + stock + '</td>' +
+					'<td id="' + 'stk' + parseFloat(i + 1) + '">' + stock + '</td>' +
 					'<td>' + ubicacion + '</td>' +
 					'<td>' + MARCAS[marca] + '</td>' +
 					'<td><input class="form-control" id="' + 'canBus' + parseFloat(i + 1) + '" onClick=calculoTablaUp('+(i+1)+')  min=1 type="number" value="1"></td>' +
@@ -1022,7 +1022,8 @@
 	let calcularPrecioTabla = (e,btn,id) =>{
 
 		if(e.keyCode==13){
-			const evento = e.preventDefault();
+			const evento = e.preventDefault();		
+
 			let idTabla=btn.id;
 			let precio_unitario=convertirNumeros(document.getElementById(idTabla).value);
 			let cantidad=document.getElementById('cant'+id).value;
@@ -1033,19 +1034,40 @@
 
 			recalcularValores();
 		}
-
-
-
-
 	}
 	
 	let calculoTablaUp = (id)=>{
 		
+
+
+		var stock=0;
+		stock=document.getElementById(`stk${id}`).innerHTML;
+
+		if(stock<1){
+			$.notify({
+			title: "Precaución: ",
+			message: "Stock se encuentra agotado !!!:",
+			icon: 'fas fa-close'
+			}, {
+			type: "danger",
+			placement: {
+			from: "bottom",
+			align: "center"
+			},
+			offset: 70,
+			spacing: 70,
+			z_index: 1031,
+			delay: 2000,
+			timer: 3000
+			});	
+		}
 		let cantidad=document.getElementById('canBus'+id).value;
 		let precioVenta=convertirNumeros(document.getElementById('venCon'+id).value);
 		let precioTotal=cantidad*precioVenta;
 		console.log('precioTotal ' + precioTotal);
 		document.getElementById('total'+id).value=(precioTotal);
+
+		
 	}
 	let cantidadCalculo = (btn,id) =>{
 		
@@ -1074,6 +1096,8 @@
 		const evento = e.preventDefault();
 		$("#volverBtn").show(); // mostramos nuevamente  los botones
 		$("#salidaTabla").hide(); //tabla donde se buscan los productos
+		document.getElementById('buscar').value='';
+		document.getElementById('buscar').focus();
 	}
 
 

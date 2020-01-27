@@ -851,7 +851,7 @@ let tablaProductos = (array) => {
 		'<td><input class="canti" name="can' + parseFloat(nfilas) + '" style="width:50px" id="' + 'cant' + parseFloat(nfilas) + '" size="2" onClick=cantidadCalculo('+nfilas+',2)  type="number" min=1 value="'+cantidad+'"></td>' +
 		'<td> <span class="editar" onclick="transformarEnEditable(this,1)" style="cursor:pointer;">' + nombre + '</span> </td>' +
 		'<td><input style="text-align:center;" name="totunitaU' + parseFloat(nfilas) + '" id="' + 'precuni' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(precio_sin)+'"></td>' +
-		'<td><input style="text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
+		'<td><input style="text-align:center;" name="totU' + parseFloat(nfilas) + '" id="' + 'prect' + parseFloat(nfilas) + '" onkeypress="calcularPrecioTabla(event,this,' + parseFloat(nfilas) + ')"  type="text" min=0 value="'+formatearNumeros(total)+'"></td>' +
 		'<td><input style="text-align:center;" name="desU' + parseFloat(nfilas) + '" id="' + 'desc' + parseFloat(nfilas) + '"   type="text" min=0 value="'+formatearNumeros(desOcul)+'"></td>' +
 		'<td><input style="text-align:center;" name="preU' + parseFloat(nfilas) + '" id="' + 'vent' + parseFloat(nfilas) + '"  onkeypress="totalFcalcular(event)" type="text" min=0 value="'+formatearNumeros(precioTotal)+'"></td>' +					
 		'<td><button class="btn  btn-danger" id="cols' + nfilas + '" onclick=removerItem(' + parseFloat(nfilas) + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
@@ -866,6 +866,22 @@ let tablaProductos = (array) => {
 			document.getElementById('obsProducto').value="";
 			comprobarRepetidos(arrCod,'cols',nfilas);
 			
+	}
+
+	let calcularPrecioTabla = (e,btn,id) =>{
+
+		if(e.keyCode==13){
+			const evento = e.preventDefault();
+			let idTabla=btn.id;
+			let precio_unitario=convertirNumeros(document.getElementById(idTabla).value);
+			let cantidad=document.getElementById('cant'+id).value;
+			console.log('preciounitario '+ (precio_unitario));
+			console.log('cantidad'  + cantidad);
+			let precio_final=precio_unitario*cantidad;
+			document.getElementById('vent'+id).value=formatearNumeros(precio_final);
+
+			recalcularValores();
+		}
 	}
 
 	let removerItem = async(id) => {
