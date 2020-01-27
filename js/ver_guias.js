@@ -469,8 +469,8 @@ function eliminarProducto(e, id,index) {
 	let mensaje;
 	let titulo;
 	if(index==1){
-		titulo=`Eliminar factura`;
-		mensaje=`¿esta seguro de eliminar la factura ?`;
+		titulo=`Eliminar Guia`;
+		mensaje=`¿esta seguro de eliminar la guia ?`;
 	}else{
 		titulo=`Anular producto`;
 		mensaje=`¿esta seguro de anular la factura ?`;
@@ -591,7 +591,7 @@ let obtenerStock = async(idP,index) => {
 
 			$.notify({
 				title: "Anulado: ",
-				message: "Se Anulo la boleta:",
+				message: "Se Anulo la Guia:",
 				icon: 'fas fa-check'
 			}, {
 				type: "success",

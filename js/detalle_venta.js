@@ -82,7 +82,22 @@
 			
 			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
 			const data = await response.text();
-			console.log('update cliente');
+			$.notify({
+				title: "Modificación: ",
+				message: "Se Modificado el cliente:",
+				icon: 'fas fa-check'
+			}, {
+				type: "success",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 2000,
+				timer: 3000
+			});	
 			
 		} catch (error) { console.log('error en la conexion ', error); }
 
@@ -650,11 +665,11 @@
 			let precioTotal = cantidad * precio_Con;
 			// let idProd = table.rows[idTabla].cells[11].innerHTML;
 			let descuento = document.getElementById(`des${idTabla}`).value;
-			if(ESTADOVENTA!=4){
-				const insert = await insertarNuevoProducto(codigo_producto,total,cantidad,nombre,precioTotal,desOcul);
-			}
 			
-
+				const insert = await insertarNuevoProducto(codigo_producto,total,cantidad,nombre,precioTotal,desOcul);
+		
+			
+		
 			// var estadoEntr = "";
 			// estadoEntr = document.getElementById('checkEnt').checked;
 
@@ -721,7 +736,7 @@
 	}
 
 
-	let borrarElement = (arrCod,idVR,codigo_producto,cantidad,index) => {
+	let borrarElement = (arrCod,idVR,codigo_producto,cantidad,index2) => {
 
 		var uniqs = arrCod.filter(function(item, index, array) {	
 
@@ -736,7 +751,7 @@
 
 			
 				swal('warning','ya ingreso esteproducto','info');
-				removerItem(idfila,idVR,codigo_producto,cantidad,index);
+				removerItem(idfila,idVR,codigo_producto,cantidad,index2);
 				break
 			}
 
@@ -785,8 +800,10 @@
 				delay: 1500,
 				timer: 1500
 			});
-			
-			const actualiSt= actualizarStockAdd(codigo_producto,cantidad);
+			if(ESTADOVENTA!=4){
+				const actualiSt= actualizarStockAdd(codigo_producto,cantidad);	
+			}
+		
 
 		} catch (error) {  }
 	
