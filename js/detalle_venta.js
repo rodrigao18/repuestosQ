@@ -440,6 +440,38 @@
 					comprobarRepetidos(arrCod,'cols',IDVENTARELACIONAL);
 		}	
 		
+
+		function validar_descuento(e,id, descuento_max, id_precio_venta, id_precio_final) {
+
+			if (e.keyCode === 13 && !e.shiftKey) {
+				e.preventDefault();
+				var precio_venta = document.getElementById('venSin'+id_precio_venta).value;//document.getElementById("pres" + id_precio_venta).value //PRECIO VENTA
+		
+				id_descuento = id.id; // SE OBTIENE EL ID DESDE EL INPUT DESCUENTO  CON  LA PROPIEDAD THIS
+				var valor_descuento = document.getElementById(id_descuento).value //SACO EL VALOR DEL INPUT GRACIAS AL ID ENVIADO DESDE LA FUNCION;
+			
+			
+				if (valor_descuento > descuento_max) { //VALIDO QUE EL VALOR DEL DESCUENTO SEA MENOR AL VALOR REAL DEL DESCUENTO Y QUE SEA MAYOR A CERO;
+					swal("No puede aplicar un descuento superior al predeterminado","","info");
+					$('#' + id_descuento).val(0); //VUELVO EL VALOR DEL INPUT DESCUENTO A 0;
+					$('#venCon' + id_precio_final).val(precio_venta);
+					return;
+				} else {
+					calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_final);
+				}
+			}
+			
+		}	
+
+		function calcular_precio_con_descuento(precio_venta, valor_descuento, id_precio_f) {
+
+			var precio_final1 = parseFloat(valor_descuento / 100) * parseInt(precio_venta);
+			var precio_final=parseInt(precio_venta)-parseInt(precio_final1);
+			
+			$('#venCon' + id_precio_f).val(precio_final);
+			$('#total' + id_precio_f).val(precio_final);
+		}
+		
 		//PASAR EL MOUSE POR EL NOMBRE DEL PRODUCTO
 	let obser = async (id,nombre,codigo) => {
 

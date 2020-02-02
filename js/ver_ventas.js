@@ -158,11 +158,11 @@ let tablaVentas = (arreglo) => {
 		if(i['nula_boleta']==2){
 			activo=`<span class='badge badge-dark'>Nula</span>`;
 			boton=``;
-			boton_eliminar=`<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
+			boton_eliminar=`<button class="btn btn-danger" disabled data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
 		}else{
 			activo=`<span class='badge badge-success'>Realizada</span>`;
 			boton=`<button class="btn  btn-dark" data-toggle="tooltip" data-placement="top" title="Anular" onclick=eliminarProducto(event,${i['id']})><i class="fas fa-times-circle"></i></button>`;
-			boton_eliminar=`<button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
+			boton_eliminar=`<button class="btn  btn-danger" disabled data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
 		}
 		
 		tbody.innerHTML +=
@@ -274,7 +274,7 @@ function eliminarProducto(e, id,index) {
 		titulo=`Eliminar producto`;
 		mensaje=`¿esta seguro de eliminar la boleta ?`;
 	}else{
-		titulo=`Anular producto`;
+		titulo=`Anular documento`;
 		mensaje=`¿esta seguro de anular la boleta ?`;
 	}
 
@@ -408,7 +408,7 @@ let obtenerStock = async(idP,index) => {
 				timer: 3000
 			});	
 
-			setTimeout('location.reload()', 1000);				
+			setTimeout('window.location.href = "ventas_por_dia.php"', 1000);				
 		} catch (error) { console.log('error en la conexion ', error); }
 
 	}

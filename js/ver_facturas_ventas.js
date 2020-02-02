@@ -416,7 +416,7 @@ let obtenerStock = async(idP,index) => {
 				timer: 3000
 			});	
 
-			setTimeout('location.reload()', 1000);				
+			setTimeout('window.location.href = "ventas_por_dia.php"', 1000);					
 		} catch (error) { console.log('error en la conexion ', error); }
 
 	}

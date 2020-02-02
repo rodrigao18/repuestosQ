@@ -29,7 +29,7 @@
 	<!-- Sidebar menu-->
 	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 	<aside class="app-sidebar">
-		<div class="app-sidebar__user "><i class="fas fa-laptop fa-3x"></i> 
+		<div class="app-sidebar__user "><i class="fas fa-laptop fa-3x "></i> 
 			<div>
 				<p class="app-sidebar__user-name pl-3">
 						<?php echo $user; ?>

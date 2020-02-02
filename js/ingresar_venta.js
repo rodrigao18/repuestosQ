@@ -58,6 +58,28 @@ let cargarDatos = async() => {
 			
 			
 	}
+	let sel_Documento = async(index) =>{
+		// console.log('entro a se_documento');
+		// console.log('index ' + index);
+
+		// if(index==1){
+		// 	//document.getElementById('selectDocumento').value
+		// const boleta = await $('#selectDocumento option[value="1"]').attr("selected", true);
+		// console.log(boleta);		
+		// }if(index==2){
+		// const factura = await	$('#selectDocumento option[value="2"]').attr("selected", true);			
+		// }
+		//  if(index==3){
+		// 	const guia = await	$('#selectDocumento option[value="3"]').attr("selected", true);			
+		// }
+		//  if(index==4){
+		// 	const cotiza = await	$('#selectDocumento option[value="4"]').attr("selected", true);			
+		// }if(index==5){
+		// 	const tarje = await	$('#selectDocumento option[value="5"]').attr("selected", true);			
+		// }
+		
+
+	}
 
 	let verificarDocumento = ()=>{
 
@@ -82,7 +104,7 @@ let cargarDatos = async() => {
 			});
 
 		}else{
-			return;
+			//return;
 		}
 	}
 
