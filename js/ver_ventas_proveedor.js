@@ -228,21 +228,21 @@ function lenguaje() {
 	});
 
 
-     new $.fn.dataTable.Buttons(table, {
-		buttons: [
-			{
-				extend: 'excelHtml5',
-				title: 'Ventas agrupadas por proveedor ' + fecha + ''
-            }, {
-				extend: 'pdfHtml5',
-				title: 'Ventas agrupadas por proveedor ' + fecha + ''
-            }]
+    //  new $.fn.dataTable.Buttons(table, {
+	// 	buttons: [
+	// 		{
+	// 			extend: 'excelHtml5',
+	// 			title: 'Ventas agrupadas por proveedor ' + fecha + ''
+    //         }, {
+	// 			extend: 'pdfHtml5',
+	// 			title: 'Ventas agrupadas por proveedor ' + fecha + ''
+    //         }]
 
-	});
+	// });
 
-	table.buttons(0, null).container().prependTo(
-		table.table().container()
-	);
+	// table.buttons(0, null).container().prependTo(
+	// 	table.table().container()
+	// );
 
 	
 
