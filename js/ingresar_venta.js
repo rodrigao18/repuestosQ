@@ -58,7 +58,48 @@ let cargarDatos = async() => {
 			
 			
 	}
-	let sel_Documento = async(index) =>{
+	let sel_Documento = async() =>{
+
+		let idselect=document.getElementById('selectDocumento').value;
+	
+		if(idselect==1){						
+			document.getElementById('id_boleta').className=`form-control documento_elejido-input`;
+			document.getElementById('id_guia').className=`form-control documento_input`;
+			document.getElementById('id_factura').className=`form-control documento_input`;
+			document.getElementById('id_tarjeta').className=`form-control documento_input`;
+			document.getElementById('id_cotizacion').className=`form-control documento_input`;
+		
+		}
+		if(idselect==2){
+			document.getElementById('id_factura').className=`form-control documento_elejido-input`;
+			document.getElementById('id_boleta').className=`form-control documento_input`;
+			document.getElementById('id_guia').className=`form-control documento_input`;
+			document.getElementById('id_tarjeta').className=`form-control documento_input`;
+			document.getElementById('id_cotizacion').className=`form-control documento_input`;
+		}
+		if(idselect==3){
+			document.getElementById('id_guia').className=`form-control documento_elejido-input`;
+			document.getElementById('id_boleta').className=`form-control documento_input`;
+			document.getElementById('id_factura').className=`form-control documento_input`;
+			document.getElementById('id_tarjeta').className=`form-control documento_input`;
+			document.getElementById('id_cotizacion').className=`form-control documento_input`;
+		}
+		if(idselect==4){
+			document.getElementById('id_cotizacion').className=`form-control documento_elejido-input`;
+			document.getElementById('id_boleta').className=`form-control documento_input`;
+			document.getElementById('id_guia').className=`form-control documento_input`;
+			document.getElementById('id_tarjeta').className=`form-control documento_input`;
+			document.getElementById('id_factura').className=`form-control documento_input`;
+		}
+		if(idselect==5){
+			document.getElementById('id_tarjeta').className=`form-control documento_elejido-input`;
+			document.getElementById('id_boleta').className=`form-control documento_input`;
+			document.getElementById('id_guia').className=`form-control documento_input`;
+			document.getElementById('id_factura').className=`form-control documento_input`;
+			document.getElementById('id_cotizacion').className=`form-control documento_input`;
+		}
+	
+
 		// console.log('entro a se_documento');
 		// console.log('index ' + index);
 

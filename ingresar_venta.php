@@ -89,6 +89,13 @@
 		background-color:rgba(58, 83, 155, 1);
 		color:white;
 	}
+
+.documento_input{
+
+}
+.documento_elejido-input{
+	border:2px solid green;
+}	
 	</style>
 </head>
 
@@ -109,23 +116,23 @@
 				<div class="form-row">
 					<div class="form-group col-md-2">
 					<label>boleta</label>
-						<input type="text" onblur="validarIds()" onclick="sel_Documento(1)" class="form-control" id="id_boleta" name="id_boleta" value="1">
+						<input type="text" onblur="validarIds()"  class="form-control"  id="id_boleta" name="id_boleta" value="1">
 					</div>
 					<div class="form-group col-md-2">
 					<label>guia</label>
-						<input type="text" onblur="validarIds()" onclick="sel_Documento(3)" class="form-control" id="id_guia" name="id_guia" value="1">
+						<input type="text" onblur="validarIds()"  class="form-control" id="id_guia" name="id_guia" value="1">
 					</div>
 					<div class="form-group col-md-2">
 					<label>factura</label>
-						<input type="text" onblur="validarIds()" onclick="sel_Documento(2)" class="form-control" id="id_factura" name="id_factura" value="1">
+						<input type="text" onblur="validarIds()"  class="form-control" id="id_factura" name="id_factura" value="1">
 					</div>
 					<div class="form-group col-md-2">
 					<label>cotizacion</label>
-						<input type="text" onblur="validarIds()" onclick="sel_Documento(4)" class="form-control" id="id_cotizacion" name="id_cotizacion" value="1">
+						<input type="text" onblur="validarIds()"  class="form-control" id="id_cotizacion" name="id_cotizacion" value="1">
 					</div>	
 					<div class="form-group col-md-2">
 					<label>tarjeta</label>
-						<input type="text" onblur="validarIds()" onclick="sel_Documento(5)" class="form-control" id="id_tarjeta" name="id_tarjeta" value="1">
+						<input type="text" onblur="validarIds()"  class="form-control" id="id_tarjeta" name="id_tarjeta" value="1">
 					</div>				
 				</div>				
 				
@@ -166,7 +173,7 @@
 								<div class="form-group col-md-4">
 									<label> Seleccione tipo documento</label>
 									<div class="input-group">
-									<select  class="form-control"  id="selectDocumento">                                    
+									<select  class="form-control" onchange="sel_Documento()" id="selectDocumento">                                    
                                     <option value="1">Boleta</option>
                                     <option value="2">Factura electrónica</option>
                                     <option value="3">Guía interna</option>
