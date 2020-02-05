@@ -16,7 +16,7 @@ let cargarDatos = async() => {
 	const ulguia = await ultimoGuia();
 	const ulfactura = await ultimoFactura();
 	const ultTarjeta = await ultimoTarjeta();
-	
+	const tool= await sel_Documento();
 	
 
 	if(PRODUCTOS.length > 0){
