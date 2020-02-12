@@ -1378,20 +1378,24 @@ for (var i = 0; i < nFilas; i++) {
 	let inputPreU=`input[name=preU${(i+1)}]`;
 	let inputTotU=`input[name=totU${(i+1)}]`;
 	var codigo = tablaC.rows[i].cells[1].innerHTML;
-	var cantidad = `${document.querySelector(input).value}` //usamos innerText para obtener solo el valor
+	// var cantidad = `${document.querySelector(input).value}` //usamos innerText para obtener solo el valor
+	let cantidad=tablaC.rows[i].cells[2].children[0].value;
 	var nombre = tablaC.rows[i].cells[3].innerText;
-	var precioUnitario = `${document.querySelector(inputPreU).value}`
-	var precioUnitarioConvertido = convertirNumeros(precioUnitario);
-	var totalUnitario = `${document.querySelector(inputTotU).value}`
-	var totalUnitarioConvertido = convertirNumeros(totalUnitario);
+	// var precioUnitario = `${document.querySelector(inputPreU).value}`
+	// var precioUnitarioConvertido = convertirNumeros(precioUnitario);
+	let precioUnitarioConvertido=convertirNumeros(tablaC.rows[i].cells[7].children[0].value);
+	// var totalUnitario = `${document.querySelector(inputTotU).value}`
+	// var totalUnitarioConvertido = convertirNumeros(totalUnitario);
+	let totalUnitarioConvertido=convertirNumeros(tablaC.rows[i].cells[5].children[0].value);
+	let descuentoConvertido=convertirNumeros(tablaC.rows[i].cells[6].children[0].value);
 
 	var proveedor = tablaC.rows[i].cells[10].innerText;
 
 	const baseUrl = 'php/consultaFetch.php';
-//precioUnitarioConvertido
-	let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto,id_proveedor)
 
-	VALUES("${codigo}",${totalUnitarioConvertido},${cantidad},${precioUnitarioConvertido},${id},"${nombre}",${proveedor})`;	
+	let consulta=`INSERT INTO VENTAS_RELACIONAL (codigo_producto,precio_unitario,cantidad,total_unitario,id_venta,nombre_producto,descuento_producto,id_proveedor)
+
+	VALUES("${codigo}",${totalUnitarioConvertido},${cantidad},${precioUnitarioConvertido},${id},"${nombre}",${descuentoConvertido},${proveedor})`;	
 
 	console.error(consulta);
 				const sql   = {sql: consulta, tag: `crud`}		

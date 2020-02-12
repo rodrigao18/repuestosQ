@@ -128,7 +128,21 @@
                 echo "";
             }
             ?>
-
+		<!--Facturas-->
+		<?php
+            $menuFacturas='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-clipboard-list"></i><span class="app-menu__label">Facturas</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a class="treeview-item" href="ver_facturas.php"><i class="icon fas fa-angle-right"></i> Listado facturas</a></li>	
+					<li><a class="treeview-item" href="ver_facturas_compras.php"><i class="icon fas fa-angle-right"></i> Facturas de compras</a></li>					
+				
+				</ul>
+			</li>';
+            if ($nivel==0) {
+                echo $menuFacturas;
+            } else {
+                echo "";
+            }
+            ?>
 			<?php
 			$menuInventario='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-clipboard-list"></i><span class="app-menu__label">Inventario </span><i class="treeview-indicator fa fa-angle-right"></i></a>
 			<ul class="treeview-menu">
@@ -143,38 +157,7 @@
 			echo "";
 			}
 			?>
-			
-			<!--Clientes--->
-			<?php
-            $Clientes='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Clientes</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="ver_clientes.php"><i class="icon fas fa-angle-right"></i> Ver clientes</a></li>
-					<li><a class="treeview-item" href="ingresar_clientes.php"><i class="icon fa fa-angle-right"></i> Ingresar clientes</a></li>
-
-				</ul>
-			</li>';
-            if ($nivel==1 || $nivel==0) {
-                echo  $Clientes;
-            } else {
-                echo "";
-            }
-            ?>
-
-			<!-- <?php
-            $Tecnicos='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-user-cog"></i><span class="app-menu__label">Técnicos</span><i class="treeview-indicator fa fa-angle-right"></i></a>
-				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="ver_tecnicos.php"><i class="icon fas fa-angle-right"></i> Ver técnicos</a></li>
-					<li><a class="treeview-item" href="ingresar_tecnicos.php"><i class="icon fa fa-angle-right"></i> Ingresar técnicos</a></li>
-
-				</ul>
-			</li>';
-            if ($nivel==1 || $nivel==0) {
-                echo  $Tecnicos;
-            } else {
-                echo "";
-            }
-            ?> -->
-	<!-- Vendedores -->
+			<!-- Proveedores -->
 
 	<?php
             $menuProveedores='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-truck"></i><span class="app-menu__label">Proveedores</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -190,21 +173,37 @@
                 echo "";
             }
             ?>
-			<!--Facturas-->
-	<?php
-            $menuFacturas='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-clipboard-list"></i><span class="app-menu__label">Facturas</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<?php
+            $informes='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fas fa-list"></i><span class="app-menu__label">Informes</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+			<ul class="treeview-menu">
+				<li><a class="treeview-item" href="ver_stock.php"><i class="icon fas fa-angle-right"></i> Ver stock</a></li>
+
+
+			</ul>
+		</li>';
+		if ($nivel==0) {
+			echo  $informes;
+		} else {
+			echo "";
+		}
+		?> 
+			<!--Clientes--->
+			<?php
+            $Clientes='<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Clientes</span><i class="treeview-indicator fa fa-angle-right"></i></a>
 				<ul class="treeview-menu">
-					<li><a class="treeview-item" href="ver_facturas.php"><i class="icon fas fa-angle-right"></i> Listado facturas</a></li>	
-					<li><a class="treeview-item" href="ver_facturas_compras.php"><i class="icon fas fa-angle-right"></i> Facturas de compras</a></li>					
-				
+					<li><a class="treeview-item" href="ver_clientes.php"><i class="icon fas fa-angle-right"></i> Ver clientes</a></li>
+					<li><a class="treeview-item" href="ingresar_clientes.php"><i class="icon fa fa-angle-right"></i> Ingresar clientes</a></li>
+
 				</ul>
 			</li>';
-            if ($nivel==0) {
-                echo $menuFacturas;
+            if ($nivel==1 || $nivel==0) {
+                echo  $Clientes;
             } else {
                 echo "";
             }
             ?>
+	
+	
 			<!-- Vendedores -->
 
 			<?php

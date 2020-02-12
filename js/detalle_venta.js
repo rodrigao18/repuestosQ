@@ -865,7 +865,7 @@
 			//*-request de los datos en formato texto(viene todo el request)
 			const data = await response.text();
 			//*-se parsea solo la respuesta del Json enviada por el servidor.
-			
+		
 			
 			
 		} catch (error) {  }
@@ -1142,7 +1142,7 @@
 			const actuStock = actualizarStockAdd(codigo_producto,cantidad,index);
 		}
 	
-
+		
 	}
 
 	let borrarItemBd = async(idFr) =>{
@@ -1224,24 +1224,19 @@
 
 			let codigoInterno = tablaC.rows[i].cells[0].innerHTML;
 			let nombre = tablaC.rows[i].cells[1].innerText;		
-			input=`input[name=can${(i+1)}]`;
-			inputPreU=`input[name=preU${(i+1)}]`;
-			inputTotU=`input[name=totU${(i+1)}]`;
-			desU=`input[name=desU${(i+1)}]`;
-			var cantidad = `${document.querySelector(input).value}` //usamos innerText para obtener solo el valor			
-			let idfr = tablaC.rows[i].cells[7].innerHTML;
-			var precioUnitario = `${document.querySelector(inputPreU).value}`;
-			var precioUnitarioConvertido = convertirNumeros(precioUnitario);		
-			var totalUnitario = `${document.querySelector(inputTotU).value}`;			
-			let descuento_producto=`${document.querySelector(desU).value}`;
-			var totalUnitarioConvertido = convertirNumeros(totalUnitario);
-
-			
-
-			const baseUrl = 'php/consultaFetch.php';
-			
+			// input=`input[name=can${(i+1)}]`;
+			// inputPreU=`input[name=preU${(i+1)}]`;
+			// inputTotU=`input[name=totU${(i+1)}]`;
+			// desU=`input[name=desU${(i+1)}]`;
 		
-			//totalUnitarioConvertido y precioUnitario al reves para evitar problemas
+			let idfr = tablaC.rows[i].cells[7].innerHTML;
+			let cantidad=tablaC.rows[i].cells[2].children[0].value;
+			let precioUnitarioConvertido=convertirNumeros(tablaC.rows[i].cells[3].children[0].value);
+			let descuento_producto=convertirNumeros(tablaC.rows[i].cells[4].children[0].value);
+			let totalUnitarioConvertido=convertirNumeros(tablaC.rows[i].cells[5].children[0].value);			
+		
+			const baseUrl = 'php/consultaFetch.php';		
+		
 			let consulta=`UPDATE ventas_relacional , productos p INNER JOIN ventas_relacional vr ON vr.codigo_producto=p.codigo 
 						 set vr.codigo_producto="${codigoInterno}",vr.precio_unitario=${totalUnitarioConvertido},vr.cantidad=${cantidad}
 						,vr.total_unitario=${precioUnitarioConvertido},vr.nombre_producto="${nombre}",vr.descuento_producto=${descuento_producto} WHERE vr.id=${idfr}`;		
