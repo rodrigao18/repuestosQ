@@ -162,7 +162,7 @@ let tablaVentas = (arreglo) => {
 		   <td></td>
 		   <td>${i['nombre_producto']}</td>
 		   <td>${i['cantidad']}</td>		
-		   <td>${i['stock']}</td>	  
+		   <td data-tableexport-msonumberformat="0">${i['stock']}</td>	  
 		   <td>${i['costo']}</td>	  
 		 </tr>`
 		}else{

@@ -120,7 +120,9 @@
         var sFileName = 'proveedores_producotos_stock ' + f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()+ "/";
         function ExportXLSX(){
             $('#tablaProductos').tableExport({fileName: sFileName,
-                        type: 'xlsx'
+						type: 'xlsx',
+						msonumberformat:'0'
+					
                        });
         }
     </script>

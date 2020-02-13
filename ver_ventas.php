@@ -75,9 +75,9 @@
 						<a style="margin-right: 15px" href="ingresar_productos_nuevos.php" class="btn btn-outline-primary float-right"><i class="icon fa fa-cart-plus"></i>Ingresar productos nuevos</a>
 						<div class="my-3 p-3 bg-white rounded box-shadow">
 
-							<h6 class="border-bottom border-gray pb-2 mb-0 ">Facturas</h6>
+							<h6 class="border-bottom border-gray pb-2 mb-0 ">Ventas</h6>
 							<br><br>
-
+							<button class="btn btn-primary" onClick="ExportXLSX();"><i class="fas fa-file-excel"></i> Exportar Tabla a Excel</button> 
 								<div id="salida">
 								<div class="my-3 p-3 bg-white rounded box-shadow">
 								
@@ -125,6 +125,10 @@
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
+	<script type="text/javascript" src="js/plugins/js-xlsx/xlsx.core.min.js"></script>
+    <script type="text/javascript" src="js/plugins/FileSaver.min.js"></script> 
+    <script type="text/javascript" src="js/plugins/html2canvas.min.js"></script>
+    <script type="text/javascript" src="js/plugins/tableExport.min.js"></script>
 	<!-- The javascript plugin to display page loading on top-->
 	<script src="js/plugins/pace.min.js"></script>
     <script type="text/javascript" src="js/funciones.js?vknet29"></script>
@@ -134,7 +138,17 @@
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<?php include "./js/table.php"; ?>
 
-
+	<script type="text/javaScript">   
+		var f = new Date();      
+        var sFileName = 'ventas ' + f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()+ "/";
+        function ExportXLSX(){
+            $('#tablaProductos').tableExport({fileName: sFileName,
+						type: 'xlsx',
+						html: decimalMark: '.'
+					
+                       });
+        }
+    </script>
 
 
 
