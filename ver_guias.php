@@ -79,10 +79,10 @@
 								<input type="hidden" class="form-control" id="array_productos" name="array_productos">
 								<input type="hidden" class="form-control" id="id_cliente" name="id_cliente">
 								<input type="hidden" class="form-control" id="ul_factura" name="ul_factura">
-								<button type="submit"   class="btn btn-primary"><i class="fas fa edit"></i>Ver documento</button>
+								<button type="submit"   class="btn btn-primary"><i class="fas fa-file-pdf"></i> Ver documento</button>
 							</form> 
 							<br>
-							<button  class="btn btn-success"  onclick="trasFactura()"><i class="fas fa edit"></i>Pasar guias a factura</button>
+							<button  class="btn btn-success"  onclick="trasFactura()"><i class="fas fa-clipboard-list"></i> Pasar guias a factura</button>
 							<br><br>
 							<button class="btn btn-primary" onClick="ExportXLSX();"><i class="fas fa-file-excel"></i> Exportar Tabla a Excel</button> 
 								<div id="salida">
