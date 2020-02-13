@@ -75,7 +75,7 @@
 
 							<h6 class="border-bottom border-gray pb-2 mb-0 ">Facturas ventas</h6>
 							<br><br>
-
+							<button class="btn btn-primary" onClick="ExportXLSX();"><i class="fas fa-file-excel"></i> Exportar Tabla a Excel</button> 
 								<div id="salida">
 								<div class="my-3 p-3 bg-white rounded box-shadow">
 								
@@ -133,6 +133,17 @@
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<?php include "./js/table.php"; ?>
 
+	<script type="text/javaScript">   
+		var f = new Date();      
+        var sFileName = 'ventas_factura_ventas ' + f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()+ "/";
+        function ExportXLSX(){
+            $('#tablaProductos').tableExport({fileName: sFileName,
+						type: 'xlsx',
+						msonumberformat:'0'
+					
+                       });
+        }
+    </script>
 
 
 </body>

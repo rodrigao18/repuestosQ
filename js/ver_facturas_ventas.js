@@ -250,27 +250,6 @@ function lenguaje() {
 		"order": [[1, "asc"]],
 		"stateSave":true
 	});
-
-
-     new $.fn.dataTable.Buttons(table, {
-		buttons: [
-			{
-				extend: 'excelHtml5',
-				title: 'ver_ventas' + fecha + ''
-            }, {
-				extend: 'pdfHtml5',
-				title: 'ver_ventas' + fecha + ''
-            }]
-
-	});
-
-	table.buttons(0, null).container().prependTo(
-		table.table().container()
-	);
-
-	
-
-
 }
 
 
