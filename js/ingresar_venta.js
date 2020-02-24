@@ -722,13 +722,17 @@ let tablaProductos = (array) => {
 	/*BUSCAR LA ULTIMA VENTA DEL PRODUCTO*/ 
 	let buscarUltimaVenta =async (codigo) => {
 
+
+
 		const baseUrl = 'php/consultaFetch.php';
 
-		const consulta=`SELECT (fecha_venta) as fecha ,precio_unitario,p.precio_venta FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN productos p ON vr.codigo_producto=p.codigo
-		 WHERE vr.codigo_producto=${codigo} AND estado=1 ORDER BY v.id DESC LIMIT 1`;
+		const consulta=`SELECT (fecha_venta) as fecha ,precio_unitario,p.precio_venta,v.estado_venta FROM ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN productos p ON vr.codigo_producto=p.codigo
+		 WHERE vr.codigo_producto=${codigo}  ORDER BY v.id DESC LIMIT 1`;
 
 		const sql = {sql: consulta, tag: `array_datos`} 
-		
+
+		console.info(consulta);
+
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
 			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -736,10 +740,15 @@ let tablaProductos = (array) => {
 			const data = await response.text();
 			//*-se parsea solo la respuesta del Json enviada por el servidor.	
 			let array = JSON.parse(data);
+			let estado_venta=array[0]['estado_venta'];
 
 			if(array.length > 0){
-				document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha ultima <strong>venta</strong> : ${array[0]['fecha']}</li></ul>`;
-				document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong>  : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;				
+				
+				if(estado_venta!=3){
+					document.getElementById('fecha_ultima_venta').innerHTML=`<ul><li>Fecha ultima <strong>venta</strong> : ${array[0]['fecha']}</li></ul>`;
+					document.getElementById('precio_ultima_venta').innerHTML=`<ul><li>Precio  ultima <strong>venta</strong>  : ${formatearNumeros(array[0]['precio_unitario'])}</li></ul>`;	
+				}
+							
 			}
 			document.getElementById('precioVenta_ultima_compra').innerHTML=`<ul><li>Precio Venta <strong></strong> : ${formatearNumeros(array[0]['precio_venta'])}</li></ul>`;		
 			
