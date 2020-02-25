@@ -17,7 +17,7 @@ td {
 
 table {
 	border: 1px solid black;
-	width: 85%;
+	width: 87%;
 	line-height: 1.5;
 	padding-top: 5px;
 	padding-bottom: 5px;
