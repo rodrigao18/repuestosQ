@@ -17,7 +17,7 @@ let vendedor = async () => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);
-		console.error(array);
+		
 		var arr = new Array();
 		for (var i = 0; i < array.length; i++) {
 			arr[array[i][0].toString()] = array[i][1];
@@ -39,6 +39,9 @@ let vendedor = async () => {
 
 let cargar_ventas_onchange = async() =>{	
 
+	document.getElementById('loading').innerHTML=`<p>Buscando proveedores....... <img width='80px' src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'></p>`;
+	document.getElementById('contenido').className=`fade`;
+
 	let tbody = document.getElementById('tablaBody');
 
 	tbody.innerHTML=``;
@@ -48,7 +51,7 @@ let cargar_ventas_onchange = async() =>{
 
 	const baseUrl = 'php/consultaFetch.php';
 
- 	let consulta=`SELECT v.estado_venta AS estadoventa,p.nombre,vr.codigo_producto,vr.nombre_producto,SUM(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
+ 	let consulta=`SELECT v.estado_venta AS estadoventa,p.nombre,vr.codigo_producto,vr.nombre_producto,(vr.cantidad) as cantidad,(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
 	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN proveedores p ON p.id=vr.id_proveedor JOIN productos pr ON pr.codigo=vr.codigo_producto
 	WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59"
 	GROUP BY vr.codigo_producto DESC ORDER BY nombre ASC`;
@@ -69,7 +72,9 @@ let cargar_ventas_onchange = async() =>{
 		const tablaFactutass = await tablaVentas(array);
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
-		//const botones = await lenguaje();	
+		//const botones = await lenguaje();
+		document.getElementById('contenido').className=`fade-in`;
+		document.getElementById('loading').innerHTML=``;					
 	
 	} catch (error) {
 		console.log('error en la conexion ', error);
@@ -101,7 +106,7 @@ let clientes = async () => {
 
 			}		
 		CLIENTES=arrs;
-		console.error(CLIENTES);	
+			
 		const vende = await cargarVentas();
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
@@ -121,7 +126,7 @@ let cargarVentas = async () => {
 	let fecha_termino=document.getElementById('fecha_termino').value;
 
 	const baseUrl = 'php/consultaFetch.php';
-	let consulta=`SELECT v.estado_venta AS estadoventa,p.nombre,vr.codigo_producto,vr.nombre_producto,SUM(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
+	let consulta=`SELECT v.estado_venta AS estadoventa,p.nombre,vr.codigo_producto,vr.nombre_producto,(vr.cantidad) as cantidad,SUM(pr.stock) as stock,pr.codigo_proveedor,pr.costo FROM
 	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN proveedores p ON p.id=vr.id_proveedor JOIN productos pr ON pr.codigo=vr.codigo_producto
 	WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59"
 	GROUP BY vr.codigo_producto DESC ORDER BY nombre ASC`;

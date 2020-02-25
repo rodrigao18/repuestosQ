@@ -43,6 +43,10 @@ let vendedor = async () => {
 
 let cargar_ventas_onchange = async() =>{	
 
+
+	document.getElementById('loading').innerHTML=`<p>Buscando ventas....... <img width='80px' src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'></p>`;
+	document.getElementById('contenido').className=`fade`;
+
 	let tbody = document.getElementById('tablaBody');
 
 	tbody.innerHTML=``;
@@ -74,6 +78,9 @@ let cargar_ventas_onchange = async() =>{
 		let fecha_term = document.getElementById('fecha_termino').value;
 		document.getElementById('fecha_termino_text').value=fecha_term;	
 		document.getElementById('fecha_termino_text_nula').value=fecha_term;
+
+		document.getElementById('contenido').className=`fade-in`;
+		document.getElementById('loading').innerHTML=``;
 	
 	} catch (error) {
 		console.log('error en la conexion ', error);

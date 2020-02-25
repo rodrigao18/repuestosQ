@@ -11,6 +11,20 @@
 	<link rel="stylesheet" type="text/css" href="css/ventas.css?vknet28">
 	<!-- Font-icon css-->
 	<link rel="stylesheet" type="text/css"href="fontawesome-5.5.0/css/all.min.css">	
+
+	<style>
+
+.fade{
+    opacity: 0.3;
+	pointer-events : none;
+	
+  }
+  .fade-in{
+    opacity: 1; 
+    pointer-events : auto ; 
+  }
+
+</style>
 </head>
 
 <body class="app sidebar-mini rtl">
@@ -57,6 +71,8 @@
 							<h6 class="border-bottom border-gray pb-2 mb-0 ">Ventas</h6>
 							<br><br>
 							<button class="btn btn-primary" onClick="ExportXLSX();"><i class="fas fa-file-excel"></i> Exportar Tabla a Excel</button> 
+							<div id="contenido">
+								<div id="loading"></div>	
 								<div id="salida">
 								<div class="my-3 p-3 bg-white rounded box-shadow">
 								
@@ -87,7 +103,7 @@
 								</tr>
 								</tfoot>
 								</table>
-
+  								</div>
 								</div>
 							</div>
 							</div>

@@ -97,28 +97,7 @@ let cargarDatos = async() => {
 			document.getElementById('id_guia').className=`form-control documento_input`;
 			document.getElementById('id_factura').className=`form-control documento_input`;
 			document.getElementById('id_cotizacion').className=`form-control documento_input`;
-		}
-	
-
-		// console.log('entro a se_documento');
-		// console.log('index ' + index);
-
-		// if(index==1){
-		// 	//document.getElementById('selectDocumento').value
-		// const boleta = await $('#selectDocumento option[value="1"]').attr("selected", true);
-		// console.log(boleta);		
-		// }if(index==2){
-		// const factura = await	$('#selectDocumento option[value="2"]').attr("selected", true);			
-		// }
-		//  if(index==3){
-		// 	const guia = await	$('#selectDocumento option[value="3"]').attr("selected", true);			
-		// }
-		//  if(index==4){
-		// 	const cotiza = await	$('#selectDocumento option[value="4"]').attr("selected", true);			
-		// }if(index==5){
-		// 	const tarje = await	$('#selectDocumento option[value="5"]').attr("selected", true);			
-		// }
-		
+		}	
 
 	}
 
@@ -538,14 +517,8 @@ let tablaProductos = (array) => {
 			var stock = array[i]['stock'];
 			var ubicacion = array[i]['ubicacion'];
 			var marca = array[i]['marca'];
-			var descripcion=array[i]['descripcion'];
-		
-			//CALCULO PASAR A BAJO//	
-			//BODY DE LA TABLA AGREGAR PRODUCTOS;
-			//cargar 105 por defecto
-			//total alreves en cotizacion a venta y a que aparezca el descuento
-			//generar excel al eliminar venta
-			//sacar costo y descuento
+			var descripcion=array[i]['descripcion'];		
+	
 			$("#tablaBody").append('<tr id="' + 'fila_add' + parseFloat(i + 1) + '">' +
 				'<td width="5%" id="' + 'codiP' + parseFloat(i + 1) + '">' + codigo + '</td>' +
 				'<td width="5%" id="' + 'codPro' + parseFloat(i + 1) + '">' + codigoProveedor + '</td>' +
@@ -1089,29 +1062,32 @@ let cantidadCalculo = (id,indice) =>{
 	var cantidad=0;
 	var stock=0;
 	if(indice==1){
-		console.log('entro aca');
+		
 		 cantidad = document.getElementById(`cant${id}`).value;
 		 stock=document.getElementById(`stk${id}`).innerHTML;
 		 console.log('stock ' + stock);
+		 console.log('cantidad ' + cantidad);
 
-		 if(stock<1){
+		 if( stock <= cantidad  ){
 
-			$.notify({
-				title: "Precaución: ",
-				message: "Stock se encuentra agotado !!!:",
-				icon: 'fas fa-close'
-			}, {
-				type: "danger",
-				placement: {
-					from: "bottom",
-					align: "center"
-				},
-				offset: 70,
-				spacing: 70,
-				z_index: 1031,
-				delay: 2000,
-				timer: 3000
-			});	
+			console.log('entro a l if');
+
+			// $.notify({
+			// 	title: "Precaución: ",
+			// 	message: "Stock se encuentra agotado !!!:",
+			// 	icon: 'fas fa-close'
+			// }, {
+			// 	type: "danger",
+			// 	placement: {
+			// 		from: "bottom",
+			// 		align: "center"
+			// 	},
+			// 	offset: 70,
+			// 	spacing: 70,
+			// 	z_index: 1031,
+			// 	delay: 2000,
+			// 	timer: 3000
+			// });	
 
 		 }
 

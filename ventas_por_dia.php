@@ -28,7 +28,19 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff"> -->
+<style>
 
+.fade{
+    opacity: 0.3;
+	pointer-events : none;
+	
+  }
+  .fade-in{
+    opacity: 1; 
+    pointer-events : auto ; 
+  }
+
+</style>
 	
 </head>
 
@@ -85,7 +97,8 @@
 
 							<h6 class="border-bottom border-gray pb-2 mb-0 "></h6>
 							<br><br>
-
+							<div id="contenido">
+								<div id="loading"></div>	
 								<div id="salida">
 								<div class="my-3 p-3 bg-white rounded box-shadow">
 								
@@ -116,7 +129,7 @@
 								</tr>
 								</tfoot>
 								</table>
-
+								</div>
 								</div>
 							</div>
 							</div>
