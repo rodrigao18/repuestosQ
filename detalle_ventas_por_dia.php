@@ -74,9 +74,9 @@ position:absolute;
 include 'php/consulta.php';
 	 date_default_timezone_set("America/Santiago"); setlocale(LC_ALL, "es_ES"); ?>
 
-<?php $queryConsultar="	SELECT vr.id_venta,estado_venta,fecha_venta,descuento,estado_venta,DATE(fecha_venta) AS fecha ,total,id_boleta,
+<?php $queryConsultar="	SELECT vr.id_venta,estado_venta,fecha_venta,p.codigo_proveedor,v.descuento,estado_venta,DATE(fecha_venta) AS fecha ,total,id_boleta,
 	id_cotizacion,id_factura,id_guia,id_tarjeta,vr.cantidad,vr.nombre_producto,vr.codigo_producto FROM
-	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id WHERE fecha_venta BETWEEN '$fecha_inicio 00:00:00' AND '$fecha_termino 23:59:59'";
+	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN productos p ON vr.codigo_producto=p.codigo WHERE fecha_venta BETWEEN '$fecha_inicio 00:00:00' AND '$fecha_termino 23:59:59'";
 	
 	$detalleVentas=consultar($queryConsultar);
 
@@ -92,6 +92,7 @@ include 'php/consulta.php';
 </thead>
 <tr>
 			<td width="10%" class="encabezado-graficos">fecha</td>
+			<td width="10%" class="encabezado-graficos">Cod Pro</td>
 			<td width="10%" class="encabezado-graficos">Documento</td>
 			<td width="10%" class="encabezado-graficos">Nro</td>
 			<td width="10%" class="encabezado-graficos">total desc</td>
@@ -130,6 +131,7 @@ include 'php/consulta.php';
 
 		echo '<tr>';		
 		echo '<td>'.$detalleVentas[$i]['fecha'].'</td>';
+		echo '<td>'.$detalleVentas[$i]['codigo_proveedor'].'</td>';
 		echo '<td>'.$documento.'</td>';
 		echo '<td>'.$numero.'</td>';
 		echo '<td>'.$detalleVentas[$i]['descuento'].'</td>';		
@@ -142,7 +144,7 @@ include 'php/consulta.php';
 	
 	?>
 	<tr>
-			<td colspan="8"></td>
+			<td colspan="9"></td>
 		</tr>
 	<?php } ?>
 	
