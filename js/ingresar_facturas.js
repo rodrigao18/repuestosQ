@@ -133,7 +133,7 @@ let tablaProductos = (array) => {
 				'<td>' + codigoProveedor + '</td>' +
 				'<td>' + nombre + '</td>' +
 				'<td>' + stock + '</td>' +
-				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '"    min=0 type="number" value="1"></td>' +
+				'<td><input class="form-control" id="' + 'can' + parseFloat(i + 1) + '" disabled onClick=cantidadCalculoTabla('+(i+1)+',1)  min=0 type="number" value="1"></td>' +
 				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '"  onClick=cantidadCosto(event,'+(i+1)+') onkeyup=cantidadCosto(event,'+(i+1)+')  type="number" value=' + redondeo(costo,0) + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeyup="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
@@ -503,6 +503,34 @@ try {
 		$("#cols" + id).remove();
 		recalcularValores();
 	}
+
+	let cantidadCalculoTabla = (id,indice) =>{
+	
+		console.log('id ' + id);
+		let input=`input[name=can${(id)}]`;
+		var cantidad=0;
+		var stock=0;
+		if(indice==1){
+			
+			 cantidad = document.getElementById(`can${id}`).value;
+			 precio_Venta=document.getElementById(`ven${id}`).value;		
+			console.log('cantidad ' + cantidad);
+		
+		
+		if(indice==1){
+			
+			//let precioVen=convertirNumeros(document.getElementById('venCon'+id).value);
+			let precioT=cantidad*precio_Venta;
+			console.log('precioT ' + precioT);
+			
+			document.getElementById(`ven${id}`).value=precioT;
+	
+		}
+		
+		recalcularValores();
+	
+	} 
+}
 
 	let cantidadCalculo = (id) =>{
 		
