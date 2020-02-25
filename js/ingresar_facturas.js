@@ -93,7 +93,7 @@ let tablaProductos = (array) => {
 			'	<th scope="col" width="10%">Stock</th>' +	
 			'	<th scope="col" width="1%">Cantidad</th>' +
 			'	<th scope="col" width="10%">Costo</th>' +
-			'	<th id="checkMargen" width="10%">Margen</th>' +
+			'	<th disabled id="checkMargen" width="10%">Margen</th>' +
 			'	<th scope="col" width="10%"> Descuento</th>' +
 			'	<th scope="col" width="10%"> Precio venta<span id="iva"></span></th>' +		
 			'	<th scope="col" width="10%"> </th>' +
