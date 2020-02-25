@@ -17,7 +17,7 @@ td {
 
 table {
 	border: 1px solid black;
-	width: 90%;
+	width: 88%;
 	line-height: 1.5;
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -94,8 +94,8 @@ include 'php/consulta.php';
 			<td width="10%" class="encabezado-graficos">fecha</td>
 			<td width="10%" class="encabezado-graficos">Cod Pro</td>
 			<td width="10%" class="encabezado-graficos">Documento</td>
-			<td width="10%" class="encabezado-graficos">Nro</td>
-			<td width="10%" class="encabezado-graficos">total desc</td>
+			<td width="10%" class="encabezado-graficos">N°</td>
+			<td width="10%" class="encabezado-graficos">tot des</td>
 			<td width="10%"class="encabezado-graficos">Repuesto</td>
 			<td width="10%" class="encabezado-graficos">Codigo</td>
 			<td width="10%" class="encabezado-graficos">Cantidad</td>
