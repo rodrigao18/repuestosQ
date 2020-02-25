@@ -20,7 +20,8 @@ cargarDatos = async (id) => {
         document.getElementById('rut').value=array[0]['rut'];	
 		document.getElementById('fono').value=array[0]['fono'];	
 		document.getElementById('contacto').value=array[0]['contacto'];
-		document.getElementById('direccion').value=array[0]['direccion'];		
+		document.getElementById('direccion').value=array[0]['direccion'];
+		
         // const Proveedores = await Proveedor(id_pro,id);
         // const Categoriaa = await Categoria(id_cat);
         // const Marcaa = await Marca(id_mar);
@@ -73,7 +74,8 @@ let  bucarProductos = async () => {
 			let array = JSON.parse(data);	
 			
 			const tablaproductoss = await tablaProductos(array);
-			
+			var estadoEntr = "";
+			estadoEntr = document.getElementById('checkEnt').checked='checked';		
 			
 		} catch (error) {  }
 	
@@ -113,7 +115,11 @@ let tablaProductos = (array) => {
 			var precio_venta = array[i]['precio_venta'];
 			var margen = array[i]['margen_contado'];
 			var stock = array[i]['stock'];
+			let precio_margen=redondeo(2.05 * (costo),0);			
+			let precio_v=precio_margen*0.19;
+			let preciofinal=parseInt(precio_v) + parseInt(precio_margen);
 			
+			console.log('preciofinal ' + preciofinal);
 			var descuento_html = '<div style="display:none;right: .9em; " id="' + 'div_descuento' + parseFloat(i + 1) + '"class="col input-group">' +
 			'<input class="form-control" id="' + 'des' + parseFloat(i + 1) + '"  type="number" onclick="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"' +
 			'onkeyup="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="'+descuento+'">' +
@@ -131,7 +137,7 @@ let tablaProductos = (array) => {
 				'<td><input  class="form-control" id="' + 'cos' + parseFloat(i + 1) + '"  onClick=cantidadCosto(event,'+(i+1)+') onkeyup=cantidadCosto(event,'+(i+1)+')  type="number" value=' + redondeo(costo,0) + '></td>' +
 				'<td><input style="width:70px" class="form-control" id="' + 'mar' + parseFloat(i + 1) + '" min=105 onclick="calcular_margen(this,' + parseFloat(i + 1) + ',true)" onkeyup="calcular_margen(this,' + parseFloat(i + 1) + ',true)"  type="number" value=' + margen + '></td>' +
 				'<td>' + btn_descuento_html + descuento_html + ' </td>' +						
-				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '"  type="number" value=' + precio_venta + '></td>' +		
+				'<td><input class="form-control" id="' + 'ven' + parseFloat(i + 1) + '"  type="number" value=' + preciofinal + '></td>' +		
 				'<td style="display:none;">'+id_producto+'</td>' +
 				'<td>' +
 				'<button id="' + parseFloat(i + 1) + '" class="btn btn-mini" data-toggle="tooltip" data-placement="top" title="Agregar" onclick="agregarProductos(event,this)"> <i class="fa fa-plus" aria-hidden="true"></i></button>' +
@@ -459,10 +465,7 @@ try {
 
 		let borrarElement = (arrCod) => {
 
-			var uniqs = arrCod.filter(function(item, index, array) {
-				
-			
-				
+			var uniqs = arrCod.filter(function(item, index, array) {				
 
 				switch(array.indexOf(item) === index){
 					case  true: 
