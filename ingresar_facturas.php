@@ -13,6 +13,24 @@
 
 	<!-- Estilos tablas cotizacion -->
 	<link rel="stylesheet" href="css/ventas.css">
+
+	<style>
+
+.color_fila_rojo{
+	background-color:rgba(240, 52, 52, 0.3);
+}
+.color_fila_verde{
+	background-color:rgba(77, 175, 124, 0.3);
+}
+.cabezera{
+	background-color:rgba(44, 130, 201, 1);
+}
+.cabezera-tabla th{
+		background-color:rgba(58, 83, 155, 1);
+		color:white;
+	}	
+	
+	</style>
 </head>
 
 <body class="app sidebar-mini rtl">

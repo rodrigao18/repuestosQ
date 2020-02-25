@@ -84,7 +84,7 @@ let  bucarProductos = async () => {
 let tablaProductos = (array) => {
 
 	$("#salidaTabla").append('<button class="btn btn-sm btn-primary float-right" onclick = regresar(event)  data-toggle="tooltip" data-placement="top" title="" data-original-title="Regresar a resumen" ><i class="fas fa-chevron-left"></i>  </button>' +		
-			'<table  class="table-responsive  table-striped" id="tabla" >' +
+			'<table  class="cabezera-tabla" id="tabla" >' +
 			'<thead>' +
 			'<tr class="table-success">' +
 			'	<th scope="col" width="10%">Cód.Interno</th>' +
@@ -119,7 +119,7 @@ let tablaProductos = (array) => {
 			let precio_v=precio_margen*0.19;
 			let preciofinal=parseInt(precio_v) + parseInt(precio_margen);
 			
-			console.log('preciofinal ' + preciofinal);
+			
 			var descuento_html = '<div style="display:none;right: .9em; " id="' + 'div_descuento' + parseFloat(i + 1) + '"class="col input-group">' +
 			'<input class="form-control" id="' + 'des' + parseFloat(i + 1) + '"  type="number" onclick="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)"' +
 			'onkeyup="validar_descuento(event,this,50,' + parseFloat(i + 1) + ',' + parseFloat(i + 1) + ',true)" min = "0" max= 50  data-toggle="tooltip" data-placement="top" title="max 50" value="'+descuento+'">' +
@@ -128,7 +128,7 @@ let tablaProductos = (array) => {
 			var btn_descuento_html = '<button class="btn btn-danger btn-mini float-left" id="' + 'btn_des' + parseFloat(i + 1) + '" onclick="comprobar_descuento_historico (this)">  <i class="fas fa-sort-amount-down"></i>  Descuento </button>';
 
 			//BODY DE LA TABLA AGREGAR PRODUCTOS;
-			$("#tablaBody").append('<tr>' +
+			$("#tablaBody").append('<tr id="' + 'fila_add' + parseFloat(i + 1) + '">' +
 				'<td>' + codigo + '</td>' +
 				'<td>' + codigoProveedor + '</td>' +
 				'<td>' + nombre + '</td>' +
@@ -146,6 +146,13 @@ let tablaProductos = (array) => {
 				'data-placement="top" title="Editar" name="id" value='+id_producto+'><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>'+				
 				'</td>' +
 				'</tr>');
+
+
+				if(stock<1){
+					document.getElementById(`fila_add${parseFloat(i + 1)}`).className=`color_fila_rojo`;
+				}else{
+					document.getElementById(`fila_add${parseFloat(i + 1)}`).className=`color_fila_verde`;
+				}
 
 				
 		}
