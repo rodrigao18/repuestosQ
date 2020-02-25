@@ -23,7 +23,7 @@ $mipdf = new Dompdf();
 $mipdf->load_Html($template);
 
 #Definimos el tamaño y orientación del papel que queremos.#O por defecto cogerá el que está en el fichero de configuración.
-$mipdf->set_paper("A4", "portrait");
+$mipdf->set_paper("A4", "landscape");
 
 //render
 $mipdf->render();
