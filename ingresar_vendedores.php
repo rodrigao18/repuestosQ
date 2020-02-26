@@ -86,7 +86,7 @@
 	<script src="js/plugins/pace.min.js"></script>
 	<script type="text/javascript" src="js/funciones.js?vp5"></script>
 	<script type="text/javascript" src="js/ingresar_vendedores.js?vp5"></script>
-	<script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<!-- Page specific javascripts-->
 	<!-- Google analytics script-->
 	<script type="text/javascript">

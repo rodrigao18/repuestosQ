@@ -22,7 +22,7 @@ function cargar_estadisticas(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 	//obtener_fecha(fecha_1);
 	cargarVendedor(fecha_1, fecha_2, numeroCotizacionVendedores, nivel, idVendedorLogueado);
 	//cargo las fechas para las ventas del archivo verventas_por_fechas
-	cargarFechas();
+	//cargarFechas();
 
 }
 function cargar_estadistica_onchange(fecha_1, fecha_2, nivel, idVendedorLogueado){
@@ -76,7 +76,7 @@ function numeroCotizacionVendedores(fecha1, fecha2, nombresVendedores, idVendedo
 	codigoProducto = [];
 	nombreProducto = [];
 	productosVendidos = [];
-	var sql = 'SELECT COUNT(*) as venta from ventas where fechaVenta between "' + fecha1 + ' 00:00:00" and "' + fecha2 + ' 23:59:59" and id_vendedor=' + idVendedor[contadorCotizacion];
+	var sql = 'SELECT COUNT(*) as venta from ventas where fecha_venta between "' + fecha1 + ' 00:00:00" and "' + fecha2 + ' 23:59:59" and id_vendedor=' + idVendedor[contadorCotizacion];
 	
     $.ajax({
         type: 'POST',
@@ -110,9 +110,10 @@ function cargarProductos(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 	codigoProducto = [];
 	nombreProducto = [];
 	productosVendidos = [];
-	var sql = 'SELECT DISTINCT vr.codigoProducto,vr.nombreProducto FROM ' +
-		' ventas_relacional vr inner join ventas v on v.numeroVenta=vr.idVenta ' +
-		' where v.fechaVenta between "' + fecha_1 + ' 00:00:00" and "' + fecha_2 + ' 23:59:59" group by vr.codigoProducto';
+	var sql = 'SELECT DISTINCT vr.codigo_producto,vr.nombre_producto FROM ' +
+		' ventas_relacional vr inner join ventas v on v.id=vr.id_venta ' +
+		' where v.fecha_venta between "' + fecha_1 + ' 00:00:00" and "' + fecha_2 + ' 23:59:59" group by vr.codigo_producto';
+	
 	
 	$.ajax({
 		type: 'POST',
@@ -123,7 +124,7 @@ function cargarProductos(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 
 			var arreglo = JSON.parse(data);
 			for (var i = 0; i < arreglo.length; i++) {
-				codigoProducto.push(arreglo[i]['codigoProducto']);
+				codigoProducto.push(arreglo[i]['codigo_producto']);
 			}
 			var contador = 0;
 			if (codigoProducto.length > 0) {
@@ -147,21 +148,18 @@ function ProductosMasVendidos(fecha_1, fecha_2, nivel, idVendedorLogueado, conta
 
 	if (nivel > 0) {
 		var filtroVendedor = 'AND v.id_vendedor=' + idVendedorLogueado;
-		var sql = 'SELECT nombreProducto,SUM(cantidad) as productos from ' +
-		' ventas_relacional vr inner join ventas v on v.numeroVenta=vr.idVenta ' +
-		' where v.fechaVenta between "' + fecha_1 + ' 00:00:00" and "' + fecha_2 + ' 23:59:59" and vr.codigoProducto =' + codigoProducto[contador] + ' '+filtroVendedor+'   ';
+		var sql = 'SELECT vr.nombre_producto,SUM(cantidad) as productos from ' +
+		' ventas_relacional vr inner join ventas v on v.id=vr.id_venta ' +
+		' where v.fecha_venta between "' + fecha_1 + ' 00:00:00" and "' + fecha_2 + ' 23:59:59" and vr.codigo_producto =' + codigoProducto[contador] + ' '+filtroVendedor+'   ';
 
 	}else{
 
-		var sql = 'SELECT nombreProducto,SUM(cantidad) as productos from ' +
-		' ventas_relacional vr inner join ventas v on v.numeroVenta=vr.idVenta ' +
-		' where v.fechaVenta between "' + fecha_1 + ' 00:00:00" and "' + fecha_2 + ' 23:59:59" and vr.codigoProducto =' + codigoProducto[contador] + ' ';
+		var sql = 'SELECT vr.nombre_producto,SUM(cantidad) as productos from ' +
+		' ventas_relacional vr inner join ventas v on v.id=vr.id_venta ' +
+		' where v.fecha_venta between "' + fecha_1 + ' 00:00:00" and "' + fecha_2 + ' 23:59:59" and vr.codigo_producto =' + codigoProducto[contador] + ' ';
 	}
-
-
-
-
 	
+
 
 	$.ajax({
 		type: 'POST',
@@ -175,7 +173,7 @@ function ProductosMasVendidos(fecha_1, fecha_2, nivel, idVendedorLogueado, conta
 
 			for (var i = 0; i < arreglo.length; i++) {
 				productosVendidos.push(arreglo[i]['productos']);
-				nombreProducto.push(arreglo[i]['nombreProducto']);
+				nombreProducto.push(arreglo[i]['nombre_producto']);
 			}
 
 			NOMBREPRODUCTO=nombreProducto;
@@ -256,16 +254,16 @@ function ventasDiaPorMes(arrayMeses, arrayDias, nivel, idVendedorLogueado) {
 		if (nivel > 0) {
 			var mes = parseInt(MES) + 1;
 			var filtroVendedor = 'AND v.id_vendedor=' + idVendedorLogueado;
-			var sql = 'select DISTINCT v.totalVenta ,DATE_FORMAT(v.fechaVenta, "%d") as dia from ' +
-				'  ventas_relacional vr inner join ventas v on v.numeroVenta=vr.idVenta where month(fechaVenta)=' + mes + ' and DAY(fechaVenta)=' + arrayDias[i] + ' and YEAR(fechaVenta)=2019 ' + filtroVendedor;
+			var sql = 'select DISTINCT v.total ,DATE_FORMAT(v.fecha_venta, "%d") as dia from ' +
+				'  ventas_relacional vr inner join ventas v on v.id=vr.id_venta where month(fecha_venta)=' + mes + ' and DAY(fecha_venta)=' + arrayDias[i] + ' and YEAR(fecha_venta)=2020 ' + filtroVendedor;
 		}
 		else {
 			var mes = parseInt(MES) + 1;
-			var sql = 'select DISTINCT v.totalVenta ,DATE_FORMAT(v.fechaVenta, "%d") as dia from ' +
-				'  ventas_relacional vr inner join ventas v on v.numeroVenta=vr.idVenta where month(fechaVenta)=' + mes + ' and DAY(fechaVenta)=' + arrayDias[i] + ' and YEAR(fechaVenta)=2019 ';
+			var sql = 'select DISTINCT v.total ,DATE_FORMAT(v.fecha_venta, "%d") as dia from ' +
+				'  ventas_relacional vr inner join ventas v on v.id=vr.id_venta where month(fecha_venta)=' + mes + ' and DAY(fecha_venta)=' + arrayDias[i] + ' and YEAR(fecha_venta)=2020 ';
 		}
 
-
+		console.log(sql);
 		$.ajax({
 			type: 'POST',
 			url: 'php/consulta.php',
@@ -279,7 +277,7 @@ function ventasDiaPorMes(arrayMeses, arrayDias, nivel, idVendedorLogueado) {
 					var arreglo = JSON.parse(data);
 					var sumaUtilidad = 0;
 					for (var i = 0; i < arreglo.length; i++) {
-						sumaUtilidad += parseInt(arreglo[i]["totalVenta"]);
+						sumaUtilidad += parseInt(arreglo[i]["total"]);
 						//utilidadProductos.push(sumaUtilidad);
 						utilidadProductos[parseInt(arreglo[i]["dia"] - 1)] = sumaUtilidad;
 
@@ -303,3 +301,5 @@ function ventasDiaPorMes(arrayMeses, arrayDias, nivel, idVendedorLogueado) {
 
 	}
 }
+
+window.onload=cargar_estadistica_onchange;

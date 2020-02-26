@@ -74,39 +74,7 @@
 				<div class="col-md-12">
 					<div class="tile">
 						<h3 class="tile-title">Ventas</h3>
-						<div id="tablaVentasIndex">
-							
-							<div id="salidaTablaVendidos">
-				<table class="tablaVendedor table-responsive" id="tabla-completa">
-				<tr>
-				<th class="titulo-tabla-completa" colspan="5">Ventas</th>
-				</tr>
-				<!--Cotizacion-->
-				<tr>
-				<th class="encabezado-tabla-comp-coti" width="10%">Fecha inicio</th>
-				<th class="encabezado-tabla-comp-coti" width="10%">Fecha término</th>		
-				<th id ="nombreVendedor"  class="encabezado-tabla-comp-coti" width="10%">Número de venta</th>
-				
-				<!--Notas-->  
-				
-				<!--<th id ="totalNota" class="encabezado-tabla-detalles" width="10%">Vendedor</th>		
-				<th class="encabezado-tabla-detalles" width="10%">Clientes </th>-->
-				<th class="encabezado-tabla-comp-coti" width="10%">Total venta</th>				        
-				<th class="encabezado-tabla-comp-coti" width="10%">Sucursal</th>	
-				</tr>
-				<tbody id="tabla-body">
-				</tbody>
-				<tr>
-					<td class="encabezado-tabla-comp-coti">&nbsp</td>					
-					<td class="encabezado-tabla-comp-coti">&nbsp</td>		
-					<td class="encabezado-tabla-comp-coti">&nbsp</td>
-					<td class="encabezado-tabla-comp-coti">&nbsp</td>
-					<td class="encabezado-tabla-comp-coti">&nbsp</td>
-				</tr>		
-				</table>
-				
-							</div>
-						</div>
+					
 					</div>
 				</div>
 

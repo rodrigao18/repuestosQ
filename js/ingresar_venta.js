@@ -237,11 +237,7 @@ let ultimoGuia = async () => {
 		let ultima_boleta;
 		
 		
-		 ultima_boleta=array[0]['numeroGuia'];
-	
-		
-
-		
+		 ultima_boleta=array[0]['numeroGuia'];		
 
 		document.getElementById('id_guia').value=ultima_boleta;
       
@@ -308,10 +304,7 @@ let ultimoTarjeta = async () => {
 		}
 		else{
 			ultima_boleta=array[0]['numeroTarjeta'];
-		}
-		
-
-		
+		}		
 
 		document.getElementById('id_tarjeta').value=ultima_boleta;
       
@@ -1064,30 +1057,26 @@ let cantidadCalculo = (id,indice) =>{
 	if(indice==1){
 		
 		 cantidad = document.getElementById(`cant${id}`).value;
-		 stock=document.getElementById(`stk${id}`).innerHTML;
-		 console.log('stock ' + stock);
-		 console.log('cantidad ' + cantidad);
+		 stock=document.getElementById(`stk${id}`).innerHTML;	
 
-		 if( stock <= cantidad  ){
+		 if( parseInt(stock) <= parseInt(cantidad)  ){			
 
-			console.log('entro a l if');
-
-			// $.notify({
-			// 	title: "Precaución: ",
-			// 	message: "Stock se encuentra agotado !!!:",
-			// 	icon: 'fas fa-close'
-			// }, {
-			// 	type: "danger",
-			// 	placement: {
-			// 		from: "bottom",
-			// 		align: "center"
-			// 	},
-			// 	offset: 70,
-			// 	spacing: 70,
-			// 	z_index: 1031,
-			// 	delay: 2000,
-			// 	timer: 3000
-			// });	
+			$.notify({
+				title: "Precaución: ",
+				message: "Verifique el stock para vender !:",
+				icon: 'fas fa-close'
+			}, {
+				type: "danger",
+				placement: {
+					from: "top",
+					align: "right"
+				},
+				offset: 70,
+				spacing: 70,
+				z_index: 1031,
+				delay: 2000,
+				timer: 3000
+			});	
 
 		 }
 
