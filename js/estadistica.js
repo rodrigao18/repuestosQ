@@ -177,12 +177,12 @@ function numeroCotizacionVendedores(fecha1, fecha2, nombresVendedores, idVendedo
 	nombreProducto = [];
 	productosVendidos = [];
 	// var sql = 'SELECT COUNT(*) as venta from ventas where fecha_venta between "' + fecha1 + ' 00:00:00" and "' + fecha2 + ' 23:59:59" and id_vendedor=' + idVendedor[contadorCotizacion];
-	let sql=`SELECT COUNT(IF(estado_venta=1,1,NULL)) AS boletas, COUNT(IF(estado_venta=2,1,NULL)) AS facturas, COUNT(IF(estado_venta=3,1,NULL)) AS guias ,
+	let sql=`SELECT COUNT(IF(estado_venta=1,1,NULL)) AS boletas, COUNT(IF(estado_venta=2,1,NULL)) AS facturas, COUNT(IF(estado_venta=3,1,NULL)) AS guias,
 	COUNT(IF(estado_venta=4,1,NULL)) AS cotizaciones,COUNT(IF(estado_venta=5,1,NULL)) AS tarjetas FROM
 	 ventas  WHERE  fecha_venta BETWEEN "${fecha1} 00:00:00" AND "${fecha2} 23:59:59"`;
 
 	
-
+	console.log(sql);
     $.ajax({
         type: 'POST',
         url: 'php/consulta.php',
@@ -201,7 +201,8 @@ function numeroCotizacionVendedores(fecha1, fecha2, nombresVendedores, idVendedo
 				console.log(ARR_BOLETAS);
                 pie_chart(ARR_BOLETAS);
 				cargarProductos(fecha1, fecha2, nivel, idVendedorLogueado);
-			   	numerar(nivel, idVendedorLogueado);
+				   numerar(nivel, idVendedorLogueado);
+				   ARR_BOLETAS=[];
             // }else{
 
             //     numeroCotizacionVendedores(fecha1, fecha2, nombresVendedores, idVendedor, nivel,contadorCotizacion);

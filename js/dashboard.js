@@ -1,6 +1,6 @@
 function pie_chart(boletas) {
   console.log(boletas[0]);
-  console.log(boletas[1]);
+  console.log(boletas[3]);
   var pieChartContent = document.getElementById('graficoBarras');
   pieChartContent.innerHTML = '&nbsp;';
 
