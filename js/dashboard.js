@@ -24,7 +24,7 @@ function pie_chart(boletas) {
 
   var ctxp = $("#barChartDemo").get(0).getContext("2d");
   var pieChart = new Chart(ctxp, {
-    type: 'pie',
+    type: 'doughnut',
     data: data,
     options: {
       tooltips: {

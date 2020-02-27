@@ -107,7 +107,7 @@ function cargar_estadisticas(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 		let fecha_ter=document.getElementById(`fecha_termino`).value;
 
 		const baseUrl = 'php/consultaFetch.php';
-		let consulta=`SELECT COUNT(*) as tarjetas FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=5`;
+		let consulta=`SELECT SUM(total) as tarjetas FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=5`;
 		const sql   = {sql: consulta, tag: `array_datos`}
 		
 		try {
