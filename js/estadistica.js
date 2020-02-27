@@ -21,10 +21,105 @@ function cargar_estadisticas(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 	
 	//obtener_fecha(fecha_1);
 	cargarVendedor(fecha_1, fecha_2, numeroCotizacionVendedores, nivel, idVendedorLogueado);
-	//cargo las fechas para las ventas del archivo verventas_por_fechas
-	//cargarFechas();
-
+	numero_boletas_grafico();
+	numero_facturas_grafico();
+	numero_guias_grafico();
+	numero_tarjetas_grafico();
 }
+
+	let numero_boletas_grafico = async() => {
+
+		let fecha_ini=document.getElementById(`fecha_inicio`).value;
+		let fecha_ter=document.getElementById(`fecha_termino`).value;
+
+		const baseUrl = 'php/consultaFetch.php';
+		let consulta=`SELECT SUM(total) as boletas FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=1`;
+		const sql   = {sql: consulta, tag: `array_datos`}
+		console.log(consulta);
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();				
+			let array=JSON.parse(data);
+			let numero_b=array[0]['boletas'];
+			$("#boletas > p > b").html("");
+			$("#boletas > p > b").append(`$${formatearNumeros(numero_b)}`);
+
+		} catch (error) {  }		
+
+	}
+
+	let numero_facturas_grafico = async() => {
+
+		let fecha_ini=document.getElementById(`fecha_inicio`).value;
+		let fecha_ter=document.getElementById(`fecha_termino`).value;
+
+		const baseUrl = 'php/consultaFetch.php';
+		let consulta=`SELECT SUM(total) as facturas FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=2`;
+		const sql   = {sql: consulta, tag: `array_datos`}
+		console.log(consulta);
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();				
+			let array=JSON.parse(data);
+			let numero_b=array[0]['facturas'];
+			$("#facturas > p > b").html("");
+			$("#facturas > p > b").append(`$${formatearNumeros(numero_b)}`);
+
+		} catch (error) {  }		
+
+	}
+
+	let numero_guias_grafico = async() => {
+
+		let fecha_ini=document.getElementById(`fecha_inicio`).value;
+		let fecha_ter=document.getElementById(`fecha_termino`).value;
+
+		const baseUrl = 'php/consultaFetch.php';
+		let consulta=`SELECT SUM(total) as guias FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=3`;
+		const sql   = {sql: consulta, tag: `array_datos`}
+		console.log(consulta);
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();				
+			let array=JSON.parse(data);
+			let numero_b=array[0]['guias'];
+			$("#guias > p > b").html("");
+			$("#guias > p > b").append( `$${formatearNumeros(numero_b)}` );
+
+		} catch (error) {  }		
+
+	}
+
+	let numero_tarjetas_grafico = async() => {
+
+		let fecha_ini=document.getElementById(`fecha_inicio`).value;
+		let fecha_ter=document.getElementById(`fecha_termino`).value;
+
+		const baseUrl = 'php/consultaFetch.php';
+		let consulta=`SELECT COUNT(*) as tarjetas FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=5`;
+		const sql   = {sql: consulta, tag: `array_datos`}
+		console.log(consulta);
+		try {
+			//*-llamar ajax al servidor mediate api fetch.
+			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+			//*-request de los datos en formato texto(viene todo el request)
+			const data = await response.text();				
+			let array=JSON.parse(data);
+			let numero_b=array[0]['tarjetas'];
+			$("#tarjetas > p > b").html("");
+			$("#tarjetas > p > b").append(`$${formatearNumeros(numero_b)}`);
+
+		} catch (error) {  }		
+
+	}
+
+
 function cargar_estadistica_onchange(fecha_1, fecha_2, nivel, idVendedorLogueado){
 	ARRAYMESES = [];
 	var fecha_inicio = $("#fecha_inicio").val();
@@ -263,7 +358,7 @@ function ventasDiaPorMes(arrayMeses, arrayDias, nivel, idVendedorLogueado) {
 				'  ventas_relacional vr inner join ventas v on v.id=vr.id_venta where month(fecha_venta)=' + mes + ' and DAY(fecha_venta)=' + arrayDias[i] + ' and YEAR(fecha_venta)=2020 ';
 		}
 
-		console.log(sql);
+		
 		$.ajax({
 			type: 'POST',
 			url: 'php/consulta.php',

@@ -69,7 +69,40 @@
 					<input type="date" class="form-control" id="fecha_termino" onchange=cargar_estadistica_onchange(NIVEL,ID_VENDEDORLOGUEADO) min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d");?>">
 				</div>
 			</div>
-
+			<div class="row">
+				<div class="col-md-6 col-lg-3">
+					<div class="widget-small warning coloured-icon"><i class="icon fas fa-list fa-3x"></i>
+						<div id="boletas" class="info">
+							<h6>Boletas</h6>
+							<p><b></b></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3">
+					<div class="widget-small primary coloured-icon"><i class="icon fas fa-list-alt fa-3x"></i>
+						<div id="facturas" class="info">
+							<h6>Facturas</h6>
+							<p><b></b></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3">
+					<div class="widget-small info coloured-icon"><i class="icon fas fa-check fa-3x"></i>
+						<div id="guias" class="info">
+							<h6>Guias</h6>
+							<p><b></b></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-lg-3">
+					<div class="widget-small danger coloured-icon"><i class="icon fas fa-dollar-sign fa-3x"></i>
+						<div id="tarjetas" class="info">
+							<h6>Tarjeta</h6>
+							<p><b></b></p>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="row">
 				<div class="col-md-12">
 					<div class="tile">

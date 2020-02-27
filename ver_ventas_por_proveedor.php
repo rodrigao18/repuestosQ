@@ -50,12 +50,12 @@
 		<div class="form-row">
 		
 				<div class="form-group col-md-6">
-				<label>Fecha Término</label>
-					<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d",strtotime($fecha_actual."- 1 days"));?>">
+				<label>Fecha Inicio</label>
+					<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d");?>">
 				</div>
 			
 				<div class="form-group col-md-6">
-				<label>Fecha Inicio</label>
+				<label>Fecha Término</label>
 					<input type="date" class="form-control" id="fecha_termino" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d");?>">
 				</div>
 			</div>
