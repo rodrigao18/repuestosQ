@@ -71,7 +71,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-6 col-lg-3">
-					<div class="widget-small warning coloured-icon"><i class="icon fas fa-list fa-3x"></i>
+					<div class="widget-small warning coloured-icon"><i class="icon fas fa-cog fa-3x"></i>
 						<div id="boletas" class="info">
 							<h6>Boletas</h6>
 							<p><b></b></p>
@@ -87,7 +87,7 @@
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
-					<div class="widget-small info coloured-icon"><i class="icon fas fa-check fa-3x"></i>
+					<div class="widget-small info coloured-icon"><i class="icon far fa-list-alt fa-3x"></i>
 						<div id="guias" class="info">
 							<h6>Guias</h6>
 							<p><b></b></p>
@@ -95,7 +95,7 @@
 					</div>
 				</div>
 				<div class="col-md-6 col-lg-3">
-					<div class="widget-small danger coloured-icon"><i class="icon fas fa-dollar-sign fa-3x"></i>
+					<div class="widget-small danger coloured-icon"><i class="icon fab fa-cc-visa fa-3x"></i>
 						<div id="tarjetas" class="info">
 							<h6>Tarjeta</h6>
 							<p><b></b></p>
@@ -106,7 +106,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="tile">
-						<h3 class="tile-title">Ventas</h3>
+						<!-- <h3 class="tile-title">Ventas</h3> -->
 					
 					</div>
 				</div>
@@ -116,7 +116,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="tile">
-						<h3 class="tile-title">Ventas vendedores</h3>
+						<h3 class="tile-title">Documentos emitidos a la fecha</h3>
 						<div id="graficoBarras">
 							<div class="embed-responsive embed-responsive-16by9">
 								<canvas class="embed-responsive-item" id="barChartDemo"></canvas>

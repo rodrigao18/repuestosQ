@@ -1,24 +1,28 @@
-function pie_chart(valor1, valor2) {
-
-  var pieChartContent = document.getElementById('grafico');
+function pie_chart(boletas) {
+  console.log(boletas[0]);
+  console.log(boletas[1]);
+  var pieChartContent = document.getElementById('graficoBarras');
   pieChartContent.innerHTML = '&nbsp;';
 
-  $('#grafico').append('<canvas id="pieChartDemo"><canvas>');
+  $('#graficoBarras').append('<canvas id="barChartDemo"><canvas>');
 
   data = {
     datasets: [{
-      data: [valor1, valor2],
-      backgroundColor: ["#2c80b9", "#ddeaf6"]
+      data: [boletas[0],boletas[1],boletas[2],boletas[3],boletas[4]],
+      backgroundColor: ["#009688", "#ddeaf6","#17a2b8","#ddea11","#dc3545"]
 
     }],
     labels: [
-      '% Porcentaje de captura',
-      '% No capturado',
+      '% boletas',
+      '% facturas',
+      '% guias',
+      '% cotizaciones',
+      '% tarjetas',
     ]
 
   };
 
-  var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+  var ctxp = $("#barChartDemo").get(0).getContext("2d");
   var pieChart = new Chart(ctxp, {
     type: 'pie',
     data: data,
@@ -34,49 +38,49 @@ function pie_chart(valor1, valor2) {
 }
 
 
-function graficoVendedores(array_vendedores, arrayCotizacion) {
-  console.error(arrayCotizacion);
-  var pieChartContent = document.getElementById('graficoBarras');
-  pieChartContent.innerHTML = '&nbsp;';
-  $('#graficoBarras').append('<canvas id="barChartDemo"><canvas>');
+// function graficoVendedores(array_vendedores, arrayCotizacion) {
+//   console.error(arrayCotizacion);
+//   var pieChartContent = document.getElementById('graficoBarras');
+//   pieChartContent.innerHTML = '&nbsp;';
+//   $('#graficoBarras').append('<canvas id="barChartDemo"><canvas>');
 
 
-  var data = {
-    labels: array_vendedores,
-    datasets: [
-      {
-        label: "Ventas Realizadas",
-        data: arrayCotizacion,
-        backgroundColor: "#32CC53",
+//   var data = {
+//     labels: array_vendedores,
+//     datasets: [
+//       {
+//         label: "Ventas Realizadas",
+//         data: arrayCotizacion,
+//         backgroundColor: "#32CC53",
 
-      },    
+//       },    
       
-    ]
-  };
+//     ]
+//   };
 
-  var ctxb = $("#barChartDemo").get(0).getContext("2d");
-  // var barChart = new Chart(ctxb).Bar(data);
+//   var ctxb = $("#barChartDemo").get(0).getContext("2d");
+//   // var barChart = new Chart(ctxb).Bar(data);
 
-  var barChart = new Chart(ctxb, {
-    type: 'bar',
-    data: data,
-    options: {
-      scales: {
-        xAxes: [{ stacked: true, 
-          ticks: {
-            min: 0,
-            stepSize: 1
-          }
+//   var barChart = new Chart(ctxb, {
+//     type: 'bar',
+//     data: data,
+//     options: {
+//       scales: {
+//         xAxes: [{ stacked: true, 
+//           ticks: {
+//             min: 0,
+//             stepSize: 1
+//           }
         
-        }],
-        yAxes: [{ stacked: true }]
-      },
+//         }],
+//         yAxes: [{ stacked: true }]
+//       },
 
-    }
+//     }
 
-  });
+//   });
 
-}
+// }
 
 //*-grafico vendedores 
 function bar_chartVendedores(nombresClientes, arrayCotizacion) {
@@ -130,12 +134,12 @@ function graficoProductosMasVendidos(nombresProductos, productosVendidos) {
   arrayColores = ["#c6e3b1", "#275f5a", "#f21450", "#881f50", "#ada4c6", "#37802a", "#9c82d4", "#4b0e0e", "#af44ab", "#b7793c", "#998900", "#00093c", "#10a93c", "#aaa939", "#80a93c"];
   var data = {
     labels: nombresProductos,
-    color: "#c6e3b1",
+    color: "#00457f",
     datasets: [
       {
         label: "Producto mas vendidos",
         data: productosVendidos,
-        backgroundColor: arrayColores,
+        backgroundColor: "#f21450",
       },
     ],
   };
@@ -143,7 +147,7 @@ function graficoProductosMasVendidos(nombresProductos, productosVendidos) {
   var ctxb = $("#barChartProductos").get(0).getContext("2d");
 
   var barChart = new Chart(ctxb, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: data,
     options: {
       scales: {
@@ -178,10 +182,10 @@ function areaVentasMensual(arrayMeses, arrayVentasMensual) {
       {
         label: "Ventas en este mes",
         data: arrayVentasMensual,
-        backgroundColor: "#009587",
+        backgroundColor: "#00457f",
         fill: 'start',
         borderWidth: 2,
-        borderColor: "#009587",
+        borderColor: "#fff",
 
       },
     ],

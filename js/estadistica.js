@@ -1,6 +1,11 @@
 var ARRAYMESES = [];
 var ARRAY_COTIZACIONES = [];
 var ARRAY_NOTA_PEDIDO = [];
+var ARR_BOLETAS=[];
+var ARR_FACTURAS=[];
+var ARR_GUIAS=[];
+var ARR_COTIZACIONES=[];
+var ARR_TARJETAS=[];
 //*-cargar estadisticas
 function cargar_estadisticas(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 	//*-obtener mes a partir de la fecha del calendario
@@ -35,7 +40,7 @@ function cargar_estadisticas(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 		const baseUrl = 'php/consultaFetch.php';
 		let consulta=`SELECT SUM(total) as boletas FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=1`;
 		const sql   = {sql: consulta, tag: `array_datos`}
-		console.log(consulta);
+		
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
 			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -58,7 +63,7 @@ function cargar_estadisticas(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 		const baseUrl = 'php/consultaFetch.php';
 		let consulta=`SELECT SUM(total) as facturas FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=2`;
 		const sql   = {sql: consulta, tag: `array_datos`}
-		console.log(consulta);
+		
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
 			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -81,7 +86,7 @@ function cargar_estadisticas(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 		const baseUrl = 'php/consultaFetch.php';
 		let consulta=`SELECT SUM(total) as guias FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=3`;
 		const sql   = {sql: consulta, tag: `array_datos`}
-		console.log(consulta);
+		
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
 			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -104,7 +109,7 @@ function cargar_estadisticas(fecha_1, fecha_2, nivel, idVendedorLogueado) {
 		const baseUrl = 'php/consultaFetch.php';
 		let consulta=`SELECT COUNT(*) as tarjetas FROM ventas where fecha_venta between "${fecha_ini} 00:00:00" and "${fecha_ter} 23:59:59" and estado_venta=5`;
 		const sql   = {sql: consulta, tag: `array_datos`}
-		console.log(consulta);
+		
 		try {
 			//*-llamar ajax al servidor mediate api fetch.
 			const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
@@ -171,8 +176,13 @@ function numeroCotizacionVendedores(fecha1, fecha2, nombresVendedores, idVendedo
 	codigoProducto = [];
 	nombreProducto = [];
 	productosVendidos = [];
-	var sql = 'SELECT COUNT(*) as venta from ventas where fecha_venta between "' + fecha1 + ' 00:00:00" and "' + fecha2 + ' 23:59:59" and id_vendedor=' + idVendedor[contadorCotizacion];
+	// var sql = 'SELECT COUNT(*) as venta from ventas where fecha_venta between "' + fecha1 + ' 00:00:00" and "' + fecha2 + ' 23:59:59" and id_vendedor=' + idVendedor[contadorCotizacion];
+	let sql=`SELECT COUNT(IF(estado_venta=1,1,NULL)) AS boletas, COUNT(IF(estado_venta=2,1,NULL)) AS facturas, COUNT(IF(estado_venta=3,1,NULL)) AS guias ,
+	COUNT(IF(estado_venta=4,1,NULL)) AS cotizaciones,COUNT(IF(estado_venta=5,1,NULL)) AS tarjetas FROM
+	 ventas  WHERE  fecha_venta BETWEEN "${fecha1} 00:00:00" AND "${fecha2} 23:59:59"`;
+
 	
+
     $.ajax({
         type: 'POST',
         url: 'php/consulta.php',
@@ -180,20 +190,23 @@ function numeroCotizacionVendedores(fecha1, fecha2, nombresVendedores, idVendedo
 
         success: function (data) {
             contadorCotizacion++;
-            var arreglo = JSON.parse(data);
-            ARRAY_COTIZACIONES.push(arreglo[0]['venta']);
+			var arreglo = JSON.parse(data);
 			
-            if (contadorCotizacion == idVendedor.length) {
-			
-			
-                graficoVendedores(nombresVendedores, ARRAY_COTIZACIONES);
+            ARR_BOLETAS.push(arreglo[0]['boletas']);            
+			ARR_BOLETAS.push(arreglo[0]['facturas']);
+		    ARR_BOLETAS.push(arreglo[0]['guias']);
+			ARR_BOLETAS.push(arreglo[0]['cotizaciones']);
+			ARR_BOLETAS.push(arreglo[0]['tarjetas']);
+            // if (contadorCotizacion == idVendedor.length) {
+				console.log(ARR_BOLETAS);
+                pie_chart(ARR_BOLETAS);
 				cargarProductos(fecha1, fecha2, nivel, idVendedorLogueado);
 			   	numerar(nivel, idVendedorLogueado);
-            }else{
+            // }else{
 
-                numeroCotizacionVendedores(fecha1, fecha2, nombresVendedores, idVendedor, nivel,contadorCotizacion);
+            //     numeroCotizacionVendedores(fecha1, fecha2, nombresVendedores, idVendedor, nivel,contadorCotizacion);
 
-            }
+            // }
         },
         error: function (request, status, error) {
             console.error('Error: Could not documento');
@@ -254,7 +267,7 @@ function ProductosMasVendidos(fecha_1, fecha_2, nivel, idVendedorLogueado, conta
 		' where v.fecha_venta between "' + fecha_1 + ' 00:00:00" and "' + fecha_2 + ' 23:59:59" and vr.codigo_producto =' + codigoProducto[contador] + ' ';
 	}
 	
-
+	
 
 	$.ajax({
 		type: 'POST',
@@ -275,7 +288,7 @@ function ProductosMasVendidos(fecha_1, fecha_2, nivel, idVendedorLogueado, conta
 			if (contador == codigoProducto.length) {
 				if(productosVendidos.length > 0){			
 
-					graficoProductosMasVendidos(nombreProducto.slice(0, 7), productosVendidos);
+					graficoProductosMasVendidos(nombreProducto, productosVendidos);
 
 				}	else{
 					graficoProductosMasVendidos();
