@@ -68,6 +68,20 @@ position:absolute;
 	padding:0 0 -5em;
 	
 }
+.total{
+	background-color:rgba(41, 241, 195, 1);
+}
+.precio{
+	margin:-5px;
+}
+.documentos{
+	background-color:rgba(41, 50, 100, 0.5);	
+}
+.cabezera{
+	background-color:rgba(58, 83, 155, 1);
+	color:white;	
+	font-size:1em;
+}
 </style>
 <body>
 <?php 
@@ -75,8 +89,9 @@ include 'php/consulta.php';
 	 date_default_timezone_set("America/Santiago"); setlocale(LC_ALL, "es_ES"); ?>
 
 <?php $queryConsultar="	SELECT vr.id_venta,estado_venta,fecha_venta,p.codigo_proveedor,v.descuento,estado_venta,DATE(fecha_venta) AS fecha ,total,id_boleta,
-	id_cotizacion,id_factura,id_guia,id_tarjeta,vr.cantidad,vr.nombre_producto,vr.codigo_producto FROM
-	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN productos p ON vr.codigo_producto=p.codigo WHERE fecha_venta BETWEEN '$fecha_inicio 00:00:00' AND '$fecha_termino 23:59:59'";
+	id_cotizacion,id_factura,id_guia,id_tarjeta,vr.cantidad,vr.nombre_producto,vr.codigo_producto,vr.precio_unitario FROM
+	ventas v INNER JOIN ventas_relacional vr ON vr.id_venta=v.id JOIN productos p ON vr.codigo_producto=p.codigo
+	WHERE fecha_venta BETWEEN '$fecha_inicio 00:00:00' AND '$fecha_termino 23:59:59' ORDER BY estado_venta,id_boleta,id_factura,id_guia,id_tarjeta ASC";
 	
 	$detalleVentas=consultar($queryConsultar);
 
@@ -90,16 +105,17 @@ include 'php/consulta.php';
 <thead>
 	
 </thead>
-<tr>
-			<td width="10%" class="encabezado-graficos">fecha</td>
-			<td width="10%" class="encabezado-graficos">Cod Pro</td>
-			<td width="10%" class="encabezado-graficos">Documento</td>
-			<td width="10%" class="encabezado-graficos">N°</td>
-			<td width="10%" class="encabezado-graficos">tot des</td>
-			<td width="10%"class="encabezado-graficos">Repuesto</td>
-			<td width="10%" class="encabezado-graficos">Codigo</td>
-			<td width="10%" class="encabezado-graficos">Cantidad</td>
-			<td width="10%" class="encabezado-graficos">Total</td>
+<tr >
+			<td class="cabezera" width="10%" class="encabezado-graficos">fecha</td>
+			<td class="cabezera" width="10%" class="encabezado-graficos">Cod Pro</td>
+			<td class="cabezera" width="10%" class="encabezado-graficos">Documento</td>
+			<td class="cabezera" width="10%" class="encabezado-graficos">N°</td>
+			<td class="cabezera" width="10%" class="encabezado-graficos">tot des</td>
+			<td class="cabezera" width="10%"class="encabezado-graficos">Repuesto</td>
+			<td class="cabezera" width="10%" class="encabezado-graficos">Codigo</td>
+			<td class="cabezera" width="10%" class="encabezado-graficos">Cantidad</td>
+			<td class="cabezera" width="10%" class="encabezado-graficos">Prec</td>
+			<td class="cabezera" width="10%" class="encabezado-graficos">Total</td>
 </tr>	
 	<tbody>
 	
@@ -107,29 +123,26 @@ include 'php/consulta.php';
 	$filasAgregadas= 20 - count($detalleVentas);
 	for ($i = 0; $i < count($detalleVentas); $i++) {
 
-		$documento;
-		$numero;
+		if($detalleVentas[$i]['estado_venta']!=4){
 
-		if($detalleVentas[$i]['estado_venta']==1){
-			$documento='boleta';
-			$numero=$detalleVentas[$i]['id_boleta'];	
-		}else if($detalleVentas[$i]['estado_venta']==2){
-			$documento='factura';
-			$numero=$detalleVentas[$i]['id_factura'];
-		}else if($detalleVentas[$i]['estado_venta']==3){
-			$documento='guia';
-			$numero=$detalleVentas[$i]['id_guia'];
-		}else if($detalleVentas[$i]['estado_venta']==4){
-			$documento='cotizacion';
-			$numero=$detalleVentas[$i]['id_cotizacion'];
-		}else if($detalleVentas[$i]['estado_venta']==5){
-			$documento='tarjeta';
-			$numero=$detalleVentas[$i]['id_tarjeta'];
-		}
+			$documento;
+			$numero;
+	
+			if($detalleVentas[$i]['estado_venta']==1){
+				$documento='boleta';
+				$numero=$detalleVentas[$i]['id_boleta'];	
+			}else if($detalleVentas[$i]['estado_venta']==2){
+				$documento='factura';
+				$numero=$detalleVentas[$i]['id_factura'];
+			}else if($detalleVentas[$i]['estado_venta']==3){
+				$documento='guia';
+				$numero=$detalleVentas[$i]['id_guia'];			
+			}else if($detalleVentas[$i]['estado_venta']==5){
+				$documento='tarjeta';
+				$numero=$detalleVentas[$i]['id_tarjeta'];
+			}
 
-
-
-		echo '<tr>';		
+			echo '<tr>';		
 		echo '<td>'.$detalleVentas[$i]['fecha'].'</td>';
 		echo '<td>'.$detalleVentas[$i]['codigo_proveedor'].'</td>';
 		echo '<td>'.$documento.'</td>';
@@ -138,13 +151,14 @@ include 'php/consulta.php';
 		echo '<td>'.$detalleVentas[$i]['nombre_producto'].'</td>';
 		echo '<td>'.$detalleVentas[$i]['codigo_producto'].'</td>';
 		echo '<td>'.$detalleVentas[$i]['cantidad'].'</td>';
-		echo '<td>'.$detalleVentas[$i]['total'].'</td>';		
+		echo '<td class="precio" rowspan="1">'.number_format($detalleVentas[$i]['precio_unitario']).'</td>';
+		echo '<td class="total">'.number_format($detalleVentas[$i]['total']).'</td>';				
 		echo '</tr>';
 
-	
+		}	
 	?>
 	<tr>
-			<td colspan="9"></td>
+			<td colspan="10"></td>
 		</tr>
 	<?php } ?>
 	

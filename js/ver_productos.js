@@ -89,7 +89,7 @@ let cargarProductos = async () => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);		
-		console.log(array);		
+			
 		const tabla = await	tablaProductos(array);
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
@@ -113,25 +113,37 @@ function tablaProductos(arreglo) {
 		var codigo_proveedor = arreglo[i]['codigo_proveedor'];
 		var nombre = arreglo[i]['nombre'];
 		var costo = arreglo[i]['costo'];
+		let toFinal=costo*2.05*1.19;
+		let caldes=(toFinal * 0.25);
+		let desFinal=parseInt(toFinal)-parseInt(caldes);
+
+		//console.log('desFinal ' + desFinal);
+
 		var proveedor = arreglo[i]['proveedor'];
 		var stock_m = arreglo[i]['stock_m'];
 		var stock = arreglo[i]["stock"];
-		$("#tablaBody").append('<tr>' +
+		$("#tablaBody").append('<tr id="' + 'fila_add' + parseFloat(i + 1) + '">' +
 			'<td>' + codigo + '</td>' +
 			'<td>' + codigo_proveedor + '</td>' +
 			'<td>' + nombre + '</td>' +
-			'<td>' + costo + '</td>' +
-			'<td>' + PROVEEDOR[proveedor] + '</td>' +
-			'<td>' + stock_m + '</td>' +
+			'<td>' + formatearNumeros(costo) + '</td>' +
+			'<td>' + formatearNumeros(desFinal) + '</td>' +
+			'<td>' + PROVEEDOR[proveedor] + '</td>' +			
 			'<td>' + stock + '</td>' +
 			'<td><form method="POST" action="editar_productos.php">' +
 			'<button type="submit" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Editar" name="id" value="' + id + '" ><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>' +
 			'<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,' + id + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
 			'</tr>');
+
+			if(stock<1){
+				document.getElementById(`fila_add${parseFloat(i + 1)}`).className=`color_fila_rojo`;
+			}else{
+				document.getElementById(`fila_add${parseFloat(i + 1)}`).className=`color_fila_verde`;
+			}
 	}
 
 	$('[data-toggle="tooltip"]').tooltip();
-	//lenguaje();
+
 
 }
 
@@ -177,10 +189,10 @@ function tablaProductos(arreglo) {
 		buttons: [
 			{
 				extend: 'excelHtml5',
-				title: 'ver_ventas' + fecha + ''
+				title: 'productos-' + fecha + ''
             }, {
 				extend: 'pdfHtml5',
-				title: 'ver_ventas' + fecha + ''
+				title: 'productos-' + fecha + ''
             }]
 
 	});

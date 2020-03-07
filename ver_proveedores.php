@@ -102,7 +102,7 @@
     <script type="text/javascript" src="js/funciones.js?vknet29"></script>
 	<script type="text/javascript" src="js/ver_proveedores.js?vknet29"></script>
 	<?php include "./js/table.php"; ?>
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="js/plugins/swal2.js"></script>
 
 
 

@@ -34,7 +34,7 @@ let cargarProductos = async (id) => {
 let Proveedor = async (id)  =>{
 	
 	const baseUrl = 'php/consultaFetch.php';
-    let consulta=`SELECT id,nombre FROM proveedores`;
+    let consulta=`SELECT id,nombre FROM proveedores WHERE estado=1`;
     	
     const sql   = {sql: consulta, tag: `proveedor`}
     

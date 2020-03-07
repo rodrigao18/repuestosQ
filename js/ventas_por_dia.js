@@ -17,7 +17,7 @@ let vendedor = async () => {
 		const data = await response.text();
 		//*-se parsea solo la respuesta del Json enviada por el servidor.
 		let array = JSON.parse(data);
-		console.error(array);
+	
 		var arr = new Array();
 		for (var i = 0; i < array.length; i++) {
 			arr[array[i][0].toString()] = array[i][1];
@@ -56,7 +56,8 @@ let cargar_ventas_onchange = async() =>{
 
 	const baseUrl = 'php/consultaFetch.php';
     let consulta=`SELECT id,estado_venta,fecha_venta,id_vendedor,id_cliente,estado_venta,DATE(fecha_venta) as fecha,neto,iva, total,id_boleta,nula_boleta,nula_factura,nula_guia,nula_tarjeta,
-				id_cotizacion,id_factura,id_guia,id_tarjeta FROM ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" ORDER BY estado_venta ASC`;
+				id_cotizacion,id_factura,id_guia,id_tarjeta FROM
+				ventas WHERE fecha_venta between "${fecha_inicio} 00:00:00" AND "${fecha_termino} 23:59:59" ORDER BY estado_venta,id_boleta,id_factura,id_guia,id_tarjeta ASC`;
 	
 	
 	
@@ -112,8 +113,9 @@ let clientes = async () => {
 
 			}		
 		CLIENTES=arrs;
-		console.error(CLIENTES);	
-		const vende = await cargarVentas();
+		
+		//const vende = await cargarVentas();
+		const cargar = await cargar_ventas_onchange();
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 
@@ -229,7 +231,7 @@ let tablaVentas = (arreglo) => {
 			   <td>${formatearNumeros(i['total'])}</td>	 
 			 </tr>`
 		}else{
-			console.log('entro a ca');
+			
 			console.error('4');
 		}
 

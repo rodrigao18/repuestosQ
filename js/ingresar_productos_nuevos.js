@@ -72,7 +72,7 @@ let ultimoCodigoProducto = async () => {
 }
 //cargar proveedores
 function proveedores(){
-	var sql = 'SELECT id,nombre FROM proveedores';
+	var sql = 'SELECT id,nombre FROM proveedores WHERE estado=1';
 	//AJAX	
 	$.ajax({
 	type: 'POST',

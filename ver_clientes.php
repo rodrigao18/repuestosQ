@@ -100,6 +100,7 @@
 	<script src="js/plugins/pace.min.js"></script>
     <script type="text/javascript" src="js/funciones.js?vknet29"></script>
 	<script type="text/javascript" src="js/ver_clientes.js?vknet29"></script>
+	<script src="js/plugins/swal2.js"></script>
 	<?php include "./js/table.php"; ?>
 
 

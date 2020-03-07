@@ -145,6 +145,7 @@
 			document.getElementById('titulo_documento').innerHTML=`Guia`;
 			document.getElementById('cabezera').className=`cabezera-guia`;
 			document.getElementById('grupo-btn').style.display=`none`;
+			document.getElementById('btn_ventas').style.display=`block`;
 		}
 		else if (ESTADOVENTA == 4) {
 			document.getElementById('titulo-detalle').value=`${NUMEROBOLETA}`;
@@ -152,6 +153,8 @@
 			document.getElementById('cabezera').className=`cabezera-cotizacion`;
 			document.getElementById('btn-ocultar').style.display=`block`;
 			document.getElementById('grupo-btn').style.display=`none`;
+			document.getElementById('btn_ventas').style.display=`block`;
+
 
 		}else if (ESTADOVENTA == 5) {
 			document.getElementById('titulo-detalle').value=`${NUMEROBOLETA}`;
@@ -160,7 +163,7 @@
 			document.getElementById('btn-ocultar').style.display=`block`;
 			document.getElementById('grupo-btn').style.display=`none`;
 			document.getElementById('btnImportar').style.display=`none`;
-
+			document.getElementById('btn_ventas').style.display=`block`;
 
 		}
 		else if (ESTADOVENTA == 2) {
@@ -168,6 +171,7 @@
 			document.getElementById('titulo_documento').innerHTML=`Factura`;
 			document.getElementById('cabezera').className=`cabezera-factura`;
 			// document.getElementById('btn-ocultar').style.display=`block`;
+			document.getElementById('btn_ventas').style.display=`block`;
 		}
 
 	}
@@ -1234,12 +1238,14 @@
 			let precioUnitarioConvertido=convertirNumeros(tablaC.rows[i].cells[3].children[0].value);
 			let descuento_producto=convertirNumeros(tablaC.rows[i].cells[4].children[0].value);
 			let totalUnitarioConvertido=convertirNumeros(tablaC.rows[i].cells[5].children[0].value);			
-		
+			console.log('precioUnitarioConvertido ' + precioUnitarioConvertido);
+			console.log('totalUnitarioConvertido ' + totalUnitarioConvertido);
+
 			const baseUrl = 'php/consultaFetch.php';		
 		
 			let consulta=`UPDATE ventas_relacional , productos p INNER JOIN ventas_relacional vr ON vr.codigo_producto=p.codigo 
-						 set vr.codigo_producto="${codigoInterno}",vr.precio_unitario=${totalUnitarioConvertido},vr.cantidad=${cantidad}
-						,vr.total_unitario=${precioUnitarioConvertido},vr.nombre_producto="${nombre}",vr.descuento_producto=${descuento_producto} WHERE vr.id=${idfr}`;		
+						 set vr.codigo_producto="${codigoInterno}",vr.precio_unitario=${precioUnitarioConvertido},vr.cantidad=${cantidad}
+						,vr.total_unitario=${totalUnitarioConvertido},vr.nombre_producto="${nombre}",vr.descuento_producto=${descuento_producto} WHERE vr.id=${idfr}`;		
 				
 
 			const sql   = {sql: consulta, tag: `crud`}		
@@ -1257,7 +1263,7 @@
 					porcentaje = (exito / nFilas) * 100;
 					document.getElementById('contenido').className=`fade-in`;
 					document.getElementById('loading').innerHTML=``;				
-					swal('Venta Actualizada', 'todos los datos actualizados', 'info');	
+					swal('Datos Actualizados', 'todos los datos actualizados', 'info');	
 						
 						}	
 				

@@ -438,7 +438,7 @@
 	<!-- Page specific javascripts-->
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <!-- <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script> -->
-	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="js/plugins/swal2.js"></script>
     <?php include "./js/table.php"; ?>
 	<script type="text/javascript">
         var ID_VENDEDOR =<?php echo $idVendedor;?>;
