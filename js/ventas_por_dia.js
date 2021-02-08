@@ -155,91 +155,179 @@ let cargarVentas = async () => {
 	
 }
 
-let tablaVentas = (arreglo) => {
+// let tablaVentas = (arreglo) => {
 	
-	let tbody = document.getElementById('tablaBody');
+// 	let tbody = document.getElementById('tablaBody');
 	
 
-	for (let i of arreglo) { 
+// 	for (let i of arreglo) { 
+
+// 		let estadoColumna;
+// 		let estadoDocumento;
+// 		let numero;
+
+		
+// 		if(CLIENTES[i['id_cliente']]!=undefined){			
+// 			estadoColumna=CLIENTES[i['id_cliente']];
+// 		}if(CLIENTES[i['id_cliente']]==undefined){
+// 			estadoColumna=`<span class='badge badge-danger'>Sin cliente</span>`;
+// 		}
+
+// 		if(i['estado_venta']==1){
+
+// 			if(i['nula_boleta']==2){
+
+// 				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
+// 			}else{
+// 				estadoDocumento=`<span class='badge badge-success'>Boleta</span>`;
+// 			}			
+// 			numero=i['id_boleta'];
+// 		}else if(i['estado_venta']==2){
+
+// 			if(i['nula_factura']==2){
+// 				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
+// 			}else{
+// 				estadoDocumento=`<span class='badge badge-warning'>Factura</span>`;
+// 			}
+		
+// 			numero=i['id_factura'];	
+// 		}
+// 		else if(i['estado_venta']==3){
+
+// 			if(i['nula_guia']==2){
+// 				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
+// 			}else{
+// 				estadoDocumento=`<span class='badge badge-danger'>Guía</span>`;
+// 			}
+		
+// 			numero=i['id_guia'];		
+// 		}
+// 		else if(i['estado_venta']==4){
+			
+// 			estadoDocumento=`<span class='badge badge-dark'>Cotización</span>`;
+// 			numero=i['id_cotizacion'];	
+// 		}
+// 		else if(i['estado_venta']==5){
+
+// 			if(i['nula_tarjeta']==2){
+// 				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
+// 			}else{
+// 				estadoDocumento=`<span class='badge badge-primary'>Tarjeta</span>`;	
+// 			}
+			
+// 			numero=i['id_tarjeta'];	
+// 		}
+		
+// 		if(i['estado_venta']!=4){
+// 			tbody.innerHTML +=
+// 			`<tr>
+// 				<td>${i['fecha_venta']}</td>
+// 				<td>${estadoDocumento}</td>	
+// 				<td>${numero}</td>			   
+// 				<td>${VENDEDORES[i['id_vendedor']]}</td>
+// 				<td>${estadoColumna}</td>
+// 			   <td>${formatearNumeros(i['neto'])}</td>
+// 			   <td>${formatearNumeros(i['iva'])}</td>					
+// 			   <td>${formatearNumeros(i['total'])}</td>	 
+// 			 </tr>`
+// 		}else{
+			
+// 			console.error('4');
+// 		}
+
+	 	
+// 	}
+// 	$('[data-toggle="tooltip"]').tooltip();
+// 	totalVentasCols();
+//  }
+ 
+
+let tablaVentas =  (arreglo) =>{
+
+
+	let tbody = document.getElementById('tablaBody');
+
+	for (var i = 0; i < arreglo.length; i++) {
 
 		let estadoColumna;
 		let estadoDocumento;
 		let numero;
 
 		
-		if(CLIENTES[i['id_cliente']]!=undefined){			
-			estadoColumna=CLIENTES[i['id_cliente']];
-		}if(CLIENTES[i['id_cliente']]==undefined){
+		if(CLIENTES[arreglo[i]['id_cliente']]!=undefined){			
+			estadoColumna=CLIENTES[arreglo[i]['id_cliente']];
+		}if(CLIENTES[arreglo[i]['id_cliente']]==undefined){
 			estadoColumna=`<span class='badge badge-danger'>Sin cliente</span>`;
 		}
 
-		if(i['estado_venta']==1){
+		if(arreglo[i]['estado_venta']==1){
 
-			if(i['nula_boleta']==2){
+			if(arreglo[i]['nula_boleta']==2){
 
 				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
 			}else{
 				estadoDocumento=`<span class='badge badge-success'>Boleta</span>`;
 			}			
-			numero=i['id_boleta'];
-		}else if(i['estado_venta']==2){
+			numero=arreglo[i]['id_boleta'];
+		}else if(arreglo[i]['estado_venta']==2){
 
-			if(i['nula_factura']==2){
+			if(arreglo[i]['nula_factura']==2){
 				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
 			}else{
 				estadoDocumento=`<span class='badge badge-warning'>Factura</span>`;
 			}
 		
-			numero=i['id_factura'];	
+			numero=arreglo[i]['id_factura'];	
 		}
-		else if(i['estado_venta']==3){
+		else if(arreglo[i]['estado_venta']==3){
 
-			if(i['nula_guia']==2){
+			if(arreglo[i]['nula_guia']==2){
 				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
 			}else{
 				estadoDocumento=`<span class='badge badge-danger'>Guía</span>`;
 			}
 		
-			numero=i['id_guia'];		
+			numero=arreglo[i]['id_guia'];		
 		}
-		else if(i['estado_venta']==4){
+		else if(arreglo[i]['estado_venta']==4){
 			
 			estadoDocumento=`<span class='badge badge-dark'>Cotización</span>`;
-			numero=i['id_cotizacion'];	
+			numero=arreglo[i]['id_cotizacion'];	
 		}
-		else if(i['estado_venta']==5){
+		else if(arreglo[i]['estado_venta']==5){
 
-			if(i['nula_tarjeta']==2){
+			if(arreglo[i]['nula_tarjeta']==2){
 				estadoDocumento=`<span class='badge badge-dark'>nula</span>`;
 			}else{
 				estadoDocumento=`<span class='badge badge-primary'>Tarjeta</span>`;	
 			}
 			
-			numero=i['id_tarjeta'];	
-		}
-		
-		if(i['estado_venta']!=4){
-			tbody.innerHTML +=
-			`<tr>
-				<td>${i['fecha_venta']}</td>
-				<td>${estadoDocumento}</td>	
-				<td>${numero}</td>			   
-				<td>${VENDEDORES[i['id_vendedor']]}</td>
-				<td>${estadoColumna}</td>
-			   <td>${formatearNumeros(i['neto'])}</td>
-			   <td>${formatearNumeros(i['iva'])}</td>					
-			   <td>${formatearNumeros(i['total'])}</td>	 
-			 </tr>`
-		}else{
-			
-			console.error('4');
+			numero=arreglo[i]['id_tarjeta'];	
 		}
 
-	 	
-	}
+		if(arreglo[i]['estado_venta']!=4){
+						
+			$("#tablaBody").append(`<tr>
+							<td>${arreglo[i]['fecha_venta']}</td>
+							<td>${estadoDocumento}</td>	
+							<td>${numero}</td>			   
+							<td>${VENDEDORES[arreglo[i]['id_vendedor']]}</td>
+							<td>${estadoColumna}</td>
+						   <td>${formatearNumeros(arreglo[i]['neto'])}</td>
+						   <td>${formatearNumeros(arreglo[i]['iva'])}</td>					
+						   <td>${formatearNumeros(arreglo[i]['total'])}</td>	 
+						 </tr>`);
+					}else{
+						
+						console.error('4');
+					}	
+	}//fin del for
+
 	$('[data-toggle="tooltip"]').tooltip();
 	totalVentasCols();
- }
+
+}
+
 
 let totalVentasCols =() => {
 	document.getElementById('totalVentaCols').innerHTML=``;

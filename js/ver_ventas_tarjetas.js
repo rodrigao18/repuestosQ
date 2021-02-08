@@ -5,6 +5,8 @@ var CLIENTES;
 
 let vendedor = async () => {
 
+	document.getElementById('loading').innerHTML=`<i class="fas fa-spinner fa-pulse"></i> Cargando ventas espere......`;
+
 	const baseUrl = 'php/consultaFetch.php';
     let consulta=`	SELECT id_vendedor,nombreVendedor FROM vendedores`;
 	 
@@ -39,6 +41,8 @@ let vendedor = async () => {
 
 let cargar_ventas_onchange = async() =>{	
 
+	document.getElementById('loading').innerHTML=`<i class="fas fa-spinner fa-pulse"></i> Cargando ventas espere......`;
+
 	let tbody = document.getElementById('tablaBody');
 
 	tbody.innerHTML=``;
@@ -67,7 +71,7 @@ let cargar_ventas_onchange = async() =>{
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		//const botones = await lenguaje();	
-	
+		document.getElementById('loading').innerHTML=``;
 	} catch (error) {
 		console.log('error en la conexion ', error);
 	}
@@ -308,7 +312,7 @@ let obtenerStock = async(idP,index) => {
 			}else{
 				const borrar = await actualizarVenta(idP);	
 			}
-					
+			const totVanCols=await totalVentasCols();		
 		
 		
 	} catch (error) { console.log('error en la conexion ', error); }

@@ -82,6 +82,8 @@
 								<button type="submit"   class="btn btn-primary"><i class="fas fa-file-pdf"></i> Ver documento</button>
 							</form> 
 							<br>
+							<div id="loading"></div>
+							<br>
 							<button  class="btn btn-success"  onclick="trasFactura()"><i class="fas fa-clipboard-list"></i> Pasar guias a factura</button>
 							<br><br>
 							<button class="btn btn-primary" onClick="ExportXLSX();"><i class="fas fa-file-excel"></i> Exportar Tabla a Excel</button> 

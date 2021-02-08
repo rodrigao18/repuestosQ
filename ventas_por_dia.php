@@ -68,12 +68,12 @@
 		
 		<div class="form-group col-md-6">
 		<label>Fecha Inicio</label>
-			<input type="date" class="form-control" id="fecha_inicio" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d");?>">
+			<input type="date" class="form-control" id="fecha_inicio"  onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" >
 		</div>
 	
 		<div class="form-group col-md-6">
 		<label>Fecha Término</label>
-			<input type="date" class="form-control" id="fecha_termino" onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d");?>">
+			<input type="date" class="form-control" id="fecha_termino"  onchange=cargar_ventas_onchange() min="2013-01-01" max="2025-12-31" >
 		</div>
 	</div>
 
@@ -153,6 +153,21 @@
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<?php include "./js/table.php"; ?>
+
+	<script>
+	
+	var fecha = new Date(); //Fecha actual
+	var mes = fecha.getMonth()+1; //obteniendo mes
+	var dia = fecha.getDate(); //obteniendo dia
+	var ano = fecha.getFullYear(); //obteniendo año
+	if(dia<10)
+	  dia='0'+dia; //agrega cero si el menor de 10
+	if(mes<10)
+	  mes='0'+mes //agrega cero si el menor de 10
+	let fecha_ini=document.getElementById('fecha_inicio').value=ano+"-"+mes+"-"+dia;
+	let fecha_ter=document.getElementById('fecha_termino').value=ano+"-"+mes+"-"+dia;
+	console.log(fecha_ini);
+   </script>
 
 <!-- 
 	<script>

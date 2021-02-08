@@ -31,7 +31,8 @@ var PROVEEDOR;
 	let cargarCategoria = async(e) =>{
 
 	
-	// document.getElementById('loading').innerHTML=`<p>Actualizando....... <img width='80px' src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'></p>`;	
+		document.getElementById('loading').innerHTML=`<i class="fas fa-spinner fa-pulse"></i> Cargando productos......`;
+	//document.getElementById('salida').className=`fade`;
 
 	const evento = e.preventDefault();
 
@@ -72,7 +73,7 @@ var PROVEEDOR;
 //*-cargar datos mediante async wait()
 let cargarProductos = async () => { 
 
-	document.getElementById('loading').innerHTML=`<p>Buscando.. <img width='80px' src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'></p>`;	
+		
 
 	const baseUrl = 'php/consultaFetch.php';
 
@@ -94,7 +95,8 @@ let cargarProductos = async () => {
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		const botones = await lenguaje();	
-		document.getElementById('loading').innerHTML=`<p></p>`;
+		//document.getElementById('salida').className=`fade-in`;
+		document.getElementById('loading').innerHTML=``;
 	} catch (error) {
 		console.log('error en la conexion ', error);
 	}
@@ -107,7 +109,7 @@ function tablaProductos(arreglo) {
 
 
 	for (var i = 0; i < arreglo.length; i++) {
-
+		document.getElementById('cantidad_producto').innerHTML=` - ${i+1}`;
 		var id = arreglo[i]['id'];
 		var codigo = arreglo[i]['codigo'];
 		var codigo_proveedor = arreglo[i]['codigo_proveedor'];
@@ -131,8 +133,8 @@ function tablaProductos(arreglo) {
 			'<td>' + PROVEEDOR[proveedor] + '</td>' +			
 			'<td>' + stock + '</td>' +
 			'<td><form method="POST" action="editar_productos.php">' +
-			'<button type="submit" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Editar" name="id" value="' + id + '" ><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>' +
-			'<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,' + id + ')><i class="fa fa-trash" aria-hidden="true"></i></button></td>' +
+			'<button type="submit" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Editar" name="id" value="' + id + '" ><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>' +
+			'<td ><button class="btn  btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,' + id + ')><i class="fas fa-trash" aria-hidden="true"></i></button></td>' +
 			'</tr>');
 
 			if(stock<1){

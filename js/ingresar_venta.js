@@ -407,11 +407,31 @@ let clientes =  async() => {
 		const data = await response.text();
 		
 		$('#selectClientes').html(data).fadeIn();
+		
+		const marc = await marcas();
+        const clientesNN = await clientesN();
+        
+    } catch (error) {  }    
+}
+
+let clientesN =async() => {
+
+    const baseUrl = 'php/consultaFetch.php';
+    let consulta=`SELECT id , nombre FROM clientes ORDER BY nombre ASC`;
+
+    const sql = {sql: consulta, tag: `array_clientes_nombre`}  
+
+    try {
+		//*-llamar ajax al servidor mediate api fetch.
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) });
+		//*-request de los datos en formato texto(viene todo el request)
+		const data = await response.text();
+	
+		$('#selectClientesN').html(data).fadeIn();
 		const marc = await marcas();
         //const provinciass = await provincias(array);
         
-    } catch (error) {  }
-    
+    } catch (error) {  }    
 }
 
 let prebusqueda = (estado) => {
@@ -1709,6 +1729,20 @@ function GuardarCliente(e) {
 			console.error("Error: Could not guardarCliente2");
 		}
 	});
+}
 
+
+const idClienteRut = () =>{
+
+	let id = document.getElementById('selectClientes').value;	
+	$('#selectClientesN option[value="' + id + '"]').attr("selected", true);
 
 }
+
+const idClienteNombre = () =>{
+
+	let id = document.getElementById('selectClientesN').value;	
+	$('#selectClientes option[value="' + id + '"]').attr("selected", true);
+
+}
+

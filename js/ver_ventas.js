@@ -5,6 +5,8 @@ var ESTADOVENTA=1;
 
 let vendedor = async () => {
 
+	document.getElementById('loading').innerHTML=`<i class="fas fa-spinner fa-pulse"></i> Cargando ventas espere......`;
+
 	const baseUrl = 'php/consultaFetch.php';
     let consulta=`	SELECT id_vendedor,nombreVendedor FROM vendedores`;
 	 
@@ -39,6 +41,8 @@ let vendedor = async () => {
 
 let cargar_ventas_onchange = async() =>{	
 
+	document.getElementById('loading').innerHTML=`<i class="fas fa-spinner fa-pulse"></i> Cargando ventas espere......`;
+
 	let tbody = document.getElementById('tablaBody');
 
 	tbody.innerHTML=``;
@@ -67,6 +71,7 @@ let cargar_ventas_onchange = async() =>{
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		//const botones = await lenguaje();	
+		document.getElementById('loading').innerHTML=``;	
 	
 	} catch (error) {
 		console.log('error en la conexion ', error);
@@ -98,11 +103,11 @@ let clientes = async () => {
 
 			}		
 		CLIENTES=arrs;
-		console.error(CLIENTES);	
+		
 		const vende = await cargarVentas();
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
-
+		
 		
 	} catch (error) {
 		console.log('error en la conexion ', error);
@@ -132,60 +137,57 @@ let cargarVentas = async () => {
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		const botones = await lenguaje();	
-	
+		document.getElementById('loading').innerHTML=``;	
 	} catch (error) {
 		console.log('error en la conexion ', error);
 	}
 	
 }
 
-let tablaVentas = (arreglo) => {
-	
-	let tbody = document.getElementById('tablaBody');
-	
 
-	for (let i of arreglo) { 
+
+
+ const tablaVentas = async (arreglo) => {
+
+	for (var i = 0; i < arreglo.length; i++) {
+
 		let estadoColumna;
 		let activo;
-		// console.error("estado " + VENDEDORES[i['id_vendedor']]);
-		// if(CLIENTES[i['id_cliente']]!=undefined){			
-		// 	estadoColumna=CLIENTES[i['id_cliente']];
-		// }if(CLIENTES[i['id_cliente']]==undefined){
-		// 	estadoColumna=`<span class='badge badge-danger'>Sin cliente</span>`;
-		// }
+	
 		let boton;
 		let boton_eliminar;
-		if(i['nula_boleta']==2){
+		if(arreglo[i]['nula_boleta']==2){
 			activo=`<span class='badge badge-dark'>Nula</span>`;
 			boton=``;
-			boton_eliminar=`<button class="btn btn-danger"  data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
+			boton_eliminar=`<button class="btn btn-danger"  data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${arreglo[i]['id']},1)><i class="fas fa-trash"></i></button>`
 		}else{
 			activo=`<span class='badge badge-success'>Realizada</span>`;
-			boton=`<button class="btn  btn-dark" data-toggle="tooltip" data-placement="top" title="Anular" onclick=eliminarProducto(event,${i['id']})><i class="fas fa-times-circle"></i></button>`;
-			boton_eliminar=`<button class="btn  btn-danger"  data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${i['id']},1)><i class="fas fa-trash"></i></button>`
+			boton=`<button class="btn  btn-dark" data-toggle="tooltip" data-placement="top" title="Anular" onclick=eliminarProducto(event,${arreglo[i]['id']})><i class="fas fa-times-circle"></i></button>`;
+			boton_eliminar=`<button class="btn  btn-danger"  data-toggle="tooltip" data-placement="top" title="Eliminar" onclick=eliminarProducto(event,${arreglo[i]['id']},1)><i class="fas fa-trash"></i></button>`
 		}
 		
-		tbody.innerHTML +=
-        `<tr>
-			<td>${i['id_boleta']}</td>
-			<td>${i['fecha']}</td>				   
-			<td>${VENDEDORES[i['id_vendedor']]}</td>
-			<td>${activo}</td>
-			<td>${formatearNumeros(i['neto'])}</td>
-			<td>${formatearNumeros(i['iva'])}</td>					
-			<td>${formatearNumeros(i['total'])}</td>				  
-			<td><form method="POST" action="detalle_venta.php">
-			<input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${i['estado_venta']}">
-			<input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${i['id_boleta']}">
-			<button type="submit" class="btn btn-secondary" data-toggle="tooltip"
-			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
-			<td>${boton_eliminar}</td>			
-			<td>${boton}</td>				
-		 </tr>`
-	 	
+
+		$("#tablaBody").append(`<tr>
+		<td>${arreglo[i]['id_boleta']}</td>
+		<td>${arreglo[i]['fecha']}</td>				   
+		<td>${VENDEDORES[arreglo[i]['id_vendedor']]}</td>
+		<td>${activo}</td>
+		<td>${formatearNumeros(arreglo[i]['neto'])}</td>
+		<td>${formatearNumeros(arreglo[i]['iva'])}</td>					
+		<td>${formatearNumeros(arreglo[i]['total'])}</td>				  
+		<td><form method="POST" action="detalle_venta.php">
+		<input type="hidden" class="form-control" id="estado_venta" name="estado_venta" value="${arreglo[i]['estado_venta']}">
+		<input type="hidden" class="form-control" id="num_boleta" name="num_boleta" value="${arreglo[i]['id_boleta']}">
+		<button type="submit" class="btn btn-secondary" data-toggle="tooltip"
+		data-placement="top" title="Editar" name="id" value=${arreglo[i]['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
+		<td>${boton_eliminar}</td>			
+		<td>${boton}</td>				
+	 </tr>`);
 	}
+
 	$('[data-toggle="tooltip"]').tooltip();
 	totalVentasCols();
+
  }
 
 let totalVentasCols =() => {
@@ -200,7 +202,7 @@ let totalVentasCols =() => {
 		//valorTotal +=  parseInt(convertirNumeros(document.getElementById('prect'+(i+1)).value));
 		//console.log("valor total: " + valorTotal);
 		valor += parseInt(convertirNumeros(tablaC.rows[i].cells[columna].innerHTML));
-		console.error("valor total: " + valor);
+		
 	  }
 	  document.getElementById('totalVentaCols').innerHTML=`<h5>TOTAL: $${formatearNumeros(valor)}</h5>`;
 
@@ -242,13 +244,6 @@ function lenguaje() {
 		"stateSave":true,
 		"lengthMenu":[ 50, 100, 150, 175, 1000 ]
 	});
-
-
-   
-
-	
-
-
 }
 
 
@@ -314,6 +309,7 @@ let obtenerStock = async(idP,index) => {
 			}else{
 				const borrar = await actualizarVenta(idP);	
 			}
+			const totVanCols=await totalVentasCols();
 					
 		
 		

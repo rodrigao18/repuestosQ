@@ -220,3 +220,7 @@ let comprobarCliente = async  () => {
 
 }
 
+const editRut = ()=>{
+    let btnest = document.getElementById('rutCliente');
+   let btn = document.getElementById('rutCliente').disabled=false;
+}

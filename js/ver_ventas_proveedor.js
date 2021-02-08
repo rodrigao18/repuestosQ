@@ -5,6 +5,7 @@ var CLIENTES;
 
 let vendedor = async () => {
 
+	document.getElementById('loading').innerHTML=`<i class="fas fa-spinner fa-pulse"></i> Cargando datos espere......`;
 	const baseUrl = 'php/consultaFetch.php';
     let consulta=`	SELECT id_vendedor,nombreVendedor FROM vendedores`;
 	 
@@ -39,7 +40,7 @@ let vendedor = async () => {
 
 let cargar_ventas_onchange = async() =>{	
 
-	document.getElementById('loading').innerHTML=`<p>Buscando proveedores....... <img width='80px' src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif'></p>`;
+	document.getElementById('loading').innerHTML=`<i class="fas fa-spinner fa-pulse"></i> Cargando datos espere......`;
 	document.getElementById('contenido').className=`fade`;
 
 	let tbody = document.getElementById('tablaBody');
@@ -304,7 +305,7 @@ let obtenerStock = async(idP) => {
 			}
 
 			const borrar = await borrarVenta(idP);			
-		
+			const totVanCols=await totalVentasCols();
 		
 	} catch (error) { console.log('error en la conexion ', error); }
 

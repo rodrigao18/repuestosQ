@@ -41,13 +41,13 @@
 	<main class="app-content">
 		<div class="app-title">
 			<div>
-				<h1><i class="fa fa-shopping-cart"></i> Ver productos </h1>
-				<p>Ver productos, editar y eliminar</p>
+				<h1><i class="fa fa-shopping-cart"></i> Ver clientes </h1>
+				<p>Ver clientes, editar y eliminar</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb side">
 				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-				<li class="breadcrumb-item">Productos</li>
-				<li class="breadcrumb-item active"><a href="#">Ver productos</a></li>
+				<li class="breadcrumb-item">clientes</li>
+				<li class="breadcrumb-item active"><a href="#">Ver clientes</a></li>
 			</ul>
 		</div>
 
@@ -58,10 +58,10 @@
 			<div class="col-md-12">
 				<div class="tile">
 					<div class="tile-body">
-						<a style="margin-right: 15px" href="ingresar_productos_nuevos.php" class="btn btn-outline-primary float-right"><i class="icon fa fa-cart-plus"></i>Ingresar productos nuevos</a>
+					
 						<div class="my-3 p-3 bg-white rounded box-shadow">
 
-							<h6 class="border-bottom border-gray pb-2 mb-0 ">Productos</h6>
+							<h6 class="border-bottom border-gray pb-2 mb-0 ">clientes</h6>
 							<br><br>
 
 								<div id="salida">

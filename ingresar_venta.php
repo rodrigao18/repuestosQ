@@ -161,16 +161,27 @@
 
 
 							<div class="form-row">
-								<div class="form-group col-md-4">
-									<label> Clientes </label>
+								<div class="form-group col-md-3">
+									<label> Clientes rut </label>
 									<div class="input-group">	
-									<select  class="form-control" id="selectClientes"></select>
+									<select  class="form-control" onchange="idClienteRut()" id="selectClientes"></select>
 									<div class="input-group-append">
 											<button  target="_blank" class="btn btn-primary" id="addTipo_Equipo" onclick="ingresar_cliente()" data-toggle="tooltip" title="agregar" type="button"><i class="fas fa-plus"></i> </button>
-										</div>
-								</div>		
+									</div>
 								</div>
-								<div class="form-group col-md-4">
+
+								</div>
+								<div class="form-group col-md-3">
+									<label> Clientes Nombre </label>
+									<div class="input-group">	
+									<select  class="form-control" onchange="idClienteNombre()"  id="selectClientesN"></select>
+									<div class="input-group-append">
+											<button  target="_blank" class="btn btn-primary"  id="addTipo_Equipo" onclick="ingresar_cliente()" data-toggle="tooltip" title="agregar" type="button"><i class="fas fa-plus"></i> </button>
+									</div>
+								</div>
+										
+								</div>
+								<div class="form-group col-md-3">
 									<label> Seleccione tipo documento</label>
 									<div class="input-group">
 									<select  class="form-control" onchange="sel_Documento()" id="selectDocumento">                                    
@@ -183,9 +194,9 @@
 							 	</div>
 								 
 									</div>
-									<div class="form-group col-md-4">
+									<div class="form-group col-md-3">
 									<label> Fecha venta </label>
-									<input type="date" class="form-control" id="fecha_venta"  min="2013-01-01" max="2025-12-31" value="<?php echo date("Y-m-d");?>">
+									<input type="date" class="form-control" id="fecha_venta"  min="2013-01-01" max="2025-12-31">
 								</div>
 								</div>
 							</div>
@@ -439,6 +450,21 @@
 	<script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
     <!-- <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script> -->
 	<script src="js/plugins/swal2.js"></script>
+
+ <script>
+	
+  var fecha = new Date(); //Fecha actual
+  var mes = fecha.getMonth()+1; //obteniendo mes
+  var dia = fecha.getDate(); //obteniendo dia
+  var ano = fecha.getFullYear(); //obteniendo año
+  if(dia<10)
+    dia='0'+dia; //agrega cero si el menor de 10
+  if(mes<10)
+    mes='0'+mes //agrega cero si el menor de 10
+  let fecha_ac=document.getElementById('fecha_venta').value=ano+"-"+mes+"-"+dia;
+  console.log(fecha_ac);
+ </script>
+
     <?php include "./js/table.php"; ?>
 	<script type="text/javascript">
         var ID_VENDEDOR =<?php echo $idVendedor;?>;
@@ -450,6 +476,8 @@
 		
 
 	</script>
+
+
 
 
 </body>

@@ -45,27 +45,26 @@ let cargarClientes = async () => {
 	
 }
 //*-productos
-let tablaClientes = (arreglo) => {
-	let tbody = document.getElementById('tablaBody');
+ const tablaClientes = (arreglo) =>{
 
-	for (let i of arreglo) { 
-       
-		tbody.innerHTML +=
-		`<tr>		   
-		   <td>${formatearRut(i['rut'])}</td>
-		   <td>${i['nombre']}</td>
-		   <td>${i['fono_1']}</td>
-           <td>${i['fono_2']}</td>
-           <td>${COMUNAS[i['ciudad']-1]['nombre']}</td>						  
+	for (var i = 0; i < arreglo.length; i++) {
+
+		$("#tablaBody").append(`<tr>		   
+		   <td>${formatearRut(arreglo[i]['rut'])}</td>
+		   <td>${arreglo[i]['nombre']}</td>
+		   <td>${arreglo[i]['fono_1']}</td>
+           <td>${arreglo[i]['fono_2']}</td>
+           <td>${COMUNAS[arreglo[i]['ciudad']-1]['nombre']}</td>						  
 		   <td><form method="POST" action="editar_cliente.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
-			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>			
-			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
-         </tr>`
-	 	
-	}
-	$('[data-toggle="tooltip"]').tooltip();
+			data-placement="top" title="Editar" name="id" value=${arreglo[i]['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>			
+			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${arreglo[i]['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
+         </tr>`);
 
+	}
+
+	$('[data-toggle="tooltip"]').tooltip();
+	
  }
 
  function lenguaje() {

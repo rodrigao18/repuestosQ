@@ -86,14 +86,14 @@ function soloRut(string){
     if (string.length>14){
         console.error('max caracteres');
 		return false;
-	}else{
-
+	}else{   
+    
     var out='';
-    var filtro = '1234567890k';
+    var filtro = '1234567890kK';
 
     for(var i=0; i<string.length; i++){
         if ( filtro.indexOf(string.charAt(i)) !=-1) {
-
+         
             out+=string.charAt(i);
         }
     }

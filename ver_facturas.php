@@ -63,7 +63,8 @@
 
 							<h6 class="border-bottom border-gray pb-2 mb-0 ">Facturas</h6>
 							<br><br>
-
+							<div id="loading"></div>
+							<br>
 								<div id="salida">
 								<div class="my-3 p-3 bg-white rounded box-shadow">
 								

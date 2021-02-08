@@ -58,7 +58,12 @@
 							<div class="form-row">
 							<div class="form-group col-md-6">
 								<label>R.U.T</label>
+								<div class="input-group">
 								<input type="text" class="form-control" id="rutCliente" disabled name="rutCliente" maxlength="9" placeholder=" Ej:123456789 (sin digito)" onfocus="this.value=sacarPuntosGuionRut(this.value)" onkeyup="this.value=soloRut(this.value)" onblur="this.value=validaRut(this.value,1)" >
+								<div class="input-group-append">
+											<button  target="_blank" class="btn btn-primary" id="addTipo_Equipo" onclick="editRut()" data-toggle="tooltip" title="editar rut" type="button"><i class="fas fa-edit"></i> </button>
+								</div>
+								</div>
 							</div>
 							<div class="form-group col-md-6">
 								<label>Nombre</label>

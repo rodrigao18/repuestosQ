@@ -3,7 +3,7 @@ var PROVEEDORES;
 
 
 let proveedores = async () => {
-
+	document.getElementById('loading').innerHTML=`<i class="fas fa-spinner fa-pulse"></i> Cargando facturas espere......`;
 	const baseUrl = 'php/consultaFetch.php';
     let consulta=`	SELECT id,nombre FROM proveedores`;
 	 
@@ -54,36 +54,33 @@ let cargarFacturas = async () => {
 		//*-promesa de la funcion denguaje la ejecuto a la espera
 		//*-de la respuesta del servidor.	
 		const botones = await lenguaje();	
-		
+		document.getElementById('loading').innerHTML=``;
 	} catch (error) {
 		console.log('error en la conexion ', error);
 	}
 	
 }
 
-let tablaFacturas = (arreglo) => {
-	let tbody = document.getElementById('tablaBody');
-	
-	for (let i of arreglo) { 
-	//console.error(PROVEEDORES[i['id_proveedor']]);	
-		tbody.innerHTML +=
-		`<tr>		   
-		<td>${PROVEEDORES[i['id_proveedor']]}</td>
-		   <td>${i['rut']}</td>
-		   <td>${i['numero_factura']}</td>
-		   <td>${i['fecha_ingreso']}</td>
-		   <td>${formatearNumeros(i['neto'])}</td>
-		   <td>${formatearNumeros(i['iva'])}</td>		
-		   <td>${formatearNumeros(i['total'])}</td>				  
+ let tablaFacturas =  (arreglo) => {
+
+	for (var i = 0; i < arreglo.length; i++) {
+
+		$("#tablaBody").append(`<tr>		   
+		<td>${PROVEEDORES[arreglo[i]['id_proveedor']]}</td>
+		   <td>${arreglo[i]['rut']}</td>
+		   <td>${arreglo[i]['numero_factura']}</td>
+		   <td>${arreglo[i]['fecha_ingreso']}</td>
+		   <td>${formatearNumeros(arreglo[i]['neto'])}</td>
+		   <td>${formatearNumeros(arreglo[i]['iva'])}</td>		
+		   <td>${formatearNumeros(arreglo[i]['total'])}</td>				  
 		   <td><form method="POST" action="editar_facturas.php">
 		   <button type="submit" class="btn btn-secondary" data-toggle="tooltip"
-			data-placement="top" title="Editar" name="id" value=${i['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
-			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${i['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
-		 </tr>`
-	 	
+			data-placement="top" title="Editar" name="id" value=${arreglo[i]['id']}><i class="fas fa-edit" aria-hidden="true"></i></button></form></td>		
+			<td ><button class="btn  btn-danger" data-toggle="tooltip" data-placement="top" title="Borrar" onclick=eliminarProducto(event,${arreglo[i]['id']})><i class="fa fa-trash" aria-hidden="true"></i></button></td>			
+		 </tr>`);
 	}
-	$('[data-toggle="tooltip"]').tooltip();
 
+	$('[data-toggle="tooltip"]').tooltip();
  }
 
 

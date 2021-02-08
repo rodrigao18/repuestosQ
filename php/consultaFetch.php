@@ -17,6 +17,7 @@ if($tag == 'array_region'){ regiones($sql);} 		    //cargar regiones en editar c
 if($tag == 'array_provincias'){ provincias($sql);} 		//cargar provincias en editar cliente;
 if($tag == 'array_comunas'){ comunas($sql);} 			//cargar comunas en editar cliente;
 if($tag == 'array_clientes'){ clientes($sql);} 			//cargar clientes en ventas;
+if($tag == 'array_clientes_nombre'){ clientesNombre($sql);} 			//cargar clientes nombre en ventas;
 
 
 
@@ -155,6 +156,26 @@ function clientes($sql)	     {
 				$dv=substr($fila["rut"],-1);
 				$rutFormateado = $cuerpo ."-".  $dv;	
 				echo '<option value="'.$fila["id"].'">'.$rutFormateado.' ('.$fila["nombre"].')</option>'; }
+		mysqli_free_result($result);
+	mysqli_close($conect);
+	
+		}	
+
+		//*-mostrar las los clientes nombre en el select
+function clientesNombre($sql)	     {
+
+	$c= new conectar();
+	$conect = $c->conexion();  
+		mysqli_set_charset($conect,"utf8");//PARA MANEJAR LOS ACENTOS Y CARACTERES ESPECIALES DSDE LAS TABLAS MYSQL;   
+	$result = mysqli_query($conect,$sql) or die ('Consulta fallida :');       
+	$arreglo_usuario=array();
+	
+		echo '<option value="0">Sin cliente</option>';
+			while($fila=mysqli_fetch_array($result)){
+				$cuerpo=substr($fila["rut"],0,-1);				
+				$dv=substr($fila["rut"],-1);
+				$rutFormateado = $cuerpo ."-".  $dv;	
+				echo '<option value="'.$fila["id"].'">'.$fila["nombre"].' ('.$rutFormateado.')</option>'; }
 		mysqli_free_result($result);
 	mysqli_close($conect);
 	
