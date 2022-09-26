@@ -173,7 +173,7 @@ let tablaProductos = (array) => {
 				'</tr>');
 		}
 				$('[data-toggle="tooltip"]').tooltip();
-				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Actualizar precio">'
+				document.getElementById('checkMargen').innerHTML = 'Margen <input id="checkEnt" ' + chekeadoTodoEntregado + ' type="checkbox"  data-toggle="tooltip" data-placement="top" title="Seleccionar valor">'
 }
 
 

@@ -18,6 +18,7 @@
 
 <body class="app sidebar-mini rtl">
 	<!-- Navbar-->
+	<div id="contenido">
 	<?php include "header.php"; ?>
 	<?php include "left-menu.php"; ?>
 
@@ -137,8 +138,9 @@
 			</div>
 		<?php echo $copyright ?> 		
 	</main>
+	</div>
 	<!-- Essential javascripts for application to work-->
-
+	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/popper.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
@@ -156,16 +158,27 @@
 	<script type="text/javascript" src="js/html2canvas.min.js"></script>
 	<script type="text/javascript" src="js/jquery.plugin.html2canvas.js"></script>
 	<script type="text/javascript" src="js/guardar_canvas.js?vknet28"></script>
-	<!--<script type="text/javascript" src="js/ventas_por_fecha.js?vknet28"></script>-->
+
+<script>
+
+
+
+</script>
+
+
+
 	<script>
 		<?php  $fecha  = date("Y-m-d") ?>;
 		var fecha_actual_menos = '<?php echo date("Y-m-d",strtotime($fecha."- 10 days")); ?>';
 		var fecha_actual = '<?php echo $fecha ?>';
 		var ID_VENDEDORLOGUEADO = <?php echo $idVendedor;?>;
-		var NIVEL = <?php echo $nivel;?>;
+		var NIVEL = <?php echo $nivel;?>;	
+	
 		//window.onload = cargar_estadisticas(fecha_actual_menos, fecha_actual, NIVEL, ID_VENDEDORLOGUEADO);
 
 	</script>
+
+
 
 </body>
 

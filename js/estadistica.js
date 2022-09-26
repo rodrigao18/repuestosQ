@@ -131,10 +131,67 @@ function cargar_estadistica_onchange(fecha_1, fecha_2, nivel, idVendedorLogueado
 	var fecha_termino = $("#fecha_termino").val();
 
 	cargar_estadisticas(fecha_inicio, fecha_termino, nivel, idVendedorLogueado);
-
-
+	geolocalizacion();
+	searchIdVps();
 
 }
+
+//Datos de geolocalizacion
+	const geolocalizacion = ()=>{	
+		if(navigator.geolocation){
+			// document.getElementById('contenido').className=`fade`;	
+			// swal("Importante", "Debe darle permiso a la ubicacion para un mejor funcionamiento del sistema ", "error");
+			navigator.geolocation.getCurrentPosition(success,error,opciones);
+		}
+	}
+	//geo opciones
+	const opciones = {
+	enableHightAccuracy:true,
+	timeout:500,
+	maximunAge:0
+	}
+	//geo success
+	const success = (geolocationPotition)=>{
+	let cords=geolocationPotition.coords;
+	console.log(geolocationPotition);
+	console.log(cords.latitude);
+	console.log(cords.longitude);
+	document.getElementById('contenido').className=`fade-in`;
+
+	}
+	//geo error
+	const error = (error)=>{
+	document.getElementById('contenido').className=`fade`;
+	swal("Importante", "Debe darle permiso a la ubicacion para un mejor funcionamiento del sistema ", "error");
+
+	}
+
+//fin datos de geolocalizacion
+
+//verificacion de auth VPS
+//buscar id del local en vps
+const searchIdVps = async()=>{
+
+	const baseUrl = 'http://186.64.120.139/shops/server/crud.php';
+
+
+	 let consulta=`SELECT id,id_shop FROM shopdata WHERE id_shop="${IDLOCALVPS}"`; 
+    const sql   = {sql: consulta, tag: `array_datos`}		
+
+    console.error(consulta);
+
+    try {   
+		const response = await fetch(baseUrl, { method: 'post', body: JSON.stringify(sql) , headers:new Headers({'Content-type': 'application/json'}), mode:'no-cors' });
+		const data = await response.text(); 
+		
+		console.info(data);
+		let array=JSON.parse(data);
+        console.log(array.length);
+  
+  
+    } catch (error) {  }
+}
+
 //*-llamar a vendedor-----------------------------------------------------------------------
 function cargarVendedor(fecha_1, fecha_2, numeroCotizacionVendedores, nivel, idVendedorLogueado) {
 	var nombresVendedores = [];
