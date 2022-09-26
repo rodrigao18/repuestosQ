@@ -74,7 +74,7 @@
                                 <th width="15%">Proveedor</th>
 								<th width="10%">Rut</th>
 								<th width="10%">Factura</th>	
-								<th width="10%">Fecha ingreso</th>
+								<th width="10%">Fecha emisión</th>
 								<th width="5%">Neto</th>
 								<th width="5%">Iva</th>
                                 <th width="5%">Total</th>							

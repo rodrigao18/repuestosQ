@@ -69,7 +69,7 @@ let tablaFacturas = (arreglo) => {
 		<td>${PROVEEDORES[arreglo[i]['id_proveedor']]}</td>
 		   <td>${arreglo[i]['rut']}</td>
 		   <td>${arreglo[i]['numero_factura']}</td>
-			<td>${arreglo[i]['fechaEmision']}</td>
+		   <td>${arreglo[i]['fechaEmision']}</td>
 		   <td>${formatearNumeros(arreglo[i]['neto'])}</td>
 		   <td>${formatearNumeros(arreglo[i]['iva'])}</td>		
 		   <td>${formatearNumeros(arreglo[i]['total'])}</td>				  
