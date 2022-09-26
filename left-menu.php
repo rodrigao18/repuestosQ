@@ -23,8 +23,10 @@
 		$tipoTurno='';
 		$copyright='<i class="fas fa-copyright"></i>	2019 Copyright Todos los derechos reservados -
 		 <i class="fas fa-envelope"></i>  andres.chapa@yoimplemento.cl </p>';
-		 
+		$idunicalocal="Repuestos francia"; 
+		$IDLOCALVPSSHA1=sha1($idunicalocal);
 
+	
 ?>
 	<!-- Sidebar menu-->
 	<div class="app-sidebar__overlay" data-toggle="sidebar"></div>
@@ -53,6 +55,7 @@
 	
     if ($turno[0]['tipo_turno']==1) {
         $tipoTurno='mañana';
+		
     } else {
         $tipoTurno='tarde';
     }
@@ -290,6 +293,7 @@ var TIPO_TURNO = <?php echo $idTipoTurno;?>;
 var ID_VENDEDOR = <?php echo $idVendedor; ?>;
 var NIVEL = <?php echo $nivel;?>;
 var SUCURSAL= <?php echo $sucursal;?>;
+var IDLOCALVPS ="<?php echo $IDLOCALVPSSHA1;?>";
 
 if(SUCURSAL==1){
 var sucur="Terminal-1";	
